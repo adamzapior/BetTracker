@@ -103,9 +103,7 @@ struct AddBetScreen: View {
                             text: $vm.category,
                             isError: false
                         )
-                        .onTapGesture {
-
-                        }
+                        .onTapGesture { }
                         OptionalDataInput(
                             hint: "Wprowadź ligę",
                             text: $vm.league,
@@ -149,14 +147,16 @@ struct AddBetScreen: View {
                 }
                 .padding(.horizontal, 12)
             }
-        }.navigationBarBackButtonHidden()
+        }
+        .navigationBarBackButtonHidden()
+        .onTapGesture { hideKeyboard() }
 
-
-            .onDisappear {
-                vm.saveTextInTexfield()
-            }
-            .onAppear {
-                vm.loadTextInTextfield()
-            }
+        .onDisappear {
+            vm.saveTextInTexfield()
+        }
+        .onAppear {
+            vm.loadTextInTextfield()
+        }
     }
 }
+

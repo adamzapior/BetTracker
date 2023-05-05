@@ -21,11 +21,6 @@ class SearchVM: ObservableObject {
     var currency = UserDefaults.standard.object(forKey: "defaultCurrency") as? String ?? ""
 
     init() {
-        BetDao.getSavedBets()
-            .map {
-                .some($0) }
-            .assign(to: &$bets)
-        
         $searchText
             .combineLatest($bets)
             .map { searchText, bets in
@@ -42,6 +37,12 @@ class SearchVM: ObservableObject {
                 }
             }
             .assign(to: &$searchResults)
+        
+        BetDao.getSavedBets()
+            .map {
+                .some($0) }
+            .assign(to: &$bets)
+        
     }
 
     // MARK: Sorting logic

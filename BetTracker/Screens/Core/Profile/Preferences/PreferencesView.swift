@@ -7,6 +7,9 @@ struct PreferencesView: View {
 
     @StateObject
     var vm = PreferencesVM()
+    
+    @FocusState
+    private var hasFocus: Bool
 
     var body: some View {
         NavigationView {
@@ -32,6 +35,7 @@ struct PreferencesView: View {
                                 )
                         ) {
                             TextField("Enter your tax value", text: $vm.defaultTax)
+                                .focused($hasFocus)
                                 .overlay {
                                     Text("%")
                                         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -39,6 +43,12 @@ struct PreferencesView: View {
                                 }
                                 .textFieldStyle(.plain)
                         }
+                    }
+                    .onChange(of: hasFocus) {
+                        vm.hasFocus = $0
+                    }
+                    .onAppear {
+                        self.hasFocus = vm.hasFocus
                     }
                     .scrollContentBackground(.hidden)
                     .frame(height: 100, alignment: .topLeading)
@@ -54,6 +64,7 @@ struct PreferencesView: View {
                                 )
                         ) {
                             TextField("Enter your currency", text: $vm.defaultCurrency)
+//                                .focused(vm.$focusField, equals: .currency)
                                 .textInputAutocapitalization(.characters)
                         }
                     }
@@ -64,6 +75,9 @@ struct PreferencesView: View {
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.horizontal, -8)
                 .padding(.bottom, 48)
+                .onTapGesture {
+                    self.hideKeyboard()
+                }
             }
         }
         .navigationBarBackButtonHidden()
@@ -73,5 +87,11 @@ struct PreferencesView: View {
         .onAppear {
             vm.loadPreferences()
         }
+    }
+}
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

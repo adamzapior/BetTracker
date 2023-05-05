@@ -6,8 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
 
 class PreferencesVM: ObservableObject {
+    
+    enum FocusText {
+        case tax, currency
+    }
+    
+    @FocusState var focusField: FocusText?
+    
+    @Published var hasFocus: Bool = false
     
     let defaults = UserDefaults.standard
     

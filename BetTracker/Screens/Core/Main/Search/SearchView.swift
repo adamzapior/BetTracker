@@ -36,7 +36,7 @@ struct SearchView: View {
             }
             .padding(.vertical, 2)
             ScrollView {
-                ForEach(vm.bets ?? [], id: \.id) { bet in
+                ForEach(vm.searchResults ?? [], id: \.id) { bet in
                     NavigationLink(destination: BetDetailsScreen(bet: bet)) {
                         BetListElement(bet: bet, currency: vm.currency)
                     }
