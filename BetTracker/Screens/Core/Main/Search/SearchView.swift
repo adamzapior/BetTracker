@@ -11,25 +11,25 @@ struct SearchView: View {
         LazyVStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    SortButton(text: "All", isChecked: vm.selectedSortOption == .all) {
-                        vm.selectedSortOption = .all
-                        vm.getSavedBets()
-                    }
-                    SortButton(text: "Oldest", isChecked: vm.selectedSortOption == .oldest) {
-                        vm.selectedSortOption = .oldest
-                        vm.getBetsFormTheOldestDate()
-                    }
-                    SortButton(text: "Won", isChecked: vm.selectedSortOption == .won) {
-                        vm.selectedSortOption = .won
-                        vm.getWonBets()
-                    }
-                    SortButton(text: "Lost", isChecked: vm.selectedSortOption == .lost) {
-                        vm.selectedSortOption = .lost
-                        vm.getLostBets()
-                    }
-                    SortButton(text: "Amount", isChecked: vm.selectedSortOption == .amount) {
-                        vm.selectedSortOption = .amount
-                        vm.getBetsByAmount()
+                    ForEach(vm.sortOptions) { button in
+                        SortButton(
+                            text: button.rawValue.capitalized,
+                            isChecked: vm.selectedSortOption == button
+                        ) {
+                            vm.selectedSortOption = button
+                            switch button {
+                            case .all:
+                                vm.getSavedBets()
+                            case .oldest:
+                                vm.getBetsFormTheOldestDate()
+                            case .won:
+                                vm.getWonBets()
+                            case .lost:
+                                vm.getLostBets()
+                            case .amount:
+                                vm.getBetsByAmount()
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal, 12)

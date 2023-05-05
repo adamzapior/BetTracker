@@ -17,6 +17,7 @@ class SearchVM: ObservableObject {
 
     @Published
     var selectedSortOption: SortOption = .all
+    let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
     
     var currency = UserDefaults.standard.object(forKey: "defaultCurrency") as? String ?? ""
 
@@ -47,12 +48,14 @@ class SearchVM: ObservableObject {
 
     // MARK: Sorting logic
 
-    enum SortOption: String, CaseIterable {
+    enum SortOption: String, CaseIterable, Identifiable {
         case all
         case oldest
         case won
         case lost
         case amount
+        
+        var id: String { self.rawValue }
     }
     
     func getSavedBets() {
