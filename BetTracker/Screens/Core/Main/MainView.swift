@@ -41,7 +41,7 @@ struct MainView: View {
                     .padding(.bottom, 24)
                 }
                 HStack {
-                    BetButton(text: "History", backgroundColor: Color.ui.primaryContainer)
+                    BetButton(text: "History")
                     Spacer()
                     Text("") // hack
                 }

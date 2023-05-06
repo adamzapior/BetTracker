@@ -5,7 +5,6 @@ import SwiftUI
 class AddBetVM: ObservableObject {
 
     init() {
-        // Subscribe to changes in the @Published properties and calculate the profit
         Publishers.CombineLatest3($amount, $odds, $tax)
             .map { [weak self] amount, odds, tax in
                 guard let self else {

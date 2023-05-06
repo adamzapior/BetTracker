@@ -22,7 +22,7 @@ struct ReminderInput: View {
                 HStack {
                     HStack {
                             Text(bodyText)
-                                .foregroundColor(Color.ui.onPrimaryContainer)
+                                .foregroundColor(Color.ui.onBackground)
                         Spacer()
                         Toggle("", isOn: $isOn)
                             .frame(maxWidth: 60)

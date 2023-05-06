@@ -1,25 +1,10 @@
-//
-//  TaxVM.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 16/04/2023.
-//
-
 import Foundation
 import SwiftUI
 
 class PreferencesVM: ObservableObject {
-    
-    enum FocusText {
-        case tax, currency
-    }
-    
-    @FocusState var focusField: FocusText?
-    
-    @Published var hasFocus: Bool = false
-    
+
     let defaults = UserDefaults.standard
-    
+
     @Published
     var defaultTax = "" {
         didSet {
@@ -31,7 +16,7 @@ class PreferencesVM: ObservableObject {
             }
         }
     }
-    
+
     @Published
     var defaultCurrency = "PLN" {
         didSet {
@@ -43,15 +28,15 @@ class PreferencesVM: ObservableObject {
             }
         }
     }
-    
+
     func savePreferences() {
         defaults.set(defaultTax, forKey: "defaultTax")
         defaults.set(defaultCurrency, forKey: "defaultCurrency")
     }
-    
+
     func loadPreferences() {
         defaultTax = defaults.object(forKey: "defaultTax") as? String ?? ""
         defaultCurrency = defaults.object(forKey: "defaultCurrency") as? String ?? ""
     }
-    
+
 }

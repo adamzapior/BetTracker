@@ -13,8 +13,8 @@ struct PredictedProfit: View {
     
     var body: some View {
         HStack {
-            Text("Przewidywana wygrana:")
-                .foregroundColor(Color.ui.onPrimaryContainer)
+            Text("Predicted win:")
+                .foregroundColor(Color.ui.onBackground)
                 .bold()
             Spacer()
             Text(text)

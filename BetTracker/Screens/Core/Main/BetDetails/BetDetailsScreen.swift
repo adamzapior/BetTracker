@@ -45,6 +45,8 @@ struct BetDetailsScreen: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 12)
+            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+
 
             VStack(spacing: 5) {
                 Group {
@@ -86,6 +88,8 @@ struct BetDetailsScreen: View {
             .clipShape(RoundedRectangle(cornerRadius: 25))
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 12)
+            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+
         }
         .navigationBarBackButtonHidden()
         Spacer()

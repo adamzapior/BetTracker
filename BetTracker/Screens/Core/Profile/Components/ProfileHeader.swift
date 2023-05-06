@@ -1,22 +1,27 @@
 import SwiftUI
 
-struct MainHeader: View {
+struct ProfileHeader: View {
     var body: some View {
         ZStack {
-            Text("Welcome, Adam")
+            Text("Your stats")
             HStack {
                 Spacer()
                 NavigationLink(
-                    destination: { SearchView() },
+                    destination: { PreferencesView() },
                     label: {
-                        Image(systemName: "magnifyingglass")
+                        Image(systemName: "gear")
                             .foregroundColor(Color.ui.scheme)
-                            .opacity(0.7)
                             .font(.title2)
                     }
                 )
             }
             .padding(.trailing, 18)
         }
+    }
+}
+
+struct ProfileHeader_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileHeader()
     }
 }

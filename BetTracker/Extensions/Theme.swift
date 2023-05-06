@@ -12,6 +12,7 @@ struct ColorPalette {
     var background = Color("Background")
     var error = Color("Primary")
     var errorContainer = Color("ErrorContainer")
+    var imageGradinetColor = Color("ImageGradinetColor")
     var onBackground = Color("OnBackground")
     var onError = Color("OnError")
     var onErrorContainer = Color("OnErrorContainer")

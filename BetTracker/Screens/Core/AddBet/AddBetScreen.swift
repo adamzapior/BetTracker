@@ -115,7 +115,7 @@ struct AddBetScreen: View {
                             displayedComponents: .date
                         ) {
                             Text("Wprowadź datę zdarzenia:")
-                                .foregroundColor(Color.ui.onPrimaryContainer)
+                                .foregroundColor(Color.ui.onBackground)
                                 .padding(.horizontal, 12)
                         }
                         .datePickerStyle(.compact)
