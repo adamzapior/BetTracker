@@ -1,14 +1,53 @@
 import CoreTransferable
 import PhotosUI
 import SwiftUI
+import Combine
 
 @MainActor
 class ProfileVM: ObservableObject {
-
+    
+    @Published
+    var allBetsAmount: NSDecimalNumber = .zero
+    
+    @Published
+    var cancellables = Set<AnyCancellable>()
+    
     init() {
         checkImageFileExists()
+        
+        getBetsAmount()
+        
+        print($cancellables)
     }
 
+    
+    func getBetsAmount() {
+        BetDao.allBetsAmount()
+            .handleEvents(receiveSubscription: { _ in
+                       print("getLostBetsSum(): Subscription started")
+                   }, receiveOutput: { sum in
+                       print("getLostBetsSum(): Sum received: \(sum)")
+                   }, receiveCompletion: { completion in
+                       print("getLostBetsSum(): Completion received: \(completion)")
+                   }, receiveCancel: {
+                       print("getLostBetsSum(): Subscription cancelled")
+                   })
+                   .sink(receiveCompletion: { completion in
+                       print("getLostBetsSum(): Sink completed with \(completion)")
+                   }, receiveValue: { sum in
+                       print("getLostBetsSum(): Sink received value: \(sum)")
+                       self.allBetsAmount = sum
+                   })
+                   .store(in: &cancellables)
+        }
+    
+//    func getBetsAmount() {
+//        BetDao.allBetsAmount()
+//            .map { .some($0) }
+//            .assign(to: &$allBetsAmount)
+//    }
+//
+    
     // MARK: Profile Image Logic
 
     enum ImageState {
@@ -31,15 +70,11 @@ class ProfileVM: ObservableObject {
 
         static var transferRepresentation: some TransferRepresentation {
             DataRepresentation(importedContentType: .image) { data in
-                #if canImport(UIKit)
                     guard let uiImage = UIImage(data: data) else {
                         throw TransferError.importFailed
                     }
                     let image = Image(uiImage: uiImage)
                     return ProfileImage(image: image, uiImageX: uiImage)
-                #else
-                    throw TransferError.importFailed
-                #endif
             }
         }
     }
@@ -132,8 +167,8 @@ class ProfileVM: ObservableObject {
 // Save the user image
 
 class ImageSaver: NSObject {
-    var successHandler: (() -> Void)?
-    var errorHandler: ((Error) -> Void)?
+//    var successHandler: (() -> Void)?
+////    var errorHandler: ((Error) -> Void)?
 
     func writeToDisk(image: UIImage, imageName _: String) {
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]

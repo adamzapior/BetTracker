@@ -3,12 +3,8 @@ import Foundation
 class SearchVM: ObservableObject {
 
     @Published
-    var bets: [BetModel]? = [] {
-        didSet {
-            print(bets?.count ?? 0)
-        }
-    }
-
+    var bets: [BetModel]? = []
+    
     @Published
     private(set) var searchResults: [BetModel]? = nil
 

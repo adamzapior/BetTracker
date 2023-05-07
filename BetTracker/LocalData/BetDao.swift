@@ -115,4 +115,20 @@ class BetDao {
             .mapError { _ in Never.transferRepresentation }
             .eraseToAnyPublisher()
     }
+    
+    // MARK: Queries for Profile Stats Views
+    
+    static func allBetsAmount() -> AnyPublisher<NSDecimalNumber, Never> {
+        ValueObservation
+            .tracking { db in
+                try NSDecimalNumber
+                    .fetchOne(
+                        db,
+                        sql: "SELECT SUM (amount) FROM bet"
+                    ) ?? .zero
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
 }

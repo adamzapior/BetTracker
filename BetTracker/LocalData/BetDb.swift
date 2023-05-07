@@ -14,6 +14,7 @@ class BetDb {
             )
             .appendingPathComponent("db.sqlite")
         let db = try! DatabaseQueue(path: databaseURL.path)
+        
 
         try? db.write { db in
             try db.create(table: "bet") { t in
