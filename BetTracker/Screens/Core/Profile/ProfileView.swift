@@ -8,13 +8,16 @@ struct ProfileView: View {
 
     @StateObject
     var vm = ProfileVM()
+    
+    @StateObject
+    var vmProfilePhoto = ProfilePhotoVM()
 
     var body: some View {
         NavigationView {
             VStack{
                 ProfileHeader()
                 ScrollView(showsIndicators: false) {
-                EditableCircularProfileImage(vm: vm)
+                EditableCircularProfileImage(vm: vmProfilePhoto)
                     
                     VStack {
                         HStack {
@@ -46,7 +49,7 @@ struct ProfileView: View {
             }
         }
         .onDisappear {
-            vm.saveImageIfNeeded()
+            vmProfilePhoto.saveImageIfNeeded()
         }
     }
 

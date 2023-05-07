@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileImage: View {
-    let imageState: ProfileVM.ImageState
+    let imageState: ProfilePhotoVM.ImageState
 
     var body: some View {
         switch imageState {
@@ -23,7 +23,7 @@ struct ProfileImage: View {
 }
 
 struct CircularProfileImage: View {
-    let imageState: ProfileVM.ImageState
+    let imageState: ProfilePhotoVM.ImageState
 
     var body: some View {
         ProfileImage(imageState: imageState)
@@ -44,7 +44,7 @@ struct CircularProfileImage: View {
 
 struct EditableCircularProfileImage: View {
     @ObservedObject
-    var vm: ProfileVM
+    var vm: ProfilePhotoVM
 //    let imageSaver = ImageSaver()
 
     var body: some View {

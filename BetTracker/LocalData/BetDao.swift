@@ -131,4 +131,33 @@ class BetDao {
             .mapError { _ in Never.transferRepresentation }
             .eraseToAnyPublisher()
     }
+    
+    static func getWonBetsAmount() -> AnyPublisher<NSDecimalNumber, Never> {
+        ValueObservation
+            .tracking { db in
+                try NSDecimalNumber
+                    .fetchOne(
+                        db,
+                        sql: "SELECT SUM (amount) FROM bet WHERE isWon IS TRUE"
+                    ) ?? .zero
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
+    
+    static func getLostBetsAmount() -> AnyPublisher<NSDecimalNumber, Never> {
+        ValueObservation
+            .tracking { db in
+                try NSDecimalNumber
+                    .fetchOne(
+                        db,
+                        sql: "SELECT SUM (amount) FROM bet WHERE isWon IS FALSE"
+                    ) ?? .zero
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
+    
 }

@@ -36,15 +36,21 @@ class AddBetVM: ObservableObject {
         }
     }
 
-    @Published
-    var amount = "" {
+    @Published var amount = "" {
         didSet {
-            // swiftlint:disable opening_brace
-            if !amount.isEmpty,
-               amount.wholeMatch(of: /[0-9]|[1-9][0-9]{0,5}+\.?[0-9]{,2}/) == nil {
-                amount = oldValue
-            }
             amountIsError = false
+            if amount.isEmpty {
+                return
+            }
+            let cleanedAmount = amount.replacingOccurrences(of: ",", with: ".") // replace comma with dot
+            if cleanedAmount != amount {
+                amount = cleanedAmount // set the cleaned odds as the new value if they are different
+                return
+            }
+            
+            if cleanedAmount.wholeMatch(of: /[1-9][0-9]{0,5}?((\.|,)[0-9]{,2})?/) == nil {
+                amount = oldValue // revert back to the old value if it doesn't match the regular expression
+            }
         }
     }
     
@@ -54,31 +60,38 @@ class AddBetVM: ObservableObject {
     @Published
     var selectedDate = Date()
 
-    @Published
-    var odds = "" {
+    @Published var odds = "" {
         didSet {
             oddsIsError = false
             if odds.isEmpty {
                 return
             }
-            // swiftlint:disable opening_brace
-            if odds
-                .wholeMatch(of: /[1-9][0-9]{0,2}?(\.[0-9]{,2})?/) == nil { // 5.55, 1.22, 1.22, 10.<22>
+            let cleanedOdds = odds.replacingOccurrences(of: ",", with: ".")
+            if cleanedOdds != odds {
+                odds = cleanedOdds
+                return
+            }
+            
+            if cleanedOdds.wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) == nil { // 5.55, 1.22, 1.22, 10.<22>
                 odds = oldValue
             }
         }
     }
-
-    @Published
-    var tax = "" {
+    
+    @Published var tax = "" {
         didSet {
             taxIsError = false
             if tax.isEmpty {
                 return
             }
-            // swiftlint:disable opening_brace
-            if tax.wholeMatch(of: /[1-9][0-9]?(\.[0-9]{,2})?/) == nil {
-                tax = oldValue
+            let cleanedTax = tax.replacingOccurrences(of: ",", with: ".")
+            if cleanedTax != tax {
+                tax = cleanedTax
+                return
+            }
+            
+            if cleanedTax.wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) == nil { // 5.55, 1.22, 1.22, 10.<22>
+                tax = oldValue 
             }
         }
     }
@@ -252,15 +265,20 @@ class AddBetVM: ObservableObject {
 
 }
 
-extension String {
-    func nilIfEmpty() -> String? {
-        if isEmpty {
-            return nil
-        }
-        return self
-    }
 
-    func trim() -> String {
-        trimmingCharacters(in: .whitespacesAndNewlines)
+
+extension String {
+    static let numberFormatter = NumberFormatter()
+    var doubleValue: Double {
+        String.numberFormatter.decimalSeparator = "."
+        if let result =  String.numberFormatter.number(from: self) {
+            return result.doubleValue
+        } else {
+            String.numberFormatter.decimalSeparator = ","
+            if let result = String.numberFormatter.number(from: self) {
+                return result.doubleValue
+            }
+        }
+        return 0
     }
 }
