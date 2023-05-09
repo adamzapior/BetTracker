@@ -17,16 +17,17 @@ struct ContentView: View {
             switch session.currentState {
             case .loggedIn:
                 TabBar()
-                    .transition(.opacity)
+                    .transition(.move(edge: .bottom))
             case .onboardingSetup:
                 OnboardingSetupView(action: session.completeOnboardingSetup)
-                    .transition(.opacity)
+                    .animation(.easeInOut, value: 0.5)
             case .onboarding:
                 OnboardingView(action: session.completeOnboarding)
-                    .transition(.opacity)
+                    .transition(
+                        .move(edge: .bottom)
+                    )
             default:
-                // Splash screen
-                Color.black  // TODO: logo image view
+                ProgressView()
             }
         }
         .animation(.easeInOut, value: session.currentState)
@@ -52,3 +53,4 @@ extension UINavigationController: UIGestureRecognizerDelegate {
         return viewControllers.count > 1
     }
 }
+

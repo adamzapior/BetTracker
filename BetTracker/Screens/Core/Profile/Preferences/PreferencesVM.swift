@@ -3,6 +3,8 @@ import SwiftUI
 
 class PreferencesVM: ObservableObject {
 
+    let defaults = UserDefaultsManager.path
+
     @Published
     var username = ""
 
@@ -31,27 +33,14 @@ class PreferencesVM: ObservableObject {
     }
 
     func savePreferences() {
-        UserDefaultsManager.useManager.set(
-            username,
-            forKey: UserDefaultsManager.Keys.username
-        )
-        UserDefaultsManager.useManager.set(
-            defaultTax,
-            forKey: UserDefaultsManager.Keys.defaultTax
-        )
-        UserDefaultsManager.useManager.set(
-            defaultCurrency,
-            forKey: UserDefaultsManager.Keys.defaultCurrency
-        )
+        defaults.set(.username, to: username)
+        defaults.set(.defaultTax, to: defaultTax)
+        defaults.set(.defaultCurrency, to: defaultCurrency)
     }
 
     func loadPreferences() {
-        username = UserDefaultsManager.useManager
-            .object(forKey: UserDefaultsManager.Keys.username) as? String ?? ""
-        defaultTax = UserDefaultsManager.useManager
-            .object(forKey: UserDefaultsManager.Keys.defaultTax) as? String ?? ""
-        defaultCurrency = UserDefaultsManager.useManager
-            .object(forKey: UserDefaultsManager.Keys.defaultCurrency) as? String ?? ""
+        username = defaults.get(.username)
+        defaultTax = defaults.get(.defaultTax)
+        defaultCurrency = defaults.get(.defaultCurrency)
     }
-
 }

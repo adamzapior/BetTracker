@@ -1,6 +1,8 @@
 import Foundation
 
 final class SessionManager: ObservableObject {
+    
+    let defaults = UserDefaultsManager.path
 
     enum CurrentState {
         case loggedIn
@@ -22,7 +24,8 @@ final class SessionManager: ObservableObject {
 
     func completeOnboardingSetup() {
         currentState = .loggedIn
-        UserDefaultsManager.useManager.set(true, forKey: UserDefaultsManager.Keys.hasSeenOnboarding)
+        defaults.set(.hasSeenOnboarding, to: true)
+//        UserDefaultsManager.use.set(true, forKey: UserDefaultsManager.Keys.hasSeenOnboarding.rawValue)
     }
 
     func configureCurrentState() {
@@ -30,9 +33,8 @@ final class SessionManager: ObservableObject {
          - User closes the app during the onboarding phase > Resume the app from the onboarding screen
          - User closes the app after viewing onboarding > Resume the app from the log in screen (main app)
          */
-
-        let hasCompletedOnboarding = UserDefaults.standard
-            .bool(forKey: UserDefaultsManager.Keys.hasSeenOnboarding)
+        
+        let hasCompletedOnboarding = defaults.get(.hasSeenOnboarding)
 
         if hasCompletedOnboarding {
             currentState = .loggedIn

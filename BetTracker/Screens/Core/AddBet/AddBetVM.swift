@@ -4,6 +4,8 @@ import SwiftUI
 
 class AddBetVM: ObservableObject {
 
+    let defaults = UserDefaultsManager.path
+
     init() {
         Publishers.CombineLatest3($amount, $odds, $tax)
             .map { [weak self] amount, odds, tax in
@@ -20,7 +22,6 @@ class AddBetVM: ObservableObject {
             .assign(to: &$profit)
     }
 
-
     @Published
     var team1 = "" {
         didSet {
@@ -35,31 +36,37 @@ class AddBetVM: ObservableObject {
         }
     }
 
-    @Published var amount = "" {
+    @Published
+    var amount = "" {
         didSet {
             amountIsError = false
             if amount.isEmpty {
                 return
             }
-            let cleanedAmount = amount.replacingOccurrences(of: ",", with: ".") // replace comma with dot
+            let cleanedAmount = amount
+                .replacingOccurrences(of: ",", with: ".") // replace comma with dot
             if cleanedAmount != amount {
-                amount = cleanedAmount // set the cleaned odds as the new value if they are different
+                amount =
+                    cleanedAmount // set the cleaned odds as the new value if they are different
                 return
             }
-            
+
             if cleanedAmount.wholeMatch(of: /[1-9][0-9]{0,5}?((\.|,)[0-9]{,2})?/) == nil {
-                amount = oldValue // revert back to the old value if it doesn't match the regular expression
+                amount =
+                    oldValue // revert back to the old value if it doesn't match the regular
+                // expression
             }
         }
     }
-    
+
     @Published
     var defaultCurrency = ""
 
     @Published
     var selectedDate = Date()
 
-    @Published var odds = "" {
+    @Published
+    var odds = "" {
         didSet {
             oddsIsError = false
             if odds.isEmpty {
@@ -70,14 +77,17 @@ class AddBetVM: ObservableObject {
                 odds = cleanedOdds
                 return
             }
-            
-            if cleanedOdds.wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) == nil { // 5.55, 1.22, 1.22, 10.<22>
+
+            if cleanedOdds
+                .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
                 odds = oldValue
             }
         }
     }
-    
-    @Published var tax = "" {
+
+    @Published
+    var tax = "" {
         didSet {
             taxIsError = false
             if tax.isEmpty {
@@ -88,8 +98,10 @@ class AddBetVM: ObservableObject {
                 tax = cleanedTax
                 return
             }
-            
-            if cleanedTax.wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) == nil { // 5.55, 1.22, 1.22, 10.<22>
+
+            if cleanedTax
+                .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
                 tax = oldValue
             }
         }
@@ -222,27 +234,27 @@ class AddBetVM: ObservableObject {
     }
 
     func saveTextInTexfield() {
-        UserDefaultsManager.useManager.set(team1, forKey: "team1")
-        UserDefaultsManager.useManager.set(team2, forKey: "team2")
-        UserDefaultsManager.useManager.set(amount, forKey: "amount")
-        UserDefaultsManager.useManager.set(odds, forKey: "odds")
-        UserDefaultsManager.useManager.set(category, forKey: "category")
-        UserDefaultsManager.useManager.set(league, forKey: "league")
-        UserDefaultsManager.useManager.set(selectedDate, forKey: "selectedDate")
+        defaults.set(.team1, to: team1)
+        defaults.set(.team2, to: team2)
+        defaults.set(.amount, to: amount)
+        defaults.set(.odds, to: odds)
+        defaults.set(.category, to: category)
+        defaults.set(.league, to: league)
+        defaults.set(.selectedDate, to: selectedDate)
     }
 
     func loadTextInTextfield() {
-        team1 = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.team1) as? String ?? ""
-        team2 = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.team2) as? String ?? ""
-        amount = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.amount) as? String ?? ""
-        odds = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.odds) as? String ?? ""
-        tax = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.defaultTax) as? String ?? ""
-        defaultCurrency = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.defaultCurrency) as? String ?? ""
-        category = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.category) as? String ?? ""
-        league = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.league) as? String ?? ""
-        selectedDate = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.selectedDate) as? Date ?? Date.now
+        team1 = defaults.get(.team1)
+        team2 = defaults.get(.team2)
+        amount = defaults.get(.amount)
+        odds = defaults.get(.odds)
+        tax = defaults.get(.defaultTax)
+        defaultCurrency = defaults.get(.defaultCurrency)
+        category = defaults.get(.category)
+        league = defaults.get(.league)
+        selectedDate = defaults.get(.selectedDate)
     }
-    
+
     func clearTextField() {
         team1 = ""
         team2 = ""
@@ -253,7 +265,7 @@ class AddBetVM: ObservableObject {
         league = ""
         selectedDate = Date.now
     }
-    
+
     // MARK: idk gdzie to powinno być w pliku XD
 
     enum Category: String, CaseIterable {
