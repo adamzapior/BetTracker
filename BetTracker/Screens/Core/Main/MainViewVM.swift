@@ -9,7 +9,7 @@ class MainViewVM: ObservableObject {
     @Published
     var isSearchClicked: Bool = false
 
-    var currency = UserDefaults.standard.object(forKey: "defaultCurrency") as? String ?? ""
+    var currency = UserDefaultsManager.defaultCurrencyValue
 
     init() {
         BetDao.getPendingBets()

@@ -4,7 +4,7 @@ class BetDetailsVM: ObservableObject {
     @Published
     var isShowingAlert = false
     
-    var currency = UserDefaults.standard.object(forKey: "defaultCurrency") as? String ?? ""
+    var currency = UserDefaultsManager.defaultCurrencyValue
 
     func deleteBet(bet: BetModel) {
         BetDao.deleteBet(bet: bet)

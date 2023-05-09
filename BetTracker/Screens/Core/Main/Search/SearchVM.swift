@@ -15,7 +15,7 @@ class SearchVM: ObservableObject {
     var selectedSortOption: SortOption = .all
     let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
     
-    var currency = UserDefaults.standard.object(forKey: "defaultCurrency") as? String ?? ""
+    var currency = UserDefaultsManager.defaultCurrencyValue
 
     init() {
         $searchText

@@ -20,7 +20,6 @@ class AddBetVM: ObservableObject {
             .assign(to: &$profit)
     }
 
-    private let defaults = UserDefaults.standard
 
     @Published
     var team1 = "" {
@@ -223,25 +222,25 @@ class AddBetVM: ObservableObject {
     }
 
     func saveTextInTexfield() {
-        defaults.set(team1, forKey: "team1")
-        defaults.set(team2, forKey: "team2")
-        defaults.set(amount, forKey: "amount")
-        defaults.set(odds, forKey: "odds")
-        defaults.set(category, forKey: "category")
-        defaults.set(league, forKey: "league")
-        defaults.set(selectedDate, forKey: "selectedDate")
+        UserDefaultsManager.useManager.set(team1, forKey: "team1")
+        UserDefaultsManager.useManager.set(team2, forKey: "team2")
+        UserDefaultsManager.useManager.set(amount, forKey: "amount")
+        UserDefaultsManager.useManager.set(odds, forKey: "odds")
+        UserDefaultsManager.useManager.set(category, forKey: "category")
+        UserDefaultsManager.useManager.set(league, forKey: "league")
+        UserDefaultsManager.useManager.set(selectedDate, forKey: "selectedDate")
     }
 
     func loadTextInTextfield() {
-        team1 = defaults.object(forKey: "team1") as? String ?? ""
-        team2 = defaults.object(forKey: "team2") as? String ?? ""
-        amount = defaults.object(forKey: "amount") as? String ?? ""
-        odds = defaults.object(forKey: "odds") as? String ?? ""
-        tax = defaults.object(forKey: "defaultTax") as? String ?? ""
-        defaultCurrency = defaults.object(forKey: "defaultCurrency") as? String ?? ""
-        category = defaults.object(forKey: "category") as? String ?? ""
-        league = defaults.object(forKey: "league") as? String ?? ""
-        selectedDate = defaults.object(forKey: "selectedDate") as? Date ?? Date.now
+        team1 = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.team1) as? String ?? ""
+        team2 = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.team2) as? String ?? ""
+        amount = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.amount) as? String ?? ""
+        odds = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.odds) as? String ?? ""
+        tax = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.defaultTax) as? String ?? ""
+        defaultCurrency = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.defaultCurrency) as? String ?? ""
+        category = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.category) as? String ?? ""
+        league = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.league) as? String ?? ""
+        selectedDate = UserDefaultsManager.useManager.object(forKey: UserDefaultsManager.Keys.selectedDate) as? Date ?? Date.now
     }
     
     func clearTextField() {
