@@ -7,6 +7,8 @@ struct PreferencesView: View {
 
     @StateObject
     var vm = PreferencesVM()
+    
+    @State private var doWant = false
 
     var body: some View {
         NavigationView {
@@ -25,6 +27,23 @@ struct PreferencesView: View {
 
                     Form {
                         Section(
+                            header: Text("Your name")
+                                .foregroundColor(Color.ui.onPrimaryContainer)
+                                .frame(
+                                    maxWidth: .infinity,
+                                    alignment: .leading
+                                )
+                        ) {
+                            TextField("Enter your name", text: $vm.username)
+                                .textFieldStyle(.plain)
+                        }
+                    }
+                    .scrollContentBackground(.hidden)
+                    .frame(height: 90, alignment: .topLeading)
+                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+                    
+                    Form {
+                        Section(
                             header: Text("Choose your default tax")
                                 .foregroundColor(Color.ui.onPrimaryContainer)
                                 .frame(
@@ -32,6 +51,7 @@ struct PreferencesView: View {
                                     alignment: .leading
                                 )
                         ) {
+                            Toggle("Do you want set default tax?", isOn: $doWant)
                             TextField("Enter your tax value", text: $vm.defaultTax)
                                 .overlay {
                                     Text("%")
@@ -42,7 +62,7 @@ struct PreferencesView: View {
                         }
                     }
                     .scrollContentBackground(.hidden)
-                    .frame(height: 100, alignment: .topLeading)
+                    .frame(height: 125, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
 
                     Form {
@@ -59,11 +79,10 @@ struct PreferencesView: View {
                         }
                     }
                     .scrollContentBackground(.hidden)
-                    .frame(height: 235, alignment: .topLeading)
+                    .frame(height: 90, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
-                .padding(.horizontal, -8)
                 .padding(.bottom, 48)
                 .onTapGesture {
                     hideKeyboard()

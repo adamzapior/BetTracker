@@ -91,7 +91,7 @@ class AddBetVM: ObservableObject {
             }
             
             if cleanedTax.wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) == nil { // 5.55, 1.22, 1.22, 10.<22>
-                tax = oldValue 
+                tax = oldValue
             }
         }
     }
@@ -263,22 +263,4 @@ class AddBetVM: ObservableObject {
         case f1 = "F1"
     }
 
-}
-
-
-
-extension String {
-    static let numberFormatter = NumberFormatter()
-    var doubleValue: Double {
-        String.numberFormatter.decimalSeparator = "."
-        if let result =  String.numberFormatter.number(from: self) {
-            return result.doubleValue
-        } else {
-            String.numberFormatter.decimalSeparator = ","
-            if let result = String.numberFormatter.number(from: self) {
-                return result.doubleValue
-            }
-        }
-        return 0
-    }
 }

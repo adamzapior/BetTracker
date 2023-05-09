@@ -40,6 +40,10 @@ struct TabBar: View {
         Destination(icon: "heart", view: { ProfileView() })
     ]
 
+    @State
+    private var isKeyboardShown = false
+
+
     var body: some View {
         NavigationView {
             VStack {
@@ -47,7 +51,7 @@ struct TabBar: View {
                     AnyView(selectedTab.view()).environment(\.closeTab, closeTab)
                 }
                 .safeAreaInset(edge: .bottom) {
-                    if selectedTab != TabBar.destinations[1] {
+                    if selectedTab != TabBar.destinations[1], !isKeyboardShown {
                         HStack(spacing: 0) {
                             NavigationLink(destination: PreferencesView()) {
                                 Image(systemName: "plus")
@@ -78,6 +82,21 @@ struct TabBar: View {
                     }
                 }
             }
+
+//            .onReceive(
+//                NotificationCenter.default
+//                    .publisher(for: UIResponder.keyboardWillShowNotification)
+//            ) { _ in
+//                // Keyboard will show
+//                isKeyboardShown = true
+//            }
+//            .onReceive(
+//                NotificationCenter.default
+//                    .publisher(for: UIResponder.keyboardWillHideNotification)
+//            ) { _ in
+//                // Keyboard will hide
+//                isKeyboardShown = false
+//            }
         }
     }
 

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProfileHeader: View {
+
     var body: some View {
         ZStack {
             Text("Your stats")

@@ -48,6 +48,9 @@
 		58A296D029D46ED100E9E600 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A296CF29D46ED100E9E600 /* CategoryModel.swift */; };
 		58AA328729EB79FD00BBBC9C /* PreferencesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */; };
 		58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328829EB7A0800BBBC9C /* PreferencesView.swift */; };
+		58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715A2A082AEA00439B98 /* OnboardingView.swift */; };
+		58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */; };
+		58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4102A0A706500C8CCCC /* SessionManager.swift */; };
 		58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E887AC2A00528A0079C045 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +96,9 @@
 		58A296CF29D46ED100E9E600 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesVM.swift; sourceTree = "<group>"; };
 		58AA328829EB7A0800BBBC9C /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		58B0715A2A082AEA00439B98 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupView.swift; sourceTree = "<group>"; };
+		58BEC4102A0A706500C8CCCC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		58E887AC2A00528A0079C045 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,9 +133,10 @@
 		58076A4529C906FC00A0762B /* BetTracker */ = {
 			isa = PBXGroup;
 			children = (
+				58076A4A29C906FE00A0762B /* Assets.xcassets */,
 				58076A4629C906FC00A0762B /* BetTrackerApp.swift */,
 				58076A4829C906FC00A0762B /* ContentView.swift */,
-				58076A4A29C906FE00A0762B /* Assets.xcassets */,
+				58BEC40F2A0999BE00C8CCCC /* Managers */,
 				58076A5929C9079F00A0762B /* Extensions */,
 				58076A5E29C9079F00A0762B /* Model */,
 				58076A8E29C98B1000A0762B /* LocalData */,
@@ -291,6 +298,7 @@
 		5870E9DA29E456610023CC01 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				58B071572A082ABC00439B98 /* Onboarding */,
 				58A296CE29D44CF700E9E600 /* Core */,
 			);
 			path = Screens;
@@ -314,6 +322,23 @@
 				58AA328829EB7A0800BBBC9C /* PreferencesView.swift */,
 			);
 			path = Preferences;
+			sourceTree = "<group>";
+		};
+		58B071572A082ABC00439B98 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				58B0715A2A082AEA00439B98 /* OnboardingView.swift */,
+				58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		58BEC40F2A0999BE00C8CCCC /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				58BEC4102A0A706500C8CCCC /* SessionManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,8 +424,10 @@
 				583D2F5629EF1871000AB125 /* OptionalDataInput.swift in Sources */,
 				586D2B542A06B23E00309F91 /* ProfileHeader.swift in Sources */,
 				58076A7829C907A000A0762B /* SearchBarView.swift in Sources */,
+				58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */,
 				583D2F5829EF1E1C000AB125 /* SortButton.swift in Sources */,
 				58076A7B29C907A000A0762B /* BetButton.swift in Sources */,
+				58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */,
 				580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */,
 				58076A9529CA37BF00A0762B /* BetDao.swift in Sources */,
 				58076A8929C907A000A0762B /* AmountInput.swift in Sources */,
@@ -430,6 +457,7 @@
 				58076A7729C907A000A0762B /* SearchVM.swift in Sources */,
 				58076A4729C906FC00A0762B /* BetTrackerApp.swift in Sources */,
 				586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */,
+				58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */,
 				58076A8129C907A000A0762B /* TabBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

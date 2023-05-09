@@ -8,8 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+        
+    @EnvironmentObject var session: SessionManager
+
+    
     var body: some View {
-            TabBar()
+        ZStack {
+            switch session.currentState {
+            case .loggedIn:
+                TabBar()
+                    .transition(.opacity)
+            case .onboardingSetup:
+                OnboardingSetupView(action: session.completeOnboardingSetup)
+                    .transition(.opacity)
+            case .onboarding:
+                OnboardingView(action: session.completeOnboarding)
+                    .transition(.opacity)
+            default:
+                // Splash screen
+                Color.black  // TODO: logo image view
+            }
+        }
+        .animation(.easeInOut, value: session.currentState)
+        .onAppear(perform: session.configureCurrentState)
     }
 }
 

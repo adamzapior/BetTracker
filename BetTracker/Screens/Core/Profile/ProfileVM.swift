@@ -6,11 +6,15 @@ import SwiftUI
 @MainActor
 class ProfileVM: ObservableObject {
     
+    @Published var isShowingPreferences = false
+
+    
     @Published var allBetsAmount: NSDecimalNumber = .zero
     @Published var getBetsAmountCancellables = Set<AnyCancellable>()
     
     init() {
         getBetsAmount()
+        print("\(isShowingPreferences)")
     }
     
     // MARK: - Querries to DB for values stored in @Published variables.

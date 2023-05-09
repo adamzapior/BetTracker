@@ -4,6 +4,9 @@ import SwiftUI
 class PreferencesVM: ObservableObject {
 
     let defaults = UserDefaults.standard
+    
+    @Published
+    var username = "" 
 
     @Published
     var defaultTax = "" {
@@ -30,11 +33,13 @@ class PreferencesVM: ObservableObject {
     }
 
     func savePreferences() {
+        defaults.set(username, forKey: "username")
         defaults.set(defaultTax, forKey: "defaultTax")
         defaults.set(defaultCurrency, forKey: "defaultCurrency")
     }
 
     func loadPreferences() {
+        username = defaults.object(forKey: "username") as? String ?? ""
         defaultTax = defaults.object(forKey: "defaultTax") as? String ?? ""
         defaultCurrency = defaults.object(forKey: "defaultCurrency") as? String ?? ""
     }
