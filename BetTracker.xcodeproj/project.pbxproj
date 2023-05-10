@@ -52,6 +52,7 @@
 		58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */; };
 		58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4102A0A706500C8CCCC /* SessionManager.swift */; };
 		58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */; };
+		58BEC4322A0B623D00C8CCCC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */; };
 		58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E887AC2A00528A0079C045 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +102,7 @@
 		58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupView.swift; sourceTree = "<group>"; };
 		58BEC4102A0A706500C8CCCC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		58E887AC2A00528A0079C045 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -340,6 +342,7 @@
 			children = (
 				58BEC4102A0A706500C8CCCC /* SessionManager.swift */,
 				58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */,
+				58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				58076A7B29C907A000A0762B /* BetButton.swift in Sources */,
 				58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */,
 				580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */,
+				58BEC4322A0B623D00C8CCCC /* NotificationManager.swift in Sources */,
 				58076A9529CA37BF00A0762B /* BetDao.swift in Sources */,
 				58076A8929C907A000A0762B /* AmountInput.swift in Sources */,
 				586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */,

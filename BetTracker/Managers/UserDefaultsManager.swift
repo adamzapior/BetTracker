@@ -46,7 +46,13 @@ extension UserDefaults {
 }
 
 extension DefaultsKeys {
+    
+    
+    
+    //Onboarding:
     static let hasSeenOnboarding = DefaultsKey<Bool>("hasSeenOnboarding")
+    
+    //Add bet texfields:
     static let team1 = DefaultsKey<String>("team1")
     static let team2 = DefaultsKey<String>("team2")
     static let amount = DefaultsKey<String>("amount")
@@ -55,9 +61,12 @@ extension DefaultsKeys {
     static let category = DefaultsKey<String>("category")
     static let league = DefaultsKey<String>("league")
     static let selectedDate = DefaultsKey<Date>("selectedDate")
+    
+    //UserPreferences:
     static let username = DefaultsKey<String>("username")
-    static let defaultCurrency = DefaultsKey<String>("defaultCurrency")
+    static let isDefaultTaxOn = DefaultsKey<Bool>("isDefaultTaxOn")
     static let defaultTax = DefaultsKey<String>("defaultTax")
+    static let defaultCurrency = DefaultsKey<String>("defaultCurrency")
 }
 
 

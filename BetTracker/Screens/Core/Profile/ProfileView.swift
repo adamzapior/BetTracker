@@ -15,6 +15,8 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             ProfileHeader()
+                .padding(.top, 18)
+                .padding(.bottom, 12)
             ScrollView(showsIndicators: false) {
                 EditableCircularProfileImage(vm: vmProfilePhoto)
 

@@ -1,14 +1,20 @@
 import SwiftUI
+import Combine
 
 struct PreferencesView: View {
 
     @Environment(\.colorScheme)
     var colorScheme
 
-    @StateObject
+    @ObservedObject
     var vm = PreferencesVM()
     
     @State private var doWant = false
+    @State private var textFieldText = ""
+    
+    @State private var selection = "Red"
+       let colors = ["Red", "Green", "Blue", "Black", "Tartan"]
+
 
     var body: some View {
         NavigationView {
@@ -42,23 +48,30 @@ struct PreferencesView: View {
                     .frame(height: 90, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
                     
+                    
+                    
                     Form {
                         Section(
-                            header: Text("Choose your default tax")
+                            header: Text("Default tax")
                                 .foregroundColor(Color.ui.onPrimaryContainer)
                                 .frame(
                                     maxWidth: .infinity,
                                     alignment: .leading
                                 )
                         ) {
-                            Toggle("Do you want set default tax?", isOn: $doWant)
-                            TextField("Enter your tax value", text: $vm.defaultTax)
-                                .overlay {
-                                    Text("%")
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                        .opacity(0.5)
-                                }
-                                .textFieldStyle(.plain)
+                            Toggle("Do you want set default tax?", isOn: $vm.isDefaultTaxOn)
+                            
+                            if vm.taxStatus == .taxUnsaved {
+                                TextField("0", text: $vm.defaultTax)
+                                    .disabled(!vm.isDefaultTaxOn)
+                                    .overlay {
+                                        Text("%")
+                                            .frame(maxWidth: .infinity, alignment: .trailing)
+                                            .opacity(0.5)
+                                    }
+                                    .textFieldStyle(.plain)
+                                    .animation(.easeInOut, value: 1)
+                            }
                         }
                     }
                     .scrollContentBackground(.hidden)
@@ -67,19 +80,27 @@ struct PreferencesView: View {
 
                     Form {
                         Section(
-                            header: Text("Choose your default currency")
+                            header: Text("Default currency")
                                 .foregroundColor(Color.ui.onPrimaryContainer)
                                 .frame(
                                     maxWidth: .infinity,
                                     alignment: .leading
                                 )
                         ) {
-                            TextField("Enter your currency", text: $vm.defaultCurrency)
-                                .textInputAutocapitalization(.characters)
+                            Picker("Choose your currency", selection: $selection) {
+                                ForEach(colors, id: \.self) {
+                                    Text($0)
+                                    .foregroundColor(Color.ui.scheme)
+                                    .background {
+                                        frame(alignment: .center)
+                                    }
+                                }
+                            }
+                            .pickerStyle(.menu)
                         }
                     }
                     .scrollContentBackground(.hidden)
-                    .frame(height: 90, alignment: .topLeading)
+                    .frame(height: 150, alignment: .topLeading) // TODO: tu bylo 90
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
@@ -88,9 +109,12 @@ struct PreferencesView: View {
                     hideKeyboard()
                 }
             }
+            .onAppear { print(vm.isDefaultTaxOn) }
+
         }
         .navigationBarBackButtonHidden()
         .onDisappear {
+            vm.ifTaxEmpty()
             vm.savePreferences()
         }
         .onAppear {
@@ -98,3 +122,5 @@ struct PreferencesView: View {
         }
     }
 }
+
+

@@ -42,7 +42,7 @@ struct OnboardingSetupView: View {
                                     alignment: .leading
                                 )
                         ) {
-                            Toggle("Do you want set default tax?", isOn: $doWant)
+                            Toggle("Do you want set default tax?", isOn: $vm.isDefaultTaxOn)
                             TextField("Enter your tax value", text: $vm.defaultTax)
                                 .focused($isTaxFocused)
                                 .overlay {
@@ -69,6 +69,12 @@ struct OnboardingSetupView: View {
                                     }
                                 }
                                 .textFieldStyle(.plain)
+                                .onAppear {
+                                    vm.loadPreferences()
+                                }
+                                .onDisappear {
+                                    vm.setDefaultTaxTo0()
+                                }
                         }
                     }
                     .scrollContentBackground(.hidden)

@@ -5,21 +5,39 @@ import SwiftUI
 class AddBetVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
+    var taxStatus: Bool = false
 
     init() {
-        Publishers.CombineLatest3($amount, $odds, $tax)
-            .map { [weak self] amount, odds, tax in
-                guard let self else {
-                    return "0.0"
+        taxStatus = defaults.get(.isDefaultTaxOn)
+
+        if taxStatus {
+            Publishers.CombineLatest3($amount, $odds, $tax)
+                .map { [weak self] amount, odds, tax in
+                    guard let self else {
+                        return "0.0"
+                    }
+                    let profit = self.betProfitWithTax(
+                        amountString: amount,
+                        oddsString: odds,
+                        taxString: tax
+                    ) ?? Decimal()
+                    return String(describing: profit)
                 }
-                let profit = self.betProfit(
-                    amountString: amount,
-                    oddsString: odds,
-                    taxString: tax
-                ) ?? Decimal()
-                return String(describing: profit)
-            }
-            .assign(to: &$profit)
+                .assign(to: &$profit)
+        } else {
+            Publishers.CombineLatest($amount, $odds)
+                .map { [weak self] amount, odds in
+                    guard let self else {
+                        return "0.0"
+                    }
+                    let profit = self.betProfitWithoutTex(
+                        amountString: amount,
+                        oddsString: odds
+                    ) ?? Decimal()
+                    return String(describing: profit)
+                }
+                .assign(to: &$profit)
+        }
     }
 
     @Published
@@ -100,7 +118,7 @@ class AddBetVM: ObservableObject {
             }
 
             if cleanedTax
-                .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
+                .wholeMatch(of: /[1-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
                 nil { // 5.55, 1.22, 1.22, 10.<22>
                 tax = oldValue
             }
@@ -140,14 +158,32 @@ class AddBetVM: ObservableObject {
     @Published
     var leagueIsError = false
 
-    func betProfit(
+    func betProfitWithoutTex(
+        amountString: String?,
+        oddsString: String?
+    ) -> Decimal? {
+        guard let amountString, !amountString.isEmpty,
+              let oddsString, !oddsString.isEmpty
+        else {
+            print("One or more input values is null or empty")
+            return nil
+        }
+
+        let amount = Decimal(string: amountString) ?? Decimal()
+        let odds = Decimal(string: oddsString) ?? Decimal()
+
+        let predictedWin = amount * odds
+        return predictedWin
+    }
+
+    func betProfitWithTax(
         amountString: String?,
         oddsString: String?,
         taxString: String?
     ) -> Decimal? {
         guard let amountString, !amountString.isEmpty,
               let oddsString, !oddsString.isEmpty,
-              let taxString, !taxString.isEmpty
+              let taxString, !taxString.isEmpty, !taxString.contains("0")
         else {
             print("One or more input values is null or empty")
             return nil
@@ -273,5 +309,44 @@ class AddBetVM: ObservableObject {
         case basketball = "Basketball"
         case f1 = "F1"
     }
+    
+    @Published
+    var isMoreOptionHIdden: Bool = false {
+        didSet {
+            if isMoreOptionHIdden {
+                moreOptionHiddenStatus = .statusOn
+            } else {
+                moreOptionHiddenStatus = .statusOff
+            }
+        }
+    }
+    
+    @Published
+    var moreOptionHiddenStatus = MoreOptionHiddenStatus.statusOff
+    
+    enum MoreOptionHiddenStatus {
+        case statusOn
+        case statusOff
+    }
+    
+    
+    func toggleMoreOptionsButton() {
+        isMoreOptionHIdden.toggle()
+    }
+    
+    func setToFalse() {
+        isMoreOptionHIdden = false
+        print(_isMoreOptionHIdden)
+        print(isMoreOptionHIdden)
+    }
+    
+    
+    
+    
+    @Published
+    var reminderStatus: Bool = false
+    
+
+    
 
 }
