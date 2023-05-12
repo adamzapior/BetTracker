@@ -4,17 +4,17 @@ import SwiftDate
 import SwiftUI
 
 class AddBetVM: ObservableObject {
-    
+
     let defaults = UserDefaultsManager.path
 
     init() {
-        /// propably to delete?
+        // propably to delete?
         savedDate = defaults.get(.savedNotificationDate)
         isReminderSaved = defaults.get(.isNotificationSaved)
 
-        taxStatus = defaults.get(.isDefaultTaxOn) // Read isTaxOn form UserDefault
+        taxStatus = defaults.get(.isDefaultTaxOn) // Read isTaxOn from UserDefault
         configureTaxInput() // Pass to publisher
-        
+
         // Predicted profit
         if taxStatus {
             Publishers.CombineLatest3($amount, $odds, $tax)
@@ -132,14 +132,14 @@ class AddBetVM: ObservableObject {
     var league = ""
 
     @Published
-    var selectedDate = Date.now     /// Event date
+    var selectedDate = Date.now // Event date
 
     @Published
     var category = ""
 
-    // AddBet non-edit Row's variables:
+    /// AddBet non-edit Row's variables:
     @Published
-    var defaultCurrency = ""     /// Used for overlay text at Textfield
+    var defaultCurrency = "" // Used for overlay text at Textfield
 
     @Published
     var profit = "0.0"
@@ -205,11 +205,12 @@ class AddBetVM: ObservableObject {
 
     @Published
     var selectedNotificationDate = Date.now
-    
+
     var isReminderSaved: Bool
-    
+
     var savedDate: Date //    TODO: !!!!!
 
+    /// ReminderRowState methods:
     enum ReminderRowState {
         case add
         case editing
@@ -231,9 +232,9 @@ class AddBetVM: ObservableObject {
         reminderState = .delete
     }
 
-   
     func saveReminder() { }
 
+    /// to delete
     var dateClosedRange: ClosedRange<Date> {
         let min = Date.now
         let max = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
@@ -290,7 +291,7 @@ class AddBetVM: ObservableObject {
 
     // MARK: - Validate & Saving to DB
 
-    /// Define variables
+    /// ** Define variables **
     @Published
     var team1IsError = false
     @Published
@@ -302,7 +303,7 @@ class AddBetVM: ObservableObject {
     @Published
     var taxIsError = false
 
-    /// Validaton methods
+    ///  ** Validaton methods **
     private func validateTeam1() {
         if team1.isEmpty {
             team1IsError = true
@@ -341,7 +342,7 @@ class AddBetVM: ObservableObject {
         }
     }
 
-    /// Save data to DB
+    /// ** Save data to DB **
     func saveBet() -> Bool {
         validateTeam1()
         validateTeam2()
@@ -355,20 +356,41 @@ class AddBetVM: ObservableObject {
         }
         print("data saved")
 
-        BetDao.saveBet(bet: BetModel(
-            id: nil,
-            date: selectedDate,
-            team1: team1,
-            team2: team2,
-            selectedTeam: selectedTeam,
-            league: league,
-            amount: NSDecimalNumber(string: amount),
-            odds: NSDecimalNumber(string: odds),
-            category: category,
-            tax: NSDecimalNumber(string: tax),
-            profit: profit,
-            isWon: nil
-        ))
+        /// run if:
+        ///     true: default tax is On
+        ///     false:  default tax is Off
+        if taxStatus {
+            BetDao.saveBet(bet: BetModel(
+                id: nil,
+                date: selectedDate,
+                team1: team1,
+                team2: team2,
+                selectedTeam: selectedTeam,
+                league: league,
+                amount: NSDecimalNumber(string: amount),
+                odds: NSDecimalNumber(string: odds),
+                category: category,
+                tax: NSDecimalNumber(string: tax),
+                profit: profit,
+                isWon: nil
+
+            ))
+        } else {
+            BetDao.saveBet(bet: BetModel(
+                id: nil,
+                date: selectedDate,
+                team1: team1,
+                team2: team2,
+                selectedTeam: selectedTeam,
+                league: league,
+                amount: NSDecimalNumber(string: amount),
+                odds: NSDecimalNumber(string: odds),
+                category: category,
+                tax: NSDecimalNumber.zero,
+                profit: profit,
+                isWon: nil
+            ))
+        }
 
         return true
     }
@@ -393,7 +415,7 @@ class AddBetVM: ObservableObject {
         team2 = defaults.get(.team2)
         amount = defaults.get(.amount)
         odds = defaults.get(.odds)
-        tax = defaults.get(.defaultTax)
+        tax = defaults.get(.defaultTax) // load default Tax to field
         defaultCurrency = defaults.get(.defaultCurrency)
         category = defaults.get(.category)
         league = defaults.get(.league)

@@ -20,9 +20,6 @@ struct AddBetScreen: View {
     @State
     var alertCheck: Bool = false
 
-    @FocusState
-    private var hasFocus: Bool
-    
 
     var body: some View {
         VStack (spacing: 2) {
@@ -73,7 +70,6 @@ struct AddBetScreen: View {
                     //                        Divider()
                     VStack(spacing: 8) {
                         VStack {
-                            Divider()
                             HStack {
                                 Text("BET VALUES")
                                     .foregroundColor(Color.ui.scheme)
@@ -141,41 +137,9 @@ struct AddBetScreen: View {
                     ZStack {
                         switch vm.reminderState {
                         case .add:
-                            VStack {
-                                HStack {
-                                    Spacer()
-                                    Image(systemName: "bell")
-                                        .font(.headline)
-                                        .foregroundColor(Color.ui.scheme)
-                                        .padding(.vertical, 12)
-                                    Spacer()
-                                    Spacer()
-                                    Text("Bet reminder")
-                                        .font(.subheadline)
-                                        .bold()
-                                        .foregroundColor(Color.ui.onPrimaryContainer)
-                                        .padding(.vertical, 16)
-                                    Spacer()
-                                    Image(systemName: "plus.app.fill")
-                                        .font(.title)
-                                        .foregroundColor(Color.ui.secondary)
-                                        .onTapGesture {
-                                            vm.isAddClicked()
-                                        }
-                                        .padding(.leading, 100)
-                                }
-                                .padding(.leading, 3)
-                                .padding(.horizontal)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .foregroundColor(
-                                            Color.ui.onPrimary
-                                        )
-                                }
-                                Spacer()
+                            ReminderIsActive(icon: "bell", labelText: "Reminder is off", actionButtonIcon: "plus.app.fill") {
+                                vm.isAddClicked()
                             }
-                            .frame(maxWidth: .infinity)
-                            .edgesIgnoringSafeArea(.all)
                             
                         case .editing:
                             VStack {
@@ -197,42 +161,10 @@ struct AddBetScreen: View {
                             
                             
                         case .delete:
-                            VStack {
-                                HStack {
-                                    Spacer()
-                                    Spacer()
-                                    Image(systemName: "bell")
-                                        .foregroundColor(Color.ui.scheme)
-                                        .padding(.horizontal, 20)
-                                        .padding(.vertical, 12)
-                                    Text("Bet reminder")
-                                        .font(.subheadline)
-                                        .bold()
-                                        .foregroundColor(Color.ui.onPrimaryContainer)
-                                        .padding(.horizontal, 12)
-                                        .padding(.leading, 4)
-                                        .padding(.vertical, 16)
-                                    HStack {
-                                        Text("Delete")
-                                            .background {
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .foregroundColor(
-                                                        Color.red
-                                                    )
-                                            }
-                                    }
-                                    .onTapGesture {
-                                        vm.deleteRemind()
-                                    }
-                                    .padding(.horizontal)
-                                }
-                                .background {
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .foregroundColor(
-                                            Color.ui.onPrimary
-                                        )
-                                }
+                            ReminderIsActive(icon: "bell", labelText: "Reminder is on", actionButtonIcon: "xmark.app.fill") {
+                                vm.deleteRemind()
                             }
+               
                         }
                     }
                     .frame(maxWidth: .infinity)

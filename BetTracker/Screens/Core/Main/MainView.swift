@@ -6,7 +6,11 @@ import SwiftUI
 struct MainView2: View {
 
     @StateObject
+    var vm = MainViewVM()
 
+    var body: some View {
+        VStack(spacing: 0) {
+            MainHeader()
                 .padding(.top, 18)
                 .padding(.bottom, 26)
 
