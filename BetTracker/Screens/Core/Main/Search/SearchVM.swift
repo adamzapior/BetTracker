@@ -4,7 +4,7 @@ class SearchVM: ObservableObject {
 
     @Published
     var bets: [BetModel]? = []
-    
+
     @Published
     private(set) var searchResults: [BetModel]? = nil
 
@@ -14,7 +14,7 @@ class SearchVM: ObservableObject {
     @Published
     var selectedSortOption: SortOption = .all
     let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
-    
+
     var currency = UserDefaultsManager.defaultCurrencyValue
 
     init() {
@@ -34,12 +34,12 @@ class SearchVM: ObservableObject {
                 }
             }
             .assign(to: &$searchResults)
-        
+
         BetDao.getSavedBets()
             .map {
-                .some($0) }
+                .some($0)
+            }
             .assign(to: &$bets)
-        
     }
 
     // MARK: Sorting logic
@@ -50,16 +50,18 @@ class SearchVM: ObservableObject {
         case won
         case lost
         case amount
-        
-        var id: String { self.rawValue }
+
+        var id: String { rawValue }
     }
-    
+
+    // MARK: Database GET methods:
+
     func getSavedBets() {
         BetDao.getSavedBets()
             .map { .some($0) }
             .assign(to: &$bets)
     }
-    
+
     func getBetsFormTheOldestDate() {
         BetDao.getBetsFormTheOldestDate()
             .map { .some($0) }

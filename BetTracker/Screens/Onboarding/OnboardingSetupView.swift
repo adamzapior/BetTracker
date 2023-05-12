@@ -1,24 +1,19 @@
 import SwiftUI
 
+/// TODO: 2 View refactor
 struct OnboardingSetupView: View {
 
     @StateObject
     var vm = PreferencesVM()
 
-    @State
-    private var doWant = false
-
     @FocusState
     private var isTaxFocused
-
-    @State
-    private var scale = 1.0
 
     let action: () -> Void
 
     var body: some View {
         VStack(spacing: 48) {
-            HStack {
+            VStack {
                 VStack(alignment: .leading) {
                     VStack {
                         Text("Setup your")
@@ -52,7 +47,7 @@ struct OnboardingSetupView: View {
                                 }
                                 .toolbar {
                                     ToolbarItemGroup(placement: .keyboard) {
-                                        Button("Confirm your tax") {
+                                        Button("OK") {
                                             hideKeyboard()
                                         }
                                         .foregroundColor(Color.ui.secondary)
@@ -78,7 +73,7 @@ struct OnboardingSetupView: View {
                         }
                     }
                     .scrollContentBackground(.hidden)
-                    .frame(height: 125, alignment: .topLeading)
+                    .frame(maxHeight: 125, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
 
                     Form {
@@ -91,42 +86,42 @@ struct OnboardingSetupView: View {
                                 )
                         ) {
                             TextField("Enter your currency", text: $vm.defaultCurrency)
+                                .focused($isTaxFocused)
                                 .textInputAutocapitalization(.characters)
                         }
                     }
                     .scrollContentBackground(.hidden)
-                    .frame(height: 90, alignment: .topLeading)
+                    .frame(maxHeight: 90, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .padding(.vertical, 24)
                 .keyboardType(.decimalPad)
+
+                HStack(alignment: .bottom) {
+                    if isTaxFocused {
+                    } else {
+                        Button("Get started") {
+                            action()
+                        }
+                        .font(.title2)
+                        .bold()
+                        .foregroundColor(Color.ui.secondary)
+                        .frame(minWidth: 200, minHeight: 56, alignment: .center)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 3)
+                        .clipShape(RoundedRectangle(cornerRadius: 150))
+                        .background {
+                            RoundedRectangle(cornerRadius: 25)
+                                .stroke(style: StrokeStyle(lineWidth: 2))
+                                .foregroundColor(Color.ui.secondary)
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 25))
+                    }
+                }
+                .padding(.bottom, 48)
             }
             .navigationBarBackButtonHidden()
-
-            HStack(alignment: .bottom) {
-                if isTaxFocused {
-                } else {
-                    Button("Get started") {
-                        action()
-                    }
-                    .font(.title2)
-                    .bold()
-                    .foregroundColor(Color.ui.secondary)
-                    .frame(minWidth: 200, minHeight: 56, alignment: .center)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 3)
-                    .clipShape(RoundedRectangle(cornerRadius: 150))
-                    .background {
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(style: StrokeStyle(lineWidth: 2))
-                            .foregroundColor(Color.ui.secondary)
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 25))
-                    .animation(.linear(duration: 0.5), value: scale)
-                }
-            }
-            Spacer()
         }
         .frame(maxHeight: .infinity, alignment: .center)
         .onTapGesture {
@@ -134,6 +129,7 @@ struct OnboardingSetupView: View {
         }
         .onDisappear {
             vm.savePreferences()
+            vm.ifTaxEmpty()
         }
     }
 }

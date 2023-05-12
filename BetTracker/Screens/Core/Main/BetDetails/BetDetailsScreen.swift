@@ -14,7 +14,7 @@ struct BetDetailsScreen: View {
             BetDetailHeader {
                 vm.isShowingAlert = true
             }
-            .alert("Are ju szur", isPresented: $vm.isShowingAlert) {
+            .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
                 Button("Yes") {
                     vm.deleteBet(bet: bet)
                     dismiss()
@@ -47,7 +47,6 @@ struct BetDetailsScreen: View {
             .padding(.horizontal, 12)
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
 
-
             VStack(spacing: 5) {
                 Group {
                     if bet.league != "" {
@@ -73,7 +72,10 @@ struct BetDetailsScreen: View {
                     BetDetail(category: "Amount:", text: "\(bet.amount) \(vm.currency)")
                     BetDetail(category: "Odds:", text: "\(bet.odds.databaseValue)")
                     BetDetail(category: "Tax:", text: "\(bet.tax.databaseValue)%")
-                    BetDetail(category: "Przewidywana wygrana:", text: "\(vm.betProfit(bet: bet)) \(vm.currency)")
+                    BetDetail(
+                        category: "Przewidywana wygrana:",
+                        text: "\(bet.profit.databaseValue) \(vm.currency)"
+                    )
                 }
                 Divider()
                     .padding(.horizontal, 16)
@@ -89,7 +91,6 @@ struct BetDetailsScreen: View {
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 12)
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-
         }
         .navigationBarBackButtonHidden()
         Spacer()

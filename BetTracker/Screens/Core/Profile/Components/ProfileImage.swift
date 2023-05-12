@@ -45,7 +45,6 @@ struct CircularProfileImage: View {
 struct EditableCircularProfileImage: View {
     @ObservedObject
     var vm: ProfilePhotoVM
-//    let imageSaver = ImageSaver()
 
     var body: some View {
         CircularProfileImage(imageState: vm.imageState)

@@ -27,7 +27,7 @@ class BetDb {
                 t.column("amount", .integer).notNull()
                 t.column("odds", .integer).notNull()
                 t.column("category", .text)
-                t.column("tax", .integer).notNull()
+                t.column("tax", .integer)
                 t.column("profit", .text)
                 t.column("isWon", .boolean)
             }

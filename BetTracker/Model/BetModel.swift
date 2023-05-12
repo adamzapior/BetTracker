@@ -30,4 +30,9 @@ enum SelectedTeam: Int {
     case team2
 }
 
+enum Category: String {
+    case football
+    case basketball
+}
+
 extension SelectedTeam: DatabaseValueConvertible { }

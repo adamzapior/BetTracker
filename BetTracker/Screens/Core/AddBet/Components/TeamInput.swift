@@ -8,9 +8,10 @@ struct TeamInput: View {
     @Binding
     var isOn: Bool
 
+    var action: () -> Void
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-
             VStack {
                 HStack {
                     HStack {
@@ -28,9 +29,16 @@ struct TeamInput: View {
                             .foregroundColor(isError ? Color.ui.onError : Color.ui.onPrimary)
                     }
                     .shadow(color: Color.black.opacity(0.1), radius: 1, x: 3, y: 2)
-                    Toggle("", isOn: $isOn)
-                        .frame(maxWidth: 60)
-                        .tint(Color.ui.scheme)
+                    Image(
+                        systemName: isOn
+                            ? "checkmark.square.fill"
+                            : "checkmark.square"
+                    )
+                    .font(.largeTitle)
+                    .foregroundColor(isOn ? Color.ui.scheme : Color.ui.onPrimaryContainer)
+                    .onTapGesture {
+                        action()
+                    }
                 }
             }
         }

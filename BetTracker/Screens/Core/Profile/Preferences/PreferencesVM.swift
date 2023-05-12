@@ -1,12 +1,11 @@
+import Combine
 import Foundation
 import SwiftUI
-import Combine
 
 class PreferencesVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
-    
-    
+
     @Published
     var isDefaultTaxOn: Bool = false {
         didSet {
@@ -19,12 +18,12 @@ class PreferencesVM: ObservableObject {
             }
         }
     }
-    
+
     enum DefaultTax {
         case taxSaved
         case taxUnsaved
     }
-    
+
     @Published
     var taxStatus = DefaultTax.taxUnsaved
 
@@ -35,7 +34,7 @@ class PreferencesVM: ObservableObject {
     func taxUnsaved() {
         taxStatus = .taxUnsaved
     }
-    
+
     @Published
     var username = ""
 
@@ -62,22 +61,20 @@ class PreferencesVM: ObservableObject {
             }
         }
     }
-    
-    
+
     func clearTaxTextField() {
         let taxString = ""
         defaultTax = taxString
     }
-    
+
     func setDefaultTaxTo0() {
         let taxString = "0"
         defaults.set(.defaultTax, to: taxString)
-
     }
-    
+
     func ifTaxEmpty() {
         let tax = defaultTax
-        
+
         if tax.isEmpty {
             isDefaultTaxOn = false
         }
@@ -95,25 +92,5 @@ class PreferencesVM: ObservableObject {
         isDefaultTaxOn = defaults.get(.isDefaultTaxOn)
         defaultTax = defaults.get(.defaultTax)
         defaultCurrency = defaults.get(.defaultCurrency)
-    }
-}
-
-
-extension Binding {
-    /// Execute block when value is changed.
-    ///
-    /// Example:
-    ///
-    ///     Slider(value: $amount.didSet { print($0) }, in: 0...10)
-    func didSet(execute: @escaping (Value) ->Void) -> Binding {
-        return Binding(
-            get: {
-                return self.wrappedValue
-            },
-            set: {
-                self.wrappedValue = $0
-                execute($0)
-            }
-        )
     }
 }

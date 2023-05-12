@@ -1,12 +1,6 @@
-//
-//  BetDetailHeader.swift
-//  BetTrackerUI
-//
-//  Created by Adam Zapiór on 04/03/2023.
-//
-
 import SwiftUI
 
+/// TODO: 3 View refactor - opacity, itp
 struct BetDetailHeader: View {
     let onDelete: () -> Void
 

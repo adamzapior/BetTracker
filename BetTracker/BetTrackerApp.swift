@@ -1,21 +1,34 @@
-//
-//  BetTrackerApp.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 20/03/2023.
-//
-
 import SwiftUI
 
 @main
 struct BetTrackerApp: App {
-    
-    @StateObject private var session = SessionManager()
-    
+
+    @StateObject
+    private var session = SessionManager()
+
+    init() {
+        requestNotificationPermission()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(session)
         }
     }
+    
+    // Notification acces to user options: [.x, y. etc...]
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+                if granted {
+                    print("DEBUG: Permission for notifications granted")
+                } else if let error {
+                    print(
+                        "DEBUG: Error getting authorization for notifications: \(error.localizedDescription)"
+                    )
+                }
+            }
+    }
+
 }

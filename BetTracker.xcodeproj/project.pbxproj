@@ -40,12 +40,13 @@
 		583D2F5629EF1871000AB125 /* OptionalDataInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583D2F5529EF1871000AB125 /* OptionalDataInput.swift */; };
 		583D2F5829EF1E1C000AB125 /* SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583D2F5729EF1E1C000AB125 /* SortButton.swift */; };
 		5845A63029E6321700A95E2B /* PredictedProfit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5845A62F29E6321700A95E2B /* PredictedProfit.swift */; };
+		5858E82D2A0C008800CD018F /* ReminderCalendarInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5858E82C2A0C008800CD018F /* ReminderCalendarInput.swift */; };
+		5858E8312A0C2A4D00CD018F /* DatePickerWithButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5858E8302A0C2A4D00CD018F /* DatePickerWithButtons.swift */; };
 		586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4B2A05A51200309F91 /* ProfileImage.swift */; };
 		586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */; };
 		586D2B542A06B23E00309F91 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B532A06B23E00309F91 /* ProfileHeader.swift */; };
-		5885E3FE29D8DD1B005B764E /* ReminderInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885E3FD29D8DD1B005B764E /* ReminderInput.swift */; };
+		5885E3FE29D8DD1B005B764E /* ReminderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885E3FD29D8DD1B005B764E /* ReminderRow.swift */; };
 		5885E40029D8E4BF005B764E /* AddBetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885E3FF29D8E4BF005B764E /* AddBetButton.swift */; };
-		58A296D029D46ED100E9E600 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A296CF29D46ED100E9E600 /* CategoryModel.swift */; };
 		58AA328729EB79FD00BBBC9C /* PreferencesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */; };
 		58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328829EB7A0800BBBC9C /* PreferencesView.swift */; };
 		58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715A2A082AEA00439B98 /* OnboardingView.swift */; };
@@ -54,6 +55,8 @@
 		58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */; };
 		58BEC4322A0B623D00C8CCCC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */; };
 		58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E887AC2A00528A0079C045 /* ProfileView.swift */; };
+		58FE63572A0CDD710079A698 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FE63562A0CDD710079A698 /* SwiftUIView.swift */; };
+		58FE63742A0E4EAB0079A698 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 58FE63732A0E4EAB0079A698 /* SwiftDate */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,12 +93,13 @@
 		583D2F5529EF1871000AB125 /* OptionalDataInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDataInput.swift; sourceTree = "<group>"; };
 		583D2F5729EF1E1C000AB125 /* SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButton.swift; sourceTree = "<group>"; };
 		5845A62F29E6321700A95E2B /* PredictedProfit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictedProfit.swift; sourceTree = "<group>"; };
+		5858E82C2A0C008800CD018F /* ReminderCalendarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCalendarInput.swift; sourceTree = "<group>"; };
+		5858E8302A0C2A4D00CD018F /* DatePickerWithButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerWithButtons.swift; sourceTree = "<group>"; };
 		586D2B4B2A05A51200309F91 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardExt.swift; sourceTree = "<group>"; };
 		586D2B532A06B23E00309F91 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
-		5885E3FD29D8DD1B005B764E /* ReminderInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderInput.swift; sourceTree = "<group>"; };
+		5885E3FD29D8DD1B005B764E /* ReminderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderRow.swift; sourceTree = "<group>"; };
 		5885E3FF29D8E4BF005B764E /* AddBetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBetButton.swift; sourceTree = "<group>"; };
-		58A296CF29D46ED100E9E600 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesVM.swift; sourceTree = "<group>"; };
 		58AA328829EB7A0800BBBC9C /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		58B0715A2A082AEA00439B98 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -104,6 +108,7 @@
 		58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		58E887AC2A00528A0079C045 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		58FE63562A0CDD710079A698 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58FE63742A0E4EAB0079A698 /* SwiftDate in Frameworks */,
 				58076A8D29C9097400A0762B /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,6 +152,7 @@
 				58076A8E29C98B1000A0762B /* LocalData */,
 				5870E9DA29E456610023CC01 /* Screens */,
 				58076A4C29C906FE00A0762B /* Preview Content */,
+				58FE63562A0CDD710079A698 /* SwiftUIView.swift */,
 			);
 			path = BetTracker;
 			sourceTree = "<group>";
@@ -180,6 +187,7 @@
 		58076A5929C9079F00A0762B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				58BEC4362A0BCABA00C8CCCC /* Fonts */,
 				58076A5A29C9079F00A0762B /* Theme.swift */,
 				586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */,
 			);
@@ -190,7 +198,6 @@
 			isa = PBXGroup;
 			children = (
 				58076A5F29C9079F00A0762B /* BetModel.swift */,
-				58A296CF29D46ED100E9E600 /* CategoryModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -237,9 +244,9 @@
 		58076A6B29C907A000A0762B /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				58076A6C29C907A000A0762B /* BetListElement.swift */,
 				58076A6D29C907A000A0762B /* MainHeader.swift */,
 				58076A6E29C907A000A0762B /* NoContentElement.swift */,
+				58076A6C29C907A000A0762B /* BetListElement.swift */,
 				58076A5D29C9079F00A0762B /* BetButton.swift */,
 			);
 			path = Components;
@@ -251,6 +258,7 @@
 				58076A7229C907A000A0762B /* Components */,
 				58076A7129C907A000A0762B /* AddBetVM.swift */,
 				58076A7529C907A000A0762B /* AddBetScreen.swift */,
+				5858E8302A0C2A4D00CD018F /* DatePickerWithButtons.swift */,
 			);
 			path = AddBet;
 			sourceTree = "<group>";
@@ -261,7 +269,8 @@
 				58076A7329C907A000A0762B /* TeamInput.swift */,
 				58076A7429C907A000A0762B /* AmountInput.swift */,
 				583D2F5529EF1871000AB125 /* OptionalDataInput.swift */,
-				5885E3FD29D8DD1B005B764E /* ReminderInput.swift */,
+				5885E3FD29D8DD1B005B764E /* ReminderRow.swift */,
+				5858E82C2A0C008800CD018F /* ReminderCalendarInput.swift */,
 				5845A62F29E6321700A95E2B /* PredictedProfit.swift */,
 				5885E3FF29D8E4BF005B764E /* AddBetButton.swift */,
 			);
@@ -285,7 +294,6 @@
 				586D2B4D2A05A5A800309F91 /* Components */,
 				58E887AC2A00528A0079C045 /* ProfileView.swift */,
 				583AB5A829D230A200F4B9DC /* ProfileVM.swift */,
-				580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -295,6 +303,7 @@
 			children = (
 				586D2B4B2A05A51200309F91 /* ProfileImage.swift */,
 				586D2B532A06B23E00309F91 /* ProfileHeader.swift */,
+				580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -347,6 +356,13 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		58BEC4362A0BCABA00C8CCCC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -365,6 +381,7 @@
 			name = BetTracker;
 			packageProductDependencies = (
 				58076A8C29C9097400A0762B /* GRDB */,
+				58FE63732A0E4EAB0079A698 /* SwiftDate */,
 			);
 			productName = BetTracker;
 			productReference = 58076A4329C906FC00A0762B /* BetTracker.app */;
@@ -396,6 +413,7 @@
 			mainGroup = 58076A3A29C906FC00A0762B;
 			packageReferences = (
 				58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				58FE63722A0E4EAB0079A698 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 			);
 			productRefGroup = 58076A4429C906FC00A0762B /* Products */;
 			projectDirPath = "";
@@ -429,6 +447,8 @@
 				58076A7C29C907A000A0762B /* BetModel.swift in Sources */,
 				583D2F5629EF1871000AB125 /* OptionalDataInput.swift in Sources */,
 				586D2B542A06B23E00309F91 /* ProfileHeader.swift in Sources */,
+				58FE63572A0CDD710079A698 /* SwiftUIView.swift in Sources */,
+				5858E8312A0C2A4D00CD018F /* DatePickerWithButtons.swift in Sources */,
 				58076A7829C907A000A0762B /* SearchBarView.swift in Sources */,
 				58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */,
 				583D2F5829EF1E1C000AB125 /* SortButton.swift in Sources */,
@@ -447,10 +467,10 @@
 				58076A7D29C907A000A0762B /* BetDetailsVM.swift in Sources */,
 				58076A4929C906FC00A0762B /* ContentView.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */,
-				58A296D029D46ED100E9E600 /* CategoryModel.swift in Sources */,
 				58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */,
 				58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */,
 				5885E40029D8E4BF005B764E /* AddBetButton.swift in Sources */,
+				5858E82D2A0C008800CD018F /* ReminderCalendarInput.swift in Sources */,
 				58076A9329C98B9800A0762B /* BetRecord.swift in Sources */,
 				58076A7629C907A000A0762B /* SearchView.swift in Sources */,
 				58076A7929C907A000A0762B /* Theme.swift in Sources */,
@@ -459,7 +479,7 @@
 				58076A8229C907A000A0762B /* MainViewVM.swift in Sources */,
 				5845A63029E6321700A95E2B /* PredictedProfit.swift in Sources */,
 				58076A7F29C907A000A0762B /* BetDetail.swift in Sources */,
-				5885E3FE29D8DD1B005B764E /* ReminderInput.swift in Sources */,
+				5885E3FE29D8DD1B005B764E /* ReminderRow.swift in Sources */,
 				583AB5A929D230A200F4B9DC /* ProfileVM.swift in Sources */,
 				58076A8A29C907A000A0762B /* AddBetScreen.swift in Sources */,
 				58076A7729C907A000A0762B /* SearchVM.swift in Sources */,
@@ -677,6 +697,14 @@
 				kind = branch;
 			};
 		};
+		58FE63722A0E4EAB0079A698 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftDate.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -684,6 +712,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
+		};
+		58FE63732A0E4EAB0079A698 /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 58FE63722A0E4EAB0079A698 /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

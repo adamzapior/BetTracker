@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ReminderInput: View {
+struct ReminderRow: View {
 
     var bodyText: String
 
@@ -9,22 +9,20 @@ struct ReminderInput: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            VStack {
+            VStack  {
                 HStack {
-                    HStack {
-                        Spacer()
                         Text(bodyText)
-                            .foregroundColor(Color.ui.onBackground)
+                            .font(.callout)
+                            .foregroundColor(Color.ui.onPrimaryContainer)
                         Spacer()
                         Toggle("", isOn: $isOn)
                             .frame(maxWidth: 60)
                             .tint(Color.ui.scheme)
-                        Spacer()
-                    }
-                    Spacer()
                 }
-                .padding(.horizontal, 6)
-                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity)
+                .padding(.leading, 12)
+                .padding(.trailing, 8)
+                .padding(.vertical, 8)
             }
         }
     }

@@ -1,5 +1,5 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 struct PreferencesView: View {
 
@@ -8,13 +8,15 @@ struct PreferencesView: View {
 
     @ObservedObject
     var vm = PreferencesVM()
-    
-    @State private var doWant = false
-    @State private var textFieldText = ""
-    
-    @State private var selection = "Red"
-       let colors = ["Red", "Green", "Blue", "Black", "Tartan"]
 
+    @State
+    private var doWant = false
+    @State
+    private var textFieldText = ""
+
+    @State
+    private var selection = "Red"
+    let colors = ["Red", "Green", "Blue", "Black", "Tartan"]
 
     var body: some View {
         NavigationView {
@@ -29,7 +31,6 @@ struct PreferencesView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
-                    
 
                     Form {
                         Section(
@@ -47,9 +48,7 @@ struct PreferencesView: View {
                     .scrollContentBackground(.hidden)
                     .frame(height: 90, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-                    
-                    
-                    
+
                     Form {
                         Section(
                             header: Text("Default tax")
@@ -60,7 +59,7 @@ struct PreferencesView: View {
                                 )
                         ) {
                             Toggle("Do you want set default tax?", isOn: $vm.isDefaultTaxOn)
-                            
+
                             if vm.taxStatus == .taxUnsaved {
                                 TextField("0", text: $vm.defaultTax)
                                     .disabled(!vm.isDefaultTaxOn)
@@ -90,10 +89,10 @@ struct PreferencesView: View {
                             Picker("Choose your currency", selection: $selection) {
                                 ForEach(colors, id: \.self) {
                                     Text($0)
-                                    .foregroundColor(Color.ui.scheme)
-                                    .background {
-                                        frame(alignment: .center)
-                                    }
+                                        .foregroundColor(Color.ui.scheme)
+                                        .background {
+                                            frame(alignment: .center)
+                                        }
                                 }
                             }
                             .pickerStyle(.menu)
@@ -109,8 +108,6 @@ struct PreferencesView: View {
                     hideKeyboard()
                 }
             }
-            .onAppear { print(vm.isDefaultTaxOn) }
-
         }
         .navigationBarBackButtonHidden()
         .onDisappear {
@@ -122,5 +119,3 @@ struct PreferencesView: View {
         }
     }
 }
-
-

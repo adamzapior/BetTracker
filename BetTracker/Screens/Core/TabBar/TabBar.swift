@@ -36,13 +36,11 @@ struct TabBar: View {
 
     private static let destinations = [
         Destination(icon: "house", view: { MainView() }),
-        Destination(icon: "plus", view: { AddBetScreen() }),
         Destination(icon: "heart", view: { ProfileView() })
     ]
 
-    @State
-    private var isKeyboardShown = false
-
+    @EnvironmentObject
+    var vm: AddBetVM
 
     var body: some View {
         NavigationView {
@@ -51,52 +49,33 @@ struct TabBar: View {
                     AnyView(selectedTab.view()).environment(\.closeTab, closeTab)
                 }
                 .safeAreaInset(edge: .bottom) {
-                    if selectedTab != TabBar.destinations[1], !isKeyboardShown {
-                        HStack(spacing: 0) {
-                            NavigationLink(destination: PreferencesView()) {
-                                Image(systemName: "plus")
-                                    .renderingMode(.template)
-                                    .foregroundColor(Color.ui.secondary.opacity(1))
-                                    .padding()
-                            }
+                    HStack(spacing: 64) {
+                        NavigationLink(destination: AddBetScreen()) {
+                            Image(systemName: "plus")
+                                .renderingMode(.template)
+                                .foregroundColor(Color.ui.secondary.opacity(1))
+                                .padding()
+                        }
 
-                            ForEach(TabBar.destinations, id: \.icon) { tab in
-                                Spacer()
-                                TabBarButton(
-                                    tab: tab,
-                                    isSelected: tab == selectedTab
-                                )
-                                .onTapGesture {
-                                    selectedTab = tab
-                                }
-                                Spacer()
+                        ForEach(TabBar.destinations, id: \.icon) { tab in
+                            TabBarButton(
+                                tab: tab,
+                                isSelected: tab == selectedTab
+                            )
+                            .onTapGesture {
+                                selectedTab = tab
                             }
                         }
-                        .ignoresSafeArea(.keyboard, edges: .bottom)
-                        .padding(.horizontal, 25)
-                        .padding(.vertical, 5)
-                        .background(Material.ultraThinMaterial)
-                        .clipShape(Capsule())
-                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 5, y: 5)
-                        .padding(.horizontal)
                     }
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
+                    .padding(.horizontal, 25)
+                    .padding(.vertical, 5)
+                    .background(Material.ultraThinMaterial)
+                    .clipShape(Capsule())
+                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 5, y: 5)
+                    .padding(.horizontal)
                 }
             }
-
-//            .onReceive(
-//                NotificationCenter.default
-//                    .publisher(for: UIResponder.keyboardWillShowNotification)
-//            ) { _ in
-//                // Keyboard will show
-//                isKeyboardShown = true
-//            }
-//            .onReceive(
-//                NotificationCenter.default
-//                    .publisher(for: UIResponder.keyboardWillHideNotification)
-//            ) { _ in
-//                // Keyboard will hide
-//                isKeyboardShown = false
-//            }
         }
     }
 

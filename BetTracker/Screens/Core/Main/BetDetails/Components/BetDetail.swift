@@ -1,11 +1,6 @@
-//
-//  BetDetail.swift
-//  BetTrackerUI
-//
-//  Created by Adam Zapiór on 04/03/2023.
-//
-
 import SwiftUI
+
+// TODO: 4 View refactor - TextStyle func.
 
 struct BetDetail: View {
     let category: String

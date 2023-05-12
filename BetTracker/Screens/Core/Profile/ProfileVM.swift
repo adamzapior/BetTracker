@@ -5,19 +5,22 @@ import SwiftUI
 
 @MainActor
 class ProfileVM: ObservableObject {
-    
-    @Published var isShowingPreferences = false
 
-    
-    @Published var allBetsAmount: NSDecimalNumber = .zero
-    @Published var getBetsAmountCancellables = Set<AnyCancellable>()
-    
+    @Published
+    var isShowingPreferences = false
+
+    @Published
+    var allBetsAmount: NSDecimalNumber = .zero
+    @Published
+    var getBetsAmountCancellables = Set<AnyCancellable>()
+
     init() {
         getBetsAmount()
         print("\(isShowingPreferences)")
     }
-    
+
     // MARK: - Querries to DB for values stored in @Published variables.
+
     func getBetsAmount() {
         BetDao.allBetsAmount()
             .sink(
@@ -31,9 +34,9 @@ class ProfileVM: ObservableObject {
             )
             .store(in: &getBetsAmountCancellables)
     }
-    
+
     // MARK: - Stats calaculation metods:
-    
+
     func betProfit(
         amountString: String?,
         oddsString: String?,

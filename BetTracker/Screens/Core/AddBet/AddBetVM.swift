@@ -1,15 +1,21 @@
 import Combine
 import Foundation
+import SwiftDate
 import SwiftUI
 
 class AddBetVM: ObservableObject {
-
+    
     let defaults = UserDefaultsManager.path
-    var taxStatus: Bool = false
 
     init() {
-        taxStatus = defaults.get(.isDefaultTaxOn)
+        /// propably to delete?
+        savedDate = defaults.get(.savedNotificationDate)
+        isReminderSaved = defaults.get(.isNotificationSaved)
 
+        taxStatus = defaults.get(.isDefaultTaxOn) // Read isTaxOn form UserDefault
+        configureTaxInput() // Pass to publisher
+        
+        // Predicted profit
         if taxStatus {
             Publishers.CombineLatest3($amount, $odds, $tax)
                 .map { [weak self] amount, odds, tax in
@@ -40,6 +46,9 @@ class AddBetVM: ObservableObject {
         }
     }
 
+    // MARK: - Defined variables:
+
+    /// AddBet - User input Textfield's variables
     @Published
     var team1 = "" {
         didSet {
@@ -51,6 +60,48 @@ class AddBetVM: ObservableObject {
     var team2 = "" {
         didSet {
             team2IsError = false
+        }
+    }
+
+    @Published
+    var odds = "" {
+        didSet {
+            oddsIsError = false
+            if odds.isEmpty {
+                return
+            }
+            let cleanedOdds = odds.replacingOccurrences(of: ",", with: ".")
+            if cleanedOdds != odds {
+                odds = cleanedOdds
+                return
+            }
+
+            if cleanedOdds
+                .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
+                odds = oldValue
+            }
+        }
+    }
+
+    @Published
+    var tax = "0.0" {
+        didSet {
+//            taxIsError = false
+            if tax.isEmpty {
+                return
+            }
+            let cleanedTax = tax.replacingOccurrences(of: ",", with: ".")
+            if cleanedTax != tax {
+                tax = cleanedTax
+                return
+            }
+
+            if cleanedTax
+                .wholeMatch(of: /[1-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
+                tax = oldValue
+            }
         }
     }
 
@@ -78,52 +129,22 @@ class AddBetVM: ObservableObject {
     }
 
     @Published
-    var defaultCurrency = ""
+    var league = ""
 
     @Published
-    var selectedDate = Date()
+    var selectedDate = Date.now     /// Event date
 
     @Published
-    var odds = "" {
-        didSet {
-            oddsIsError = false
-            if odds.isEmpty {
-                return
-            }
-            let cleanedOdds = odds.replacingOccurrences(of: ",", with: ".")
-            if cleanedOdds != odds {
-                odds = cleanedOdds
-                return
-            }
+    var category = ""
 
-            if cleanedOdds
-                .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
-                nil { // 5.55, 1.22, 1.22, 10.<22>
-                odds = oldValue
-            }
-        }
-    }
+    // AddBet non-edit Row's variables:
+    @Published
+    var defaultCurrency = ""     /// Used for overlay text at Textfield
 
     @Published
-    var tax = "" {
-        didSet {
-            taxIsError = false
-            if tax.isEmpty {
-                return
-            }
-            let cleanedTax = tax.replacingOccurrences(of: ",", with: ".")
-            if cleanedTax != tax {
-                tax = cleanedTax
-                return
-            }
+    var profit = "0.0"
 
-            if cleanedTax
-                .wholeMatch(of: /[1-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
-                nil { // 5.55, 1.22, 1.22, 10.<22>
-                tax = oldValue
-            }
-        }
-    }
+    // MARK: - Selected checkmark team logic:
 
     @Published
     var selectedTeam = SelectedTeam.team1
@@ -136,27 +157,92 @@ class AddBetVM: ObservableObject {
         selectedTeam = .team2
     }
 
+    // MARK: - Tax Row state logic:
+
+    enum taxRowState {
+        case active
+        case disable
+    }
+
+    /// #1 Current Row State && taxStatus var
     @Published
-    var category = ""
+    var taxRowStateValue = taxRowState.disable
+
+    var taxStatus: Bool
+
+    /// #2 Variable to observe changes in taxStatus Variable (base
+    @Published
+    var isTaxInputDisabled: Bool = false {
+        didSet {
+            if isTaxInputDisabled {
+                taxRowStateValue = .active
+            } else {
+                taxRowStateValue = .disable
+            }
+        }
+    }
+
+    /// 3 Read taxStatus from init
+    /// Func run in init and set value of isTaxInputDisabled depend on taxStatus Value
+    /// taxStatus is boolean value of default tax user settings.
+    ///     1. taxStatus = true - the user has a default tax value set
+    ///     2. taxStatus = false - user has no default tax value set
+    func configureTaxInput() {
+        if taxStatus {
+            isTaxInputDisabled = true
+        } else {
+            isTaxInputDisabled = false
+        }
+    }
+
+    // MARK: - Reminder DatePicker Logic:
 
     @Published
-    var league = ""
+    var showDatePicker: Bool = false
 
     @Published
-    var profit = "0.0"
+    var pickedDate: Date? = nil
 
     @Published
-    var team1IsError = false
+    var selectedNotificationDate = Date.now
+    
+    var isReminderSaved: Bool
+    
+    var savedDate: Date //    TODO: !!!!!
+
+    enum ReminderRowState {
+        case add
+        case editing
+        case delete
+    }
+
     @Published
-    var team2IsError = false
-    @Published
-    var amountIsError = false
-    @Published
-    var oddsIsError = false
-    @Published
-    var taxIsError = false
-    @Published
-    var leagueIsError = false
+    var reminderState: ReminderRowState = .add
+
+    func isAddClicked() {
+        reminderState = .editing
+    }
+
+    func deleteRemind() {
+        reminderState = .add
+    }
+
+    func saveIsClicked() {
+        reminderState = .delete
+    }
+
+   
+    func saveReminder() { }
+
+    var dateClosedRange: ClosedRange<Date> {
+        let min = Date.now
+        let max = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
+        return min ... max
+    }
+
+    // MARK: - Predicted win methods:
+
+    // Methods used to calculate data with Combine in Init
 
     func betProfitWithoutTex(
         amountString: String?,
@@ -176,6 +262,7 @@ class AddBetVM: ObservableObject {
         return predictedWin
     }
 
+    /// TODO: Ta funkcja nie działa i nie liczy poprawnie np 90
     func betProfitWithTax(
         amountString: String?,
         oddsString: String?,
@@ -201,6 +288,21 @@ class AddBetVM: ObservableObject {
         return predictedWin
     }
 
+    // MARK: - Validate & Saving to DB
+
+    /// Define variables
+    @Published
+    var team1IsError = false
+    @Published
+    var team2IsError = false
+    @Published
+    var amountIsError = false
+    @Published
+    var oddsIsError = false
+    @Published
+    var taxIsError = false
+
+    /// Validaton methods
     private func validateTeam1() {
         if team1.isEmpty {
             team1IsError = true
@@ -234,11 +336,12 @@ class AddBetVM: ObservableObject {
     }
 
     private func validateTax() {
-        if tax.isEmpty {
-            taxIsError = true
+        if amount.isEmpty {
+            amountIsError = true
         }
     }
 
+    /// Save data to DB
     func saveBet() -> Bool {
         validateTeam1()
         validateTeam2()
@@ -246,10 +349,11 @@ class AddBetVM: ObservableObject {
         validateOdds()
         validateTax()
 
-        if team1IsError || team2IsError || amountIsError || oddsIsError ||
-            taxIsError {
+        if team1IsError || team2IsError || amountIsError || oddsIsError
+            || taxIsError {
             return false
         }
+        print("data saved")
 
         BetDao.saveBet(bet: BetModel(
             id: nil,
@@ -268,6 +372,11 @@ class AddBetVM: ObservableObject {
 
         return true
     }
+
+    // MARK: - View Setup methods:
+
+    //
+    // Methods are used to run inside .onApper and .onDissapear view methods
 
     func saveTextInTexfield() {
         defaults.set(.team1, to: team1)
@@ -301,52 +410,5 @@ class AddBetVM: ObservableObject {
         league = ""
         selectedDate = Date.now
     }
-
-    // MARK: idk gdzie to powinno być w pliku XD
-
-    enum Category: String, CaseIterable {
-        case football = "Football"
-        case basketball = "Basketball"
-        case f1 = "F1"
-    }
-    
-    @Published
-    var isMoreOptionHIdden: Bool = false {
-        didSet {
-            if isMoreOptionHIdden {
-                moreOptionHiddenStatus = .statusOn
-            } else {
-                moreOptionHiddenStatus = .statusOff
-            }
-        }
-    }
-    
-    @Published
-    var moreOptionHiddenStatus = MoreOptionHiddenStatus.statusOff
-    
-    enum MoreOptionHiddenStatus {
-        case statusOn
-        case statusOff
-    }
-    
-    
-    func toggleMoreOptionsButton() {
-        isMoreOptionHIdden.toggle()
-    }
-    
-    func setToFalse() {
-        isMoreOptionHIdden = false
-        print(_isMoreOptionHIdden)
-        print(isMoreOptionHIdden)
-    }
-    
-    
-    
-    
-    @Published
-    var reminderStatus: Bool = false
-    
-
-    
-
+    // end
 }

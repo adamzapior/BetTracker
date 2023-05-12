@@ -2,11 +2,9 @@ import Foundation
 
 final class UserDefaultsManager {
     static let path = UserDefaults.standard
-    let userDefaults: UserDefaults?
     var value: String
 
     init(_ value: String) {
-        userDefaults = UserDefaults.standard
         self.value = value
     }
 
@@ -14,10 +12,9 @@ final class UserDefaultsManager {
 
     static var defaultCurrencyValue = path.get(.defaultCurrency)
 
-    // MARK: - Keys used to store value
 }
 
-class DefaultsKeys {}
+class DefaultsKeys { }
 
 final class DefaultsKey<T>: DefaultsKeys {
     let value: String
@@ -27,32 +24,14 @@ final class DefaultsKey<T>: DefaultsKeys {
     }
 }
 
-extension UserDefaults {
-    
-//    enum defaultValue: String, Date {
-//        case string = ""
-//        case Date = Date.now()
-//    }
-//
-//    func get<T>(_ key: DefaultsKey<T>) -> T? {
-//        return object(forKey: key.value) as? T ?? T.defaultValue
-//    }
-
-    
-    
-    func set<T>(_ key: DefaultsKey<T>, to value: T) {
-        set(value, forKey: key.value)
-    }
-}
+// MARK: UserDefaults Keys to save&load
 
 extension DefaultsKeys {
-    
-    
-    
-    //Onboarding:
+
+    /// Onboarding:
     static let hasSeenOnboarding = DefaultsKey<Bool>("hasSeenOnboarding")
-    
-    //Add bet texfields:
+
+    /// Add bet texfields:
     static let team1 = DefaultsKey<String>("team1")
     static let team2 = DefaultsKey<String>("team2")
     static let amount = DefaultsKey<String>("amount")
@@ -61,14 +40,28 @@ extension DefaultsKeys {
     static let category = DefaultsKey<String>("category")
     static let league = DefaultsKey<String>("league")
     static let selectedDate = DefaultsKey<Date>("selectedDate")
-    
-    //UserPreferences:
+    static let savedNotificationDate = DefaultsKey<Date>("savedNotificationDate")
+    static let isNotificationSaved = DefaultsKey<Bool>("isNotificationSaved")
+
+    /// UserPreferences:
     static let username = DefaultsKey<String>("username")
     static let isDefaultTaxOn = DefaultsKey<Bool>("isDefaultTaxOn")
     static let defaultTax = DefaultsKey<String>("defaultTax")
     static let defaultCurrency = DefaultsKey<String>("defaultCurrency")
 }
 
+// MARK: UserDefaults methods
+
+extension UserDefaults {
+
+    func get<T: Defaultable>(_ key: DefaultsKey<T>) -> T.Value {
+        object(forKey: key.value) as? T.Value ?? T.defaultValue
+    }
+
+    func set<T>(_ key: DefaultsKey<T>, to value: T) {
+        set(value, forKey: key.value)
+    }
+}
 
 extension String: Defaultable {
     public static var defaultValue: String { "" }
@@ -85,10 +78,4 @@ extension Bool: Defaultable {
 public protocol Defaultable {
     associatedtype Value
     static var defaultValue: Value { get }
-}
-
-extension UserDefaults {
-    func get<T: Defaultable>(_ key: DefaultsKey<T>) -> T.Value {
-        return object(forKey: key.value) as? T.Value ?? T.defaultValue
-    }
 }
