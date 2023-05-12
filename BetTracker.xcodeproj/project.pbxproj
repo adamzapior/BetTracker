@@ -53,8 +53,10 @@
 		58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */; };
 		58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4102A0A706500C8CCCC /* SessionManager.swift */; };
 		58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */; };
-		58BEC4322A0B623D00C8CCCC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */; };
+		58BEC4322A0B623D00C8CCCC /* UserNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */; };
 		58C4854F2A0E8A9E00E62522 /* ReminderIsActive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C4854E2A0E8A9E00E62522 /* ReminderIsActive.swift */; };
+		58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C485552A0EE80400E62522 /* AppDelegate.swift */; };
+		58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C485572A0EEE0300E62522 /* HapticsManager.swift */; };
 		58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E887AC2A00528A0079C045 /* ProfileView.swift */; };
 		58FE63572A0CDD710079A698 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FE63562A0CDD710079A698 /* SwiftUIView.swift */; };
 		58FE63742A0E4EAB0079A698 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 58FE63732A0E4EAB0079A698 /* SwiftDate */; };
@@ -107,8 +109,11 @@
 		58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupView.swift; sourceTree = "<group>"; };
 		58BEC4102A0A706500C8CCCC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
-		58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsService.swift; sourceTree = "<group>"; };
 		58C4854E2A0E8A9E00E62522 /* ReminderIsActive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderIsActive.swift; sourceTree = "<group>"; };
+		58C485542A0EA84100E62522 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		58C485552A0EE80400E62522 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		58C485572A0EEE0300E62522 /* HapticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		58E887AC2A00528A0079C045 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		58FE63562A0CDD710079A698 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,9 +150,11 @@
 		58076A4529C906FC00A0762B /* BetTracker */ = {
 			isa = PBXGroup;
 			children = (
+				58C485542A0EA84100E62522 /* Info.plist */,
 				58076A4A29C906FE00A0762B /* Assets.xcassets */,
 				58076A4629C906FC00A0762B /* BetTrackerApp.swift */,
 				58076A4829C906FC00A0762B /* ContentView.swift */,
+				58C485552A0EE80400E62522 /* AppDelegate.swift */,
 				58BEC40F2A0999BE00C8CCCC /* Managers */,
 				58076A5929C9079F00A0762B /* Extensions */,
 				58076A5E29C9079F00A0762B /* Model */,
@@ -353,7 +360,8 @@
 			children = (
 				58BEC4102A0A706500C8CCCC /* SessionManager.swift */,
 				58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */,
-				58BEC4312A0B623D00C8CCCC /* NotificationManager.swift */,
+				58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */,
+				58C485572A0EEE0300E62522 /* HapticsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -466,7 +474,7 @@
 				58076A7B29C907A000A0762B /* BetButton.swift in Sources */,
 				58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */,
 				580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */,
-				58BEC4322A0B623D00C8CCCC /* NotificationManager.swift in Sources */,
+				58BEC4322A0B623D00C8CCCC /* UserNotificationsService.swift in Sources */,
 				58076A9529CA37BF00A0762B /* BetDao.swift in Sources */,
 				58076A8929C907A000A0762B /* AmountInput.swift in Sources */,
 				586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */,
@@ -475,7 +483,9 @@
 				58076A8629C907A000A0762B /* MainView.swift in Sources */,
 				58076A8529C907A000A0762B /* NoContentElement.swift in Sources */,
 				58076A8029C907A000A0762B /* BetDetailsScreen.swift in Sources */,
+				58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */,
 				58076A7D29C907A000A0762B /* BetDetailsVM.swift in Sources */,
+				58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */,
 				58076A4929C906FC00A0762B /* ContentView.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */,
 				58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */,
@@ -630,6 +640,7 @@
 				DEVELOPMENT_TEAM = B5C5KJWJ34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BetTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -659,6 +670,7 @@
 				DEVELOPMENT_TEAM = B5C5KJWJ34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BetTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

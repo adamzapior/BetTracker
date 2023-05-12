@@ -9,8 +9,11 @@ struct SearchBarView: View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(Color.ui.scheme)
+                .shadow(color: Color.ui.shadow.opacity(0.7), radius: 3, x: 3, y: 3)
             TextField(text: $searchText) {
-                Text("Find your bet").foregroundColor(Color.ui.secondary)
+                Text("Find your bet")
+                    .foregroundColor(Color.ui.onPrimaryContainer)
+                    .shadow(color: Color.ui.scheme.opacity(0.7), radius: 3, x: 3, y: 3)
             }
             .textInputAutocapitalization(.never)
             Image(systemName: "xmark.circle.fill")
@@ -24,7 +27,8 @@ struct SearchBarView: View {
         .background(
             RoundedRectangle(cornerRadius: 25)
                 .stroke(style: StrokeStyle(lineWidth: 1))
-                .foregroundColor(Color.ui.secondary)
+                .foregroundColor(Color.ui.onPrimaryContainer)
+                .shadow(color: Color.ui.shadow.opacity(0.7), radius: 3, x: 3, y: 3)
         )
     }
 }

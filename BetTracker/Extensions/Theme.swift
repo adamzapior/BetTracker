@@ -21,6 +21,7 @@ struct ColorPalette {
     var onPrimaryContainer = Color("OnPrimaryContainer")
     var secondary = Color("Secondary")
     var scheme = Color("Scheme")
+    var shadow = Color("Shadow")
 }
 
 extension Color {

@@ -19,6 +19,9 @@ struct AddBetScreen: View {
 
     @State
     var alertCheck: Bool = false
+    
+    @State
+    private var selectedDate = Date()
 
 
     var body: some View {
@@ -147,8 +150,7 @@ struct AddBetScreen: View {
                                     HStack {
                                         DatePickerWithButtons(
                                             showDatePicker: $vm.showDatePicker,
-                                            savedDate: $vm.pickedDate,
-                                            selectedDate: vm.selectedDate,
+                                            selectedDate: $vm.selectedDate,
                                             savedSuccesfully: vm.deleteRemind,
                                             vm: vm
                                         )

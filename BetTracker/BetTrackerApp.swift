@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct BetTrackerApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     @StateObject
     private var session = SessionManager()

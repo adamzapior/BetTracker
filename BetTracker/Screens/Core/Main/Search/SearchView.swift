@@ -8,8 +8,8 @@ struct SearchView: View {
     private var selectedSortOption: String = "All"
 
     var body: some View {
-        LazyVStack {
-            ScrollView(.horizontal, showsIndicators: false) {
+        VStack {
+            VStack {
                 HStack(spacing: 8) {
                     ForEach(vm.sortOptions) { button in
                         SortButton(
@@ -33,12 +33,20 @@ struct SearchView: View {
                     }
                 }
                 .padding(.horizontal, 12)
+//                .shadow(color: Color.ui.scheme.opacity(0.5), radius: 3, x: 3, y: 3)
             }
+            .shadow(
+                color: Color.ui.shadow,
+                radius: 25, x:0, y:0
+            )
+
             .padding(.vertical, 2)
             ScrollView {
-                ForEach(vm.searchResults ?? [], id: \.id) { bet in
-                    NavigationLink(destination: BetDetailsScreen(bet: bet)) {
-                        BetListElement(bet: bet, currency: vm.currency)
+                LazyVStack {
+                    ForEach(vm.searchResults ?? [], id: \.id) { bet in
+                        NavigationLink(destination: BetDetailsScreen(bet: bet)) {
+                            BetListElement(bet: bet, currency: vm.currency)
+                        }
                     }
                 }
             }
@@ -50,8 +58,12 @@ struct SearchView: View {
             SearchBarView(searchText: $vm.searchText)
                 .padding(.top, 6)
                 .padding(.horizontal, 12)
+//                .shadow(color: Color.ui.scheme.opacity(0.2), radius: 6, x: 3, y: 3)
+
+            
         }
     }
+
 }
 
 struct SearchView_Previews: PreviewProvider {

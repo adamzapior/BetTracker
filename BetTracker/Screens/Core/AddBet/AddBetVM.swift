@@ -132,7 +132,16 @@ class AddBetVM: ObservableObject {
     var league = ""
 
     @Published
-    var selectedDate = Date.now // Event date
+    var selectedDate = Date()
+
+    ///
+    var newSelectedDate = Date()
+
+    func parseDate() -> Date {
+        selectedDate
+    }
+
+    //
 
     @Published
     var category = ""
@@ -341,6 +350,9 @@ class AddBetVM: ObservableObject {
             amountIsError = true
         }
     }
+    
+    @Published
+    var betNotificationID = UUID().uuidString
 
     /// ** Save data to DB **
     func saveBet() -> Bool {
@@ -355,10 +367,17 @@ class AddBetVM: ObservableObject {
             return false
         }
         print("data saved")
+        
+        
+        UserNotificationsService().scheduleNotification(
+            withID: betNotificationID,
+            titleName: "\(team1 + team1)",
+            notificationTriggerDate: selectedDate
+        )
 
-        /// run if:
-        ///     true: default tax is On
-        ///     false:  default tax is Off
+        // run if:
+        //     true: default tax is On
+        //     false:  default tax is Off
         if taxStatus {
             BetDao.saveBet(bet: BetModel(
                 id: nil,
@@ -432,5 +451,8 @@ class AddBetVM: ObservableObject {
         league = ""
         selectedDate = Date.now
     }
+
     // end
+
+    var id = Int64()
 }

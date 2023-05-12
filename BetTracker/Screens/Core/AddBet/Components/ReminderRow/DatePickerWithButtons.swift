@@ -4,10 +4,10 @@ struct DatePickerWithButtons: View {
 
     @Binding
     var showDatePicker: Bool
+//    @Binding
+//    var savedDate: Date?
     @Binding
-    var savedDate: Date?
-    @State
-    var selectedDate: Date = Date()
+    var selectedDate: Date
 
     var savedSuccesfully: (() -> Void)?
     var helper: ()
@@ -44,7 +44,6 @@ struct DatePickerWithButtons: View {
                     Spacer()
 
                     Button(action: {
-                        savedDate = selectedDate
                         showDatePicker = false
                         vm.saveIsClicked()
 
