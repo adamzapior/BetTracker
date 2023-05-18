@@ -10,7 +10,7 @@ final class UserDefaultsManager {
 
     // MARK: Global variables from UserDefaults:
 
-    static var defaultCurrencyValue = path.get(.defaultCurrency)
+    static var defaultCurrencyValue = "PLN"
 
 }
 

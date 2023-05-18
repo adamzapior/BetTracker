@@ -4,12 +4,24 @@ import SwiftUI
 struct OnboardingSetupView: View {
 
     @StateObject
-    var vm = PreferencesVM()
+    var vm: PreferencesVM
 
     @FocusState
     private var isTaxFocused
 
     let action: () -> Void
+
+    enum Currency2: String, RawRepresentable, CaseIterable {
+
+        case usd
+        case eur
+        case gbp
+        case pln
+
+    }
+
+    @State
+    private var currency: Currency2 = .usd
 
     var body: some View {
         VStack(spacing: 48) {
@@ -64,9 +76,7 @@ struct OnboardingSetupView: View {
                                     }
                                 }
                                 .textFieldStyle(.plain)
-                                .onAppear {
-                                    vm.loadPreferences()
-                                }
+
                                 .onDisappear {
                                     vm.setDefaultTaxTo0()
                                 }
@@ -85,9 +95,13 @@ struct OnboardingSetupView: View {
                                     alignment: .leading
                                 )
                         ) {
-                            TextField("Enter your currency", text: $vm.defaultCurrency)
-                                .focused($isTaxFocused)
-                                .textInputAutocapitalization(.characters)
+                            Picker("Choose your currency", selection: $vm.defaultCurrency) {
+                                ForEach(Currency.allCases, id: \.self) { currency in
+                                    Text("\(currency.rawValue.uppercased())")
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .tint(Color.ui.scheme)
                         }
                     }
                     .scrollContentBackground(.hidden)

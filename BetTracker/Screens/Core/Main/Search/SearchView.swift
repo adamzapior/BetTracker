@@ -45,7 +45,7 @@ struct SearchView: View {
                 LazyVStack {
                     ForEach(vm.searchResults ?? [], id: \.id) { bet in
                         NavigationLink(destination: BetDetailsScreen(bet: bet)) {
-                            BetListElement(bet: bet, currency: vm.currency)
+                            BetListElement(bet: bet, currency: vm.currency.rawValue)
                         }
                     }
                 }

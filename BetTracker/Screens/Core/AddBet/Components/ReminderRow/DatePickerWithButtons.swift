@@ -4,13 +4,9 @@ struct DatePickerWithButtons: View {
 
     @Binding
     var showDatePicker: Bool
-//    @Binding
-//    var savedDate: Date?
+
     @Binding
     var selectedDate: Date
-
-    var savedSuccesfully: (() -> Void)?
-    var helper: ()
 
     @StateObject
     var vm: AddBetVM
@@ -24,9 +20,8 @@ struct DatePickerWithButtons: View {
                 DatePicker(
                     "Your remind will be set to:",
                     selection: $selectedDate,
-                    in: vm.dateClosedRange
+                    in: vm.reminderDateClosedRange
                 )
-//                    .datePickerStyle(WheelDatePickerStyle())
                 .font(.callout)
                 .padding(.horizontal, 8)
                 .frame(maxHeight: 150)

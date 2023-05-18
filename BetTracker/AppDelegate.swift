@@ -53,6 +53,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // 3
     UNUserNotificationCenter.current().setNotificationCategories([category]) // powoduje ∑łączenie opcji tak aby sie wyswietlaly
   }
+    
 
   // 1
   func userNotificationCenter(

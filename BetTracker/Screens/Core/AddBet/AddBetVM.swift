@@ -20,27 +20,27 @@ class AddBetVM: ObservableObject {
             Publishers.CombineLatest3($amount, $odds, $tax)
                 .map { [weak self] amount, odds, tax in
                     guard let self else {
-                        return "0.0"
+                        return 0
                     }
                     let profit = self.betProfitWithTax(
                         amountString: amount,
                         oddsString: odds,
                         taxString: tax
                     ) ?? Decimal()
-                    return String(describing: profit)
+                    return profit as NSDecimalNumber
                 }
                 .assign(to: &$profit)
         } else {
             Publishers.CombineLatest($amount, $odds)
                 .map { [weak self] amount, odds in
                     guard let self else {
-                        return "0.0"
+                        return 0
                     }
                     let profit = self.betProfitWithoutTex(
                         amountString: amount,
                         oddsString: odds
                     ) ?? Decimal()
-                    return String(describing: profit)
+                    return profit as NSDecimalNumber
                 }
                 .assign(to: &$profit)
         }
@@ -48,7 +48,7 @@ class AddBetVM: ObservableObject {
 
     // MARK: - Defined variables:
 
-    /// AddBet - User input Textfield's variables
+    /// ** AddBet - User input Textfield's variables **
     @Published
     var team1 = "" {
         didSet {
@@ -87,7 +87,6 @@ class AddBetVM: ObservableObject {
     @Published
     var tax = "0.0" {
         didSet {
-//            taxIsError = false
             if tax.isEmpty {
                 return
             }
@@ -131,27 +130,20 @@ class AddBetVM: ObservableObject {
     @Published
     var league = ""
 
-    @Published
-    var selectedDate = Date()
-
-    ///
-    var newSelectedDate = Date()
-
-    func parseDate() -> Date {
-        selectedDate
-    }
-
     //
 
     @Published
     var category = ""
 
+    @Published
+    var selectedCategory = Category.football
+
     /// AddBet non-edit Row's variables:
     @Published
-    var defaultCurrency = "" // Used for overlay text at Textfield
+    var defaultCurrency: Currency = Currency.usd // Used for overlay text at Textfield
 
     @Published
-    var profit = "0.0"
+    var profit: NSDecimalNumber = 0
 
     // MARK: - Selected checkmark team logic:
 
@@ -204,16 +196,38 @@ class AddBetVM: ObservableObject {
         }
     }
 
+    // MARK: - Event Date
+
+    /// ReminderRowState methods:
+    enum DateRowState {
+        case closed
+        case opened
+    }
+
+    @Published
+    var dateState: DateRowState = .closed
+
+    func openDate() {
+        dateState = .opened
+    }
+
+    func closeDate() {
+        dateState = .closed
+    }
+
+    @Published
+    var selectedDate = Date()
+
     // MARK: - Reminder DatePicker Logic:
 
     @Published
     var showDatePicker: Bool = false
 
     @Published
-    var pickedDate: Date? = nil
-
-    @Published
     var selectedNotificationDate = Date.now
+    
+    @Published
+    var betNotificationID = UUID().uuidString
 
     var isReminderSaved: Bool
 
@@ -235,16 +249,28 @@ class AddBetVM: ObservableObject {
 
     func deleteRemind() {
         reminderState = .add
+        selectedNotificationDate = Date()
     }
 
     func saveIsClicked() {
         reminderState = .delete
     }
 
-    func saveReminder() { }
+    /**
+     The function saves the user's notification if the date is different from ' Date.now '
+     - Parameter withID: Uniqe ID based on UUID.string variable
+     - Parameter titleName: Name used for Reminder Title
+     - Parameter notificationTriggerDate:Selected date to trigger notification
+     */
+    private func saveReminder() {
+            UserNotificationsService().scheduleNotification(
+                withID: betNotificationID, // i need add this to BetDao
+                titleName: "\(team1 + team1)",
+                notificationTriggerDate: selectedNotificationDate
+            )
+    }
 
-    /// to delete
-    var dateClosedRange: ClosedRange<Date> {
+    var reminderDateClosedRange: ClosedRange<Date> {
         let min = Date.now
         let max = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
         return min ... max
@@ -350,9 +376,11 @@ class AddBetVM: ObservableObject {
             amountIsError = true
         }
     }
-    
+
+  
+
     @Published
-    var betNotificationID = UUID().uuidString
+    var score: NSDecimalNumber = .zero
 
     /// ** Save data to DB **
     func saveBet() -> Bool {
@@ -367,13 +395,8 @@ class AddBetVM: ObservableObject {
             return false
         }
         print("data saved")
-        
-        
-        UserNotificationsService().scheduleNotification(
-            withID: betNotificationID,
-            titleName: "\(team1 + team1)",
-            notificationTriggerDate: selectedDate
-        )
+
+        saveReminder()
 
         // run if:
         //     true: default tax is On
@@ -388,10 +411,12 @@ class AddBetVM: ObservableObject {
                 league: league,
                 amount: NSDecimalNumber(string: amount),
                 odds: NSDecimalNumber(string: odds),
-                category: category,
+                category: selectedCategory,
                 tax: NSDecimalNumber(string: tax),
                 profit: profit,
-                isWon: nil
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
 
             ))
         } else {
@@ -404,10 +429,12 @@ class AddBetVM: ObservableObject {
                 league: league,
                 amount: NSDecimalNumber(string: amount),
                 odds: NSDecimalNumber(string: odds),
-                category: category,
+                category: selectedCategory,
                 tax: NSDecimalNumber.zero,
                 profit: profit,
-                isWon: nil
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
             ))
         }
 
@@ -416,8 +443,7 @@ class AddBetVM: ObservableObject {
 
     // MARK: - View Setup methods:
 
-    //
-    // Methods are used to run inside .onApper and .onDissapear view methods
+    /// ** Methods are used to run inside .onApper and .onDissapear view methods **
 
     func saveTextInTexfield() {
         defaults.set(.team1, to: team1)
@@ -435,7 +461,10 @@ class AddBetVM: ObservableObject {
         amount = defaults.get(.amount)
         odds = defaults.get(.odds)
         tax = defaults.get(.defaultTax) // load default Tax to field
-        defaultCurrency = defaults.get(.defaultCurrency)
+        defaultCurrency = Currency(
+            rawValue: UserDefaults.standard
+                .string(forKey: "defaultCurrency") ?? "usd"
+        )!
         category = defaults.get(.category)
         league = defaults.get(.league)
         selectedDate = defaults.get(.selectedDate)
@@ -452,7 +481,12 @@ class AddBetVM: ObservableObject {
         selectedDate = Date.now
     }
 
-    // end
+}
 
-    var id = Int64()
+extension Date {
+    func formatSelectedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d/M/yyyy"
+        return dateFormatter.string(from: self)
+    }
 }

@@ -15,15 +15,14 @@ struct AddBetButton: View {
         Text(text)
             .font(.title2)
             .bold()
-            .foregroundColor(Color.ui.secondary)
-            .frame(minWidth: 200, minHeight: 40, alignment: .center)
-            .padding(.horizontal, 12)
+            .foregroundColor(Color.ui.background)
+            .frame(minWidth: 200, minHeight: 56, alignment: .center)
+            .padding(.horizontal, 48)
             .padding(.vertical, 3)
             .clipShape(RoundedRectangle(cornerRadius: 150))
             .background {
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(style: StrokeStyle(lineWidth: 2))
-                    .foregroundColor(Color.ui.secondary)
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundColor(Color.ui.onPrimaryContainer)
             }
             .clipShape(RoundedRectangle(cornerRadius: 25))
         

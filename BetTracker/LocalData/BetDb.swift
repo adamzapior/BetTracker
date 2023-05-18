@@ -4,7 +4,7 @@ import GRDB
 class BetDb {
     private init() { }
 
-    static let db = {
+    static let db: DatabaseQueue = {
         let databaseURL = try! FileManager.default
             .url(
                 for: .applicationSupportDirectory,
@@ -19,7 +19,7 @@ class BetDb {
         try? db.write { db in
             try db.create(table: "bet") { t in
                 t.autoIncrementedPrimaryKey("id")
-                t.column("date", .date).notNull()
+                t.column("date", .datetime).notNull()
                 t.column("team1", .text).notNull()
                 t.column("team2", .text).notNull()
                 t.column("selectedTeam", .integer).notNull()
@@ -28,8 +28,10 @@ class BetDb {
                 t.column("odds", .integer).notNull()
                 t.column("category", .text)
                 t.column("tax", .integer)
-                t.column("profit", .text)
+                t.column("profit", .integer)
                 t.column("isWon", .boolean)
+                t.column("betNotificationID", .text)
+                t.column("score", .integer)
             }
         }
         return db

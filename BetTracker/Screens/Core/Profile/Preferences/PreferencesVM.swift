@@ -3,8 +3,18 @@ import Foundation
 import SwiftUI
 
 class PreferencesVM: ObservableObject {
+    
+    init() {
+        getDefaultCurrency()
+    }
 
     let defaults = UserDefaultsManager.path
+
+    //    let category: Category
+    //
+    //    init(category: Category) {
+    //        self.category = category
+    //    }
 
     @Published
     var isDefaultTaxOn: Bool = false {
@@ -51,16 +61,8 @@ class PreferencesVM: ObservableObject {
     }
 
     @Published
-    var defaultCurrency = "PLN" {
-        didSet {
-            if defaultCurrency.isEmpty {
-                return
-            }
-            if defaultCurrency.wholeMatch(of: /[A-Z]{,3}/) == nil {
-                defaultCurrency = oldValue
-            }
-        }
-    }
+    var defaultCurrency: Currency = .usd
+    
 
     func clearTaxTextField() {
         let taxString = ""
@@ -84,13 +86,21 @@ class PreferencesVM: ObservableObject {
         defaults.set(.username, to: username)
         defaults.set(.isDefaultTaxOn, to: isDefaultTaxOn)
         defaults.set(.defaultTax, to: defaultTax)
-        defaults.set(.defaultCurrency, to: defaultCurrency)
+//        defaults.set(.defaultCurrency, to: defaultCurrency)
+        UserDefaults.standard.set(defaultCurrency.rawValue, forKey: "defaultCurrency")
     }
 
     func loadPreferences() {
         username = defaults.get(.username)
         isDefaultTaxOn = defaults.get(.isDefaultTaxOn)
         defaultTax = defaults.get(.defaultTax)
-        defaultCurrency = defaults.get(.defaultCurrency)
+        UserDefaults.standard.object(forKey: "defaultCurrency")
+        //        defaultCurrency = UserDefaults.standard.object(forKey: defaultCurrency.rawValue)
+        //        as! Currency
+    }
+
+
+    func getDefaultCurrency() {
+        defaultCurrency = Currency(rawValue: UserDefaults.standard.string(forKey: "defaultCurrency") ?? "usd")!
     }
 }

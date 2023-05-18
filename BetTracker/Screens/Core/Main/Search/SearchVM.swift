@@ -15,8 +15,7 @@ class SearchVM: ObservableObject {
     var selectedSortOption: SortOption = .all
     let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
 
-    var currency = UserDefaultsManager.defaultCurrencyValue
-
+    var currency: Currency = .usd
     init() {
         $searchText
             .combineLatest($bets)
@@ -40,6 +39,8 @@ class SearchVM: ObservableObject {
                 .some($0)
             }
             .assign(to: &$bets)
+        
+        loadCurrency()
     }
 
     // MARK: Sorting logic
@@ -84,6 +85,10 @@ class SearchVM: ObservableObject {
         BetDao.getBetsByHiggestAmount()
             .map { .some($0) }
             .assign(to: &$bets)
+    }
+
+    func loadCurrency() {
+        currency = UserDefaults.standard.object(forKey: currency.self.rawValue) as! Currency
     }
 
 }

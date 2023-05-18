@@ -4,109 +4,181 @@ struct BetDetailsScreen: View {
     @Environment(\.dismiss)
     var dismiss
 
-    let bet: BetModel
-
+    /// to pozmnielem moze byc zle
     @StateObject
-    var vm = BetDetailsVM()
+    var vm: BetDetailsVM
+
+    init(bet: BetModel, backgroundColor _: Color = .clear) {
+        _vm = StateObject(wrappedValue: BetDetailsVM(bet: bet))
+    }
 
     var body: some View {
         VStack {
-            BetDetailHeader {
-                vm.isShowingAlert = true
-            }
-            .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
-                Button("Yes") {
-                    vm.deleteBet(bet: bet)
-                    dismiss()
+            ScrollView {
+                BetDetailHeader {
+                    vm.isShowingAlert = true
                 }
-                Button("No", role: .cancel) { }
-            }
-
-            VStack(spacing: 5) {
-                Text(bet.team1)
-                    .foregroundColor(Color.ui.secondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .font(.title3)
-                    .bold()
-                    .padding(.vertical, 16)
-                Text("vs.")
-                    .font(.body)
-                Text(bet.team2)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .font(.title3)
-                    .bold()
-                    .padding(.vertical, 16)
-            }
-            .background {
-                RoundedRectangle(cornerRadius: 25)
-                    .foregroundColor(
-                        Color.ui.onPrimary
-                    )
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 12)
-            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-
-            VStack(spacing: 5) {
-                Group {
-                    if bet.league != "" {
-                        BetDetail(
-                            category: "Category",
-                            text: bet
-                                .league!
-                        ) // TODO: W AddBetVM league przyjmuje pustego stringa jeslnie nie ma zadnej wartosci
+                .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
+                    Button("Yes") {
+                        vm.deleteBet(bet: vm.bet)
+                        vm.removeNotification()
+                        dismiss()
                     }
-
-                    if bet.league != "" {
-                        BetDetail(
-                            category: "League:",
-                            text: bet
-                                .league!
-                        ) // TODO: W AddBetVM league przyjmuje pustego stringa jeslnie nie ma zadnej wartosci
-                    }
-
-                    BetDetail(
-                        category: "Date:",
-                        text: (bet.date).ISO8601Format(.iso8601Date(timeZone: .current))
-                    )
-                    BetDetail(category: "Amount:", text: "\(bet.amount) \(vm.currency)")
-                    BetDetail(category: "Odds:", text: "\(bet.odds.databaseValue)")
-                    BetDetail(category: "Tax:", text: "\(bet.tax.databaseValue)%")
-                    BetDetail(
-                        category: "Przewidywana wygrana:",
-                        text: "\(bet.profit.databaseValue) \(vm.currency)"
-                    )
+                    Button("No", role: .cancel) { }
                 }
-                Divider()
-                    .padding(.horizontal, 16)
-            }
 
-            .background(
-                RoundedRectangle(cornerRadius: 25)
-                    .foregroundColor(
-                        Color.ui.onPrimary
-                    )
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 25))
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 12)
-            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+                VStack {
+                    HStack {
+                        Text("YOUR PICK")
+                            .foregroundColor(Color.ui.scheme)
+                            .bold()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.top, 12)
+                .padding(.horizontal, 12)
+
+                VStack(spacing: 5) {
+                    HStack {
+                        Text(vm.bet.team1)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .font(.title3)
+                            .bold()
+                            .padding(.vertical, 16)
+                            .foregroundColor(
+                                vm.bet.selectedTeam == .team1
+                                    ? Color.ui.scheme
+                                    : Color.ui.secondary
+                            )
+                    }
+                    Text("vs.")
+                        .font(.body)
+                    HStack {
+                        Text(vm.bet.team2)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .font(.title3)
+                            .bold()
+                            .padding(.vertical, 16)
+                            .foregroundColor(
+                                vm.bet.selectedTeam == .team2
+                                    ? Color.ui.scheme
+                                    : Color.ui.secondary
+                            )
+                    }
+                }
+                .background {
+                    RoundedRectangle(cornerRadius: 25)
+                        .foregroundColor(
+                            Color.ui.onPrimary
+                            )
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 12)
+                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+
+                VStack {
+                    HStack {
+                        Text("BET VALUES")
+                            .foregroundColor(Color.ui.scheme)
+                            .bold()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.top, 12)
+                .padding(.horizontal, 12)
+
+                VStack(spacing: 12) {
+                    Group {
+                        BetDetailRowAmount(
+                            cellTitle: "AMOUNT",
+                            valueText: vm.bet.amount.doubleValue.formattedWith2Digits(),
+                            currency: vm.currency
+                        )
+                        .frame(maxHeight: 70)
+                        HStack {
+                            BetDetailRow(
+                                cellTitle: "ODDS",
+                                valueText: vm.bet.odds.doubleValue.formattedWith2Digits()
+                            )
+                            .frame(maxHeight: 70)
+                            BetDetailRow(
+                                cellTitle: "TAX",
+                                valueText: "\(vm.bet.tax.doubleValue.formattedWith2Digits())%"
+                            )
+                            .frame(maxHeight: 70)
+                        }
+
+                        //                    if vm.bet.isWon == true {
+                        //                        BetDetailRowAmount(cellTitle: "NET PROFIT", valueText: (vm.bet.score), currency: vm.currency)
+                        //                    } else if vm.bet.isWon == false {
+                        //                        BetDetailRowAmount(cellTitle: "LOSS", valueText: ("-\(vm.bet.amount)"), currency: vm.currency)
+                        //
+                        //                    } else if vm.bet.isWon == nil {
+                        //                        BetDetailRowAmount(cellTitle: "PREDICTED WIN", valueText: vm.bet.profit, currency: vm.currency)
+                        //
+                        //                    }
+
+                        HStack {
+                            BetDetailRow(cellTitle: "DATE", valueText: vm.bet.dateString)
+                                .frame(maxHeight: 70)
+                            BetDetailRow(
+                                cellTitle: "CATEGORY",
+                                valueText: vm.bet.category.rawValue.uppercased()
+                            )
+                            .frame(maxHeight: 70)
+                        }
+                        
+                        Spacer()
+                    }
+                }
+
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 12)
+            }
         }
         .navigationBarBackButtonHidden()
         Spacer()
 
         HStack {
-            if bet.isWon != true {
+            switch vm.buttonState {
+            case .uncleared:
                 BetButton(text: "Win")
                     .onTapGesture {
-                        BetDao.markFinished(bet: bet, isWon: true)
+                        BetDao.markFinished(bet: vm.bet, isWon: true)
+                        BetDao.markProfitWon(
+                            bet: vm.bet,
+                            score: (vm.bet.profit).subtracting(vm.bet.amount)
+                        )
                         dismiss()
                     }
-            }
-            if bet.isWon != false {
                 BetButton(text: "Przegrany")
                     .onTapGesture {
-                        BetDao.markFinished(bet: bet, isWon: false)
+                        BetDao.markFinished(bet: vm.bet, isWon: false)
+                        BetDao.markProfitLost(
+                            bet: vm.bet,
+                            score: (vm.bet.amount).multiplying(by: -1)
+                        )
+                        dismiss()
+                    }
+
+            case .won:
+                BetButton(text: "Przegrany")
+                    .onTapGesture {
+                        BetDao.markFinished(bet: vm.bet, isWon: false)
+                        BetDao.markProfitLost(
+                            bet: vm.bet,
+                            score: (vm.bet.amount).multiplying(by: -1)
+                        )
+                        dismiss()
+                    }
+            case .lost:
+                BetButton(text: "Set as won")
+                    .onTapGesture {
+                        BetDao.markFinished(bet: vm.bet, isWon: true)
+                        BetDao.markProfitWon(
+                            bet: vm.bet,
+                            score: (vm.bet.profit).subtracting(vm.bet.amount)
+                        )
                         dismiss()
                     }
             }

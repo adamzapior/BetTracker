@@ -1,4 +1,7 @@
+import Combine
 import Foundation
+import GRDB
+import SwiftDate
 
 class MainViewVM: ObservableObject {
 
@@ -14,6 +17,9 @@ class MainViewVM: ObservableObject {
     @Published
     var isSearchClicked: Bool = false
 
+    @Published
+    var getBetsAmountCancellables = Set<AnyCancellable>()
+
     let bet: [BetModel] = [
         BetModel(
             id: Int64(),
@@ -24,10 +30,12 @@ class MainViewVM: ObservableObject {
             league: "",
             amount: 0.00,
             odds: 1,
-            category: "",
+            category: .football,
             tax: 1,
-            profit: "24",
-            isWon: nil
+            profit: 24,
+            isWon: nil,
+            betNotificationID: "",
+            score: 24
         )
     ]
 
@@ -45,8 +53,6 @@ class MainViewVM: ObservableObject {
         BetDao.getSavedBets()
             .map { .some($0) }
             .assign(to: &$savedBets)
-
-        print(savedBets as Any)
     }
 
 }

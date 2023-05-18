@@ -8,15 +8,13 @@ struct PreferencesView: View {
 
     @ObservedObject
     var vm = PreferencesVM()
-
-    @State
-    private var doWant = false
-    @State
-    private var textFieldText = ""
+    
+//    init(category: Category) {
+//        self._vm = ObservedObject(wrappedValue: PreferencesVM(category: category))
+//    }
 
     @State
     private var selection = "Red"
-    let colors = ["Red", "Green", "Blue", "Black", "Tartan"]
 
     var body: some View {
         NavigationView {
@@ -86,13 +84,11 @@ struct PreferencesView: View {
                                     alignment: .leading
                                 )
                         ) {
-                            Picker("Choose your currency", selection: $selection) {
-                                ForEach(colors, id: \.self) {
-                                    Text($0)
+                            Picker("Choose your currency", selection: $vm.defaultCurrency) {
+                                ForEach(Currency.allCases, id: \.self) { currency in
+                                    Text("\(currency.rawValue.uppercased())")
                                         .foregroundColor(Color.ui.scheme)
-                                        .background {
-                                            frame(alignment: .center)
-                                        }
+                                        
                                 }
                             }
                             .pickerStyle(.menu)
@@ -116,6 +112,7 @@ struct PreferencesView: View {
         }
         .onAppear {
             vm.loadPreferences()
+            vm.getDefaultCurrency()
         }
     }
 }

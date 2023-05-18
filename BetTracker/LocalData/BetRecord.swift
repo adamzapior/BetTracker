@@ -24,6 +24,8 @@ extension BetModel: TableRecord {
         case tax
         case profit
         case isWon
+        case betNotificationID
+        case score
     }
 }
 
@@ -41,6 +43,8 @@ extension BetModel: FetchableRecord {
         tax = row[Columns.tax]
         profit = row[Columns.profit]
         isWon = row[Columns.isWon]
+        betNotificationID = row[Columns.betNotificationID]
+        score = row[Columns.score]
     }
 }
 
@@ -58,5 +62,7 @@ extension BetModel: PersistableRecord {
         container[Columns.tax] = tax
         container[Columns.profit] = profit
         container[Columns.isWon] = isWon
+        container[Columns.betNotificationID] = betNotificationID
+        container[Columns.score] = score
     }
 }
