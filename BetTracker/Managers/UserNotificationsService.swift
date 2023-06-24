@@ -12,12 +12,9 @@ import SwiftUI
 
 struct UserNotificationsService {
     
-    /// withID: we want to have the same id for plant and for notification in order to enable its deletion later.
     func scheduleNotification(withID id: String, titleName name: String, notificationTriggerDate date: Date) {
         let content = UNMutableNotificationContent()
-        
-        // Problem with localization notification title:
-        // Temporary solution taken from stackOverflow (https://stackoverflow.com/questions/26684868/nslocalizedstring-with-variables-swift) -> I'm sure it can be done different.
+
         let localizedStringNotificationTitle = NSLocalizedString("%@ Your bet is waiting!", comment: "")
         let finalStringNotificationTitle = String(format: localizedStringNotificationTitle, name)
         

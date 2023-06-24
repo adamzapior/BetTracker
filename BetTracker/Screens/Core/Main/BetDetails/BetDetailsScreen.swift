@@ -47,7 +47,7 @@ struct BetDetailsScreen: View {
                             .padding(.vertical, 16)
                             .foregroundColor(
                                 vm.bet.selectedTeam == .team1
-                                    ? Color.ui.scheme
+                                    ? Color.ui.onPrimaryContainer
                                     : Color.ui.secondary
                             )
                     }
@@ -61,7 +61,7 @@ struct BetDetailsScreen: View {
                             .padding(.vertical, 16)
                             .foregroundColor(
                                 vm.bet.selectedTeam == .team2
-                                    ? Color.ui.scheme
+                                    ? Color.ui.onPrimaryContainer
                                     : Color.ui.secondary
                             )
                     }
@@ -70,7 +70,7 @@ struct BetDetailsScreen: View {
                     RoundedRectangle(cornerRadius: 25)
                         .foregroundColor(
                             Color.ui.onPrimary
-                            )
+                        )
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 12)
@@ -127,9 +127,58 @@ struct BetDetailsScreen: View {
                             )
                             .frame(maxHeight: 70)
                         }
-                        
+
                         Spacer()
                     }
+
+                    HStack {
+                        switch vm.buttonState {
+                        case .uncleared:
+                            VStack {
+                                MarkButton(text: "Seta as won", backgroundColor: Color.ui.scheme)
+                                    .padding()
+                                    .onTapGesture {
+                                        BetDao.markFinished(bet: vm.bet, isWon: true)
+                                        BetDao.markProfitWon(
+                                            bet: vm.bet,
+                                            score: (vm.bet.profit).subtracting(vm.bet.amount)
+                                        )
+                                        dismiss()
+                                    }
+                                MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                                    .onTapGesture {
+                                        BetDao.markFinished(bet: vm.bet, isWon: false)
+                                        BetDao.markProfitLost(
+                                            bet: vm.bet,
+                                            score: (vm.bet.amount).multiplying(by: -1)
+                                        )
+                                        dismiss()
+                                    }
+                            }
+
+                        case .won:
+                            MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                                .onTapGesture {
+                                    BetDao.markFinished(bet: vm.bet, isWon: false)
+                                    BetDao.markProfitLost(
+                                        bet: vm.bet,
+                                        score: (vm.bet.amount).multiplying(by: -1)
+                                    )
+                                    dismiss()
+                                }
+                        case .lost:
+                            MarkButton(text: "Set as won", backgroundColor: Color.ui.scheme)
+                                .onTapGesture {
+                                    BetDao.markFinished(bet: vm.bet, isWon: true)
+                                    BetDao.markProfitWon(
+                                        bet: vm.bet,
+                                        score: (vm.bet.profit).subtracting(vm.bet.amount)
+                                    )
+                                    dismiss()
+                                }
+                        }
+                    }
+                    .padding(.top, 36)
                 }
 
                 .frame(maxWidth: .infinity)
@@ -138,51 +187,55 @@ struct BetDetailsScreen: View {
         }
         .navigationBarBackButtonHidden()
         Spacer()
-
-        HStack {
-            switch vm.buttonState {
-            case .uncleared:
-                BetButton(text: "Win")
-                    .onTapGesture {
-                        BetDao.markFinished(bet: vm.bet, isWon: true)
-                        BetDao.markProfitWon(
-                            bet: vm.bet,
-                            score: (vm.bet.profit).subtracting(vm.bet.amount)
-                        )
-                        dismiss()
-                    }
-                BetButton(text: "Przegrany")
-                    .onTapGesture {
-                        BetDao.markFinished(bet: vm.bet, isWon: false)
-                        BetDao.markProfitLost(
-                            bet: vm.bet,
-                            score: (vm.bet.amount).multiplying(by: -1)
-                        )
-                        dismiss()
-                    }
-
-            case .won:
-                BetButton(text: "Przegrany")
-                    .onTapGesture {
-                        BetDao.markFinished(bet: vm.bet, isWon: false)
-                        BetDao.markProfitLost(
-                            bet: vm.bet,
-                            score: (vm.bet.amount).multiplying(by: -1)
-                        )
-                        dismiss()
-                    }
-            case .lost:
-                BetButton(text: "Set as won")
-                    .onTapGesture {
-                        BetDao.markFinished(bet: vm.bet, isWon: true)
-                        BetDao.markProfitWon(
-                            bet: vm.bet,
-                            score: (vm.bet.profit).subtracting(vm.bet.amount)
-                        )
-                        dismiss()
-                    }
-            }
-        }
+//
+//        HStack {
+//            switch vm.buttonState {
+//            case .uncleared:
+//                VStack {
+//                    BetButton(text: "Seta as won")
+//                        .padding()
+//                        .onTapGesture {
+//                            BetDao.markFinished(bet: vm.bet, isWon: true)
+//                            BetDao.markProfitWon(
+//                                bet: vm.bet,
+//                                score: (vm.bet.profit).subtracting(vm.bet.amount)
+//                            )
+//                            dismiss()
+//                        }
+//                    BetButton(text: "Set as lost")
+//                        .padding()
+//                        .onTapGesture {
+//                            BetDao.markFinished(bet: vm.bet, isWon: false)
+//                            BetDao.markProfitLost(
+//                                bet: vm.bet,
+//                                score: (vm.bet.amount).multiplying(by: -1)
+//                            )
+//                            dismiss()
+//                        }
+//                }
+//
+//            case .won:
+//                BetButton(text: "Set as lost")
+//                    .onTapGesture {
+//                        BetDao.markFinished(bet: vm.bet, isWon: false)
+//                        BetDao.markProfitLost(
+//                            bet: vm.bet,
+//                            score: (vm.bet.amount).multiplying(by: -1)
+//                        )
+//                        dismiss()
+//                    }
+//            case .lost:
+//                BetButton(text: "Set as won")
+//                    .onTapGesture {
+//                        BetDao.markFinished(bet: vm.bet, isWon: true)
+//                        BetDao.markProfitWon(
+//                            bet: vm.bet,
+//                            score: (vm.bet.profit).subtracting(vm.bet.amount)
+//                        )
+//                        dismiss()
+//                    }
+//            }
+//        }
         Spacer()
     }
 }

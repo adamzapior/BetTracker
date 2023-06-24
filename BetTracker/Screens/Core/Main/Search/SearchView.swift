@@ -37,10 +37,9 @@ struct SearchView: View {
             }
             .shadow(
                 color: Color.ui.shadow,
-                radius: 25, x:0, y:0
+                radius: 25, x: 0, y: 0
             )
-
-            .padding(.vertical, 2)
+            .padding(.vertical, 4)
             ScrollView {
                 LazyVStack {
                     ForEach(vm.searchResults ?? [], id: \.id) { bet in
@@ -59,8 +58,6 @@ struct SearchView: View {
                 .padding(.top, 6)
                 .padding(.horizontal, 12)
 //                .shadow(color: Color.ui.scheme.opacity(0.2), radius: 6, x: 3, y: 3)
-
-            
         }
     }
 

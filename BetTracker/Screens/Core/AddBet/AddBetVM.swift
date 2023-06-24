@@ -47,7 +47,20 @@ class AddBetVM: ObservableObject {
     }
 
     // MARK: - Defined variables:
+    
+    @Published
+    var betType: BetType = .solobet
+    
+    func switchBetTypeToBetSlip() {
+        betType = .betslip
 
+    }
+    
+    func switchBetTypeToSolobet() {
+        betType = .solobet
+    }
+    
+    
     /// ** AddBet - User input Textfield's variables **
     @Published
     var team1 = "" {
@@ -239,7 +252,7 @@ class AddBetVM: ObservableObject {
         case editing
         case delete
     }
-
+    
     @Published
     var reminderState: ReminderRowState = .add
 
@@ -255,6 +268,24 @@ class AddBetVM: ObservableObject {
     func saveIsClicked() {
         reminderState = .delete
     }
+    
+    /// ** Define variables **
+    @Published
+    var team1IsError = false
+    @Published
+    var team2IsError = false
+    @Published
+    var amountIsError = false
+    @Published
+    var oddsIsError = false
+    @Published
+    var taxIsError = false
+    
+    @Published
+    var score: NSDecimalNumber = .zero
+
+
+    // MARK: Methods:
 
     /**
      The function saves the user's notification if the date is different from ' Date.now '
@@ -276,8 +307,7 @@ class AddBetVM: ObservableObject {
         return min ... max
     }
 
-    // MARK: - Predicted win methods:
-
+    // Predicted win methods:
     // Methods used to calculate data with Combine in Init
 
     func betProfitWithoutTex(
@@ -326,19 +356,6 @@ class AddBetVM: ObservableObject {
 
     // MARK: - Validate & Saving to DB
 
-    /// ** Define variables **
-    @Published
-    var team1IsError = false
-    @Published
-    var team2IsError = false
-    @Published
-    var amountIsError = false
-    @Published
-    var oddsIsError = false
-    @Published
-    var taxIsError = false
-
-    ///  ** Validaton methods **
     private func validateTeam1() {
         if team1.isEmpty {
             team1IsError = true
@@ -376,11 +393,6 @@ class AddBetVM: ObservableObject {
             amountIsError = true
         }
     }
-
-  
-
-    @Published
-    var score: NSDecimalNumber = .zero
 
     /// ** Save data to DB **
     func saveBet() -> Bool {
@@ -483,10 +495,10 @@ class AddBetVM: ObservableObject {
 
 }
 
-extension Date {
-    func formatSelectedDate() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d/M/yyyy"
-        return dateFormatter.string(from: self)
-    }
+
+enum BetType: String, CaseIterable, Identifiable {
+    var id: String { rawValue }
+
+    case solobet
+    case betslip
 }

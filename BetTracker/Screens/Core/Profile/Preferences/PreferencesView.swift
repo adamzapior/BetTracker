@@ -32,7 +32,7 @@ struct PreferencesView: View {
 
                     Form {
                         Section(
-                            header: Text("Your name")
+                            header: Text("Your profile")
                                 .foregroundColor(Color.ui.onPrimaryContainer)
                                 .frame(
                                     maxWidth: .infinity,
@@ -41,22 +41,16 @@ struct PreferencesView: View {
                         ) {
                             TextField("Enter your name", text: $vm.username)
                                 .textFieldStyle(.plain)
-                        }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .frame(height: 90, alignment: .topLeading)
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-
-                    Form {
-                        Section(
-                            header: Text("Default tax")
-                                .foregroundColor(Color.ui.onPrimaryContainer)
-                                .frame(
-                                    maxWidth: .infinity,
-                                    alignment: .leading
-                                )
-                        ) {
+                            Picker("Choose your currency", selection: $vm.defaultCurrency) {
+                                ForEach(Currency.allCases, id: \.self) { currency in
+                                    Text("\(currency.rawValue.uppercased())")
+                                }
+                            }
+                            .tint(Color.ui.scheme)
+                            .pickerStyle(.menu)
+                            
                             Toggle("Do you want set default tax?", isOn: $vm.isDefaultTaxOn)
+                                .tint(Color.ui.scheme)
 
                             if vm.taxStatus == .taxUnsaved {
                                 TextField("0", text: $vm.defaultTax)
@@ -70,33 +64,30 @@ struct PreferencesView: View {
                                     .animation(.easeInOut, value: 1)
                             }
                         }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .frame(height: 125, alignment: .topLeading)
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-
-                    Form {
+                        
                         Section(
-                            header: Text("Default currency")
+                            header: Text("About app")
                                 .foregroundColor(Color.ui.onPrimaryContainer)
                                 .frame(
                                     maxWidth: .infinity,
                                     alignment: .leading
                                 )
                         ) {
+                            Text("Help")
                             Picker("Choose your currency", selection: $vm.defaultCurrency) {
                                 ForEach(Currency.allCases, id: \.self) { currency in
                                     Text("\(currency.rawValue.uppercased())")
-                                        .foregroundColor(Color.ui.scheme)
-                                        
                                 }
                             }
+                            .tint(Color.ui.scheme)
                             .pickerStyle(.menu)
                         }
+                        
                     }
                     .scrollContentBackground(.hidden)
-                    .frame(height: 150, alignment: .topLeading) // TODO: tu bylo 90
+                    .frame(height: 500, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+                    
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.bottom, 48)

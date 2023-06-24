@@ -20,6 +20,7 @@ struct AmountInput: View {
                     Text(overlayText)
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .opacity(0.5)
+                        
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 12)

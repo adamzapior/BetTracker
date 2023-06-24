@@ -61,7 +61,7 @@ class PreferencesVM: ObservableObject {
     }
 
     @Published
-    var defaultCurrency: Currency = .usd
+    var defaultCurrency: Currency = Currency.usd
     
 
     func clearTaxTextField() {

@@ -14,7 +14,6 @@ class BetDb {
             )
             .appendingPathComponent("db.sqlite")
         let db = try! DatabaseQueue(path: databaseURL.path)
-        
 
         try? db.write { db in
             try db.create(table: "bet") { t in
@@ -34,6 +33,23 @@ class BetDb {
                 t.column("score", .integer)
             }
         }
+
+        try? db.write { db in
+            try db.create(table: "betslip") { t in
+                t.autoIncrementedPrimaryKey("id")
+                t.column("name", .text)
+                t.column("date", .datetime).notNull()
+                t.column("amount",.integer).notNull()
+                t.column("odds", .integer).notNull()
+                t.column("category", .text)
+                t.column("tax", .integer)
+                t.column("profit", .integer)
+                t.column("isWon", .boolean)
+                t.column("betNotificationID", .text)
+                t.column("score", .integer)
+            }
+        }
+
         return db
     }()
 }

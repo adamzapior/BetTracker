@@ -45,7 +45,7 @@ class BetDao {
             .tracking { db in
                 try BetModel.fetchAll(
                     db,
-                    sql: "SELECT * FROM bet WHERE isWon IS NOT NULL"
+                    sql: "SELECT * FROM bet WHERE isWon IS NOT NULL ORDER BY date DESC"
                 )
             }
             .publisher(in: BetDb.db)

@@ -88,7 +88,9 @@ class SearchVM: ObservableObject {
     }
 
     func loadCurrency() {
-        currency = UserDefaults.standard.object(forKey: currency.self.rawValue) as! Currency
+        currency = Currency(
+            rawValue: UserDefaults.standard
+                .string(forKey: "defaultCurrency") ?? "usd")!
     }
 
 }

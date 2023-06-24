@@ -38,10 +38,12 @@ struct ProfileView: View {
             ScrollView(showsIndicators: false) {
                 EditableCircularProfileImage(vm: vmProfilePhoto)
 
-                Text("Adam")
-                    .font(.body)
-                    .bold()
-                    .padding(.top, 6)
+                if !vm.defaultUsername.isEmpty {
+                    Text(vm.defaultUsername)
+                        .font(.body)
+                        .bold()
+                        .padding(.top, 6)
+                }
 
                 HStack {
                     Picker("Select an option", selection: $vm.currentStatsState) {

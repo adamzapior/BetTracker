@@ -10,6 +10,9 @@ class ProfileVM: ObservableObject {
 
     @Published
     var defaultCurrency: String = "USD"
+    
+    @Published
+    var defaultUsername: String = ""
 
     @Published
     var currentStatsState: StatsState = .alltime {
@@ -80,7 +83,8 @@ class ProfileVM: ObservableObject {
     let calendar = Calendar.current
 
     init() {
-        getDefaultCurrency()
+        getDefaultCurrency() // default preferences
+        getDefaultUsername()
 
         getBalanceValue()
         getTotalSpent()
@@ -657,12 +661,18 @@ class ProfileVM: ObservableObject {
         }
     }
 
-    // MARK: - Stats calaculation metods:
+    // MARK: - ??:
 
     func getDefaultCurrency() {
         let currency = UserDefaults.standard.string(forKey: "defaultCurrency")
         defaultCurrency = currency ?? ""
     }
+    
+    func getDefaultUsername() {
+        let username = UserDefaults.standard.string(forKey: "username")
+        defaultUsername = username ?? ""
+    }
+    
 
 }
 
