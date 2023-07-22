@@ -3,18 +3,12 @@ import Foundation
 import SwiftUI
 
 class PreferencesVM: ObservableObject {
-    
+
     init() {
         getDefaultCurrency()
     }
 
     let defaults = UserDefaultsManager.path
-
-    //    let category: Category
-    //
-    //    init(category: Category) {
-    //        self.category = category
-    //    }
 
     @Published
     var isDefaultTaxOn: Bool = false {
@@ -24,7 +18,6 @@ class PreferencesVM: ObservableObject {
             } else {
                 taxStatus = .taxSaved
                 clearTaxTextField()
-                print(isDefaultTaxOn)
             }
         }
     }
@@ -62,7 +55,6 @@ class PreferencesVM: ObservableObject {
 
     @Published
     var defaultCurrency: Currency = Currency.usd
-    
 
     func clearTaxTextField() {
         let taxString = ""
@@ -86,7 +78,6 @@ class PreferencesVM: ObservableObject {
         defaults.set(.username, to: username)
         defaults.set(.isDefaultTaxOn, to: isDefaultTaxOn)
         defaults.set(.defaultTax, to: defaultTax)
-//        defaults.set(.defaultCurrency, to: defaultCurrency)
         UserDefaults.standard.set(defaultCurrency.rawValue, forKey: "defaultCurrency")
     }
 
@@ -95,12 +86,12 @@ class PreferencesVM: ObservableObject {
         isDefaultTaxOn = defaults.get(.isDefaultTaxOn)
         defaultTax = defaults.get(.defaultTax)
         UserDefaults.standard.object(forKey: "defaultCurrency")
-        //        defaultCurrency = UserDefaults.standard.object(forKey: defaultCurrency.rawValue)
-        //        as! Currency
     }
 
-
     func getDefaultCurrency() {
-        defaultCurrency = Currency(rawValue: UserDefaults.standard.string(forKey: "defaultCurrency") ?? "usd")!
+        defaultCurrency = Currency(
+            rawValue: UserDefaults.standard
+                .string(forKey: "defaultCurrency") ?? "usd"
+        )!
     }
 }

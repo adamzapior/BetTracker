@@ -5,7 +5,6 @@ struct BalanceRow: View {
     let cellTitle: String
     let valueText: String
     let font: Font
-
     let currency: String
 
     init(cellTitle: String, valueText: String, font: Font = .headline, currency: String) {
@@ -14,7 +13,7 @@ struct BalanceRow: View {
         self.font = font
         self.currency = currency
     }
-    
+
     var body: some View {
         VStack {
             Text("\(cellTitle)")
@@ -25,8 +24,6 @@ struct BalanceRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             HStack(alignment: .center) {
-               
-
                 Text("\(valueText) \(currency)")
                     .font(font)
                     .foregroundColor(Color.ui.secondary)

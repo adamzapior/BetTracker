@@ -10,12 +10,25 @@ class BetDao {
             try bet.insert(db, onConflict: .ignore)
         }
     }
+    
+    static func saveBetslip(bet: BetslipModel) {
+        try? BetDb.db.write { db in
+            try bet.insert(db, onConflict: .ignore)
+        }
+    }
 
     static func deleteBet(bet: BetModel) {
         _ = try? BetDb.db.write { db in
             try bet.delete(db)
         }
     }
+    
+    static func deleteBetslip(bet: BetslipModel) {
+        _ = try? BetDb.db.write { db in
+            try bet.delete(db)
+        }
+    }
+    
 
     static func getSavedBets() -> AnyPublisher<[BetModel], Never> {
         ValueObservation

@@ -17,6 +17,7 @@ class SearchVM: ObservableObject {
 
     var currency: Currency = .usd
     init() {
+ 
         $searchText
             .combineLatest($bets)
             .map { searchText, bets in

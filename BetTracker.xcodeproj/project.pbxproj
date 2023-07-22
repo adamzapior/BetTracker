@@ -31,7 +31,6 @@
 		58076A8829C907A000A0762B /* TeamInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A7329C907A000A0762B /* TeamInput.swift */; };
 		58076A8929C907A000A0762B /* AmountInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A7429C907A000A0762B /* AmountInput.swift */; };
 		58076A8A29C907A000A0762B /* AddBetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A7529C907A000A0762B /* AddBetScreen.swift */; };
-		58076A8D29C9097400A0762B /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 58076A8C29C9097400A0762B /* GRDB */; };
 		58076A9029C98B4000A0762B /* BetDb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A8F29C98B4000A0762B /* BetDb.swift */; };
 		58076A9329C98B9800A0762B /* BetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A9229C98B9800A0762B /* BetRecord.swift */; };
 		58076A9529CA37BF00A0762B /* BetDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A9429CA37BE00A0762B /* BetDao.swift */; };
@@ -45,6 +44,8 @@
 		586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4B2A05A51200309F91 /* ProfileImage.swift */; };
 		586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */; };
 		586D2B542A06B23E00309F91 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B532A06B23E00309F91 /* ProfileHeader.swift */; };
+		5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5874C4B62A6B72F900199AD6 /* GRDB */; };
+		5874C4BD2A6B72FD00199AD6 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 5874C4BC2A6B72FD00199AD6 /* SwiftDate */; };
 		5885E40029D8E4BF005B764E /* AddBetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885E3FF29D8E4BF005B764E /* AddBetButton.swift */; };
 		58A005432A476F870012B9CF /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005422A476F870012B9CF /* DateExt.swift */; };
 		58A005452A4776920012B9CF /* MarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005442A4776920012B9CF /* MarkButton.swift */; };
@@ -70,8 +71,20 @@
 		58EC477D2A1142CD0088E6DC /* BetCountRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC477C2A1142CD0088E6DC /* BetCountRow.swift */; };
 		58EC47812A1199FF0088E6DC /* BetAverageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC47802A1199FF0088E6DC /* BetAverageRow.swift */; };
 		58FBB14C2A145672003E13B3 /* BetDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FBB14B2A145672003E13B3 /* BetDetailRow.swift */; };
-		58FE63742A0E4EAB0079A698 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 58FE63732A0E4EAB0079A698 /* SwiftDate */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5874C4BB2A6B72F900199AD6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		58076A4329C906FC00A0762B /* BetTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,8 +158,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58FE63742A0E4EAB0079A698 /* SwiftDate in Frameworks */,
-				58076A8D29C9097400A0762B /* GRDB in Frameworks */,
+				5874C4BD2A6B72FD00199AD6 /* SwiftDate in Frameworks */,
+				5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +171,7 @@
 			children = (
 				58076A4529C906FC00A0762B /* BetTracker */,
 				58076A4429C906FC00A0762B /* Products */,
+				5874C4B32A6B72F900199AD6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -351,6 +365,13 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
+		5874C4B32A6B72F900199AD6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		58A296CE29D44CF700E9E600 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,6 +454,7 @@
 				58076A3F29C906FC00A0762B /* Sources */,
 				58076A4029C906FC00A0762B /* Frameworks */,
 				58076A4129C906FC00A0762B /* Resources */,
+				5874C4BB2A6B72F900199AD6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -440,8 +462,8 @@
 			);
 			name = BetTracker;
 			packageProductDependencies = (
-				58076A8C29C9097400A0762B /* GRDB */,
-				58FE63732A0E4EAB0079A698 /* SwiftDate */,
+				5874C4B62A6B72F900199AD6 /* GRDB */,
+				5874C4BC2A6B72FD00199AD6 /* SwiftDate */,
 			);
 			productName = BetTracker;
 			productReference = 58076A4329C906FC00A0762B /* BetTracker.app */;
@@ -784,12 +806,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		58076A8C29C9097400A0762B /* GRDB */ = {
+		5874C4B62A6B72F900199AD6 /* GRDB */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
 		};
-		58FE63732A0E4EAB0079A698 /* SwiftDate */ = {
+		5874C4BC2A6B72FD00199AD6 /* SwiftDate */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 58FE63722A0E4EAB0079A698 /* XCRemoteSwiftPackageReference "SwiftDate" */;
 			productName = SwiftDate;

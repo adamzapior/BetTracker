@@ -10,7 +10,7 @@ class ProfileVM: ObservableObject {
 
     @Published
     var defaultCurrency: String = "USD"
-    
+
     @Published
     var defaultUsername: String = ""
 
@@ -51,7 +51,7 @@ class ProfileVM: ObservableObject {
     var pendingBetsCount: NSDecimalNumber = .zero
 
     var wonRate: Double {
-        return 0 // to fix
+        0 // to fix
 //        let score = 0
 //        if lostBetsCount != 0 {
 //            Double(truncating: wonBetsCount.dividing(by: lostBetsCount))
@@ -370,7 +370,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .month:
             BetDao.getAvgLostBetByPeroid(
                 startDate: calendar
@@ -421,7 +421,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .month:
             BetDao.getAvgAmountBetByPeroid(
                 startDate: calendar
@@ -433,7 +433,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .year:
             BetDao.getAvgAmountBetByPeroid(
                 startDate: calendar
@@ -445,7 +445,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .alltime:
             BetDao.getAvgAmountBet()
                 .sink(
@@ -472,7 +472,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .month:
             BetDao.getLargestBetProfitByPeroid(
                 startDate: calendar
@@ -484,7 +484,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .year:
             BetDao.getLargestBetProfitByPeroid(
                 startDate: calendar
@@ -496,7 +496,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .alltime:
             BetDao.getLargestBetProfit()
                 .sink(
@@ -506,15 +506,12 @@ class ProfileVM: ObservableObject {
                 )
                 .store(in: &getBetsAmountCancellables)
         }
-
-        
     }
 
     // ** Biggest Bet Loss**
 
     func getBiggestBetLoss() {
         switch currentStatsState {
-            
         case .week:
             BetDao.getBiggestBetLossByPeroid(
                 startDate: calendar
@@ -526,7 +523,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .month:
             BetDao.getBiggestBetLossByPeroid(
                 startDate: calendar
@@ -538,7 +535,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .year:
             BetDao.getBiggestBetLossByPeroid(
                 startDate: calendar
@@ -550,7 +547,7 @@ class ProfileVM: ObservableObject {
                 }
             )
             .store(in: &getBetsAmountCancellables)
-            
+
         case .alltime:
             BetDao.getBiggestBetLoss()
                 .sink(
@@ -667,12 +664,11 @@ class ProfileVM: ObservableObject {
         let currency = UserDefaults.standard.string(forKey: "defaultCurrency")
         defaultCurrency = currency ?? ""
     }
-    
+
     func getDefaultUsername() {
         let username = UserDefaults.standard.string(forKey: "username")
         defaultUsername = username ?? ""
     }
-    
 
 }
 

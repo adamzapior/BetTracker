@@ -1,29 +1,20 @@
-//
-//  BetCountRow.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 14/05/2023.
-//
-
 import SwiftUI
 
 struct BetCountRow: View {
-    
+
     let labelText: String
-    
+
     let icon: String
     let icon2: String
     let icon3: String
-    
+
     let text: String
     let text2: String
     let text3: String
-    
-    
+
     let betsPendingText: String
     let betsPendingText2: String
     let betsPendingText3: String
-
 
     var body: some View {
         VStack {
@@ -35,16 +26,14 @@ struct BetCountRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             HStack(alignment: .center) {
-                HStack (spacing: 48) {
+                HStack(spacing: 48) {
                     VStack {
-                        HStack() {
+                        HStack {
                             Image(systemName: "\(icon)")
                                 .font(.title2)
                                 .foregroundColor(Color.orange.opacity(0.7))
                                 .padding(.bottom, 3)
                                 .frame(width: 32, height: 32)
-                        
-                                
                         }
                         Text("\(text)")
                             .font(.caption2)
@@ -52,7 +41,6 @@ struct BetCountRow: View {
                             .padding(.bottom, 3)
                             .frame(width: 64, height: 32)
 
-                        
                         Text("\(betsPendingText)")
                             .font(.headline)
                             .foregroundColor(Color.ui.secondary)
@@ -60,18 +48,14 @@ struct BetCountRow: View {
                     }
                     .padding(.vertical, 3)
                     .padding(.horizontal, 12)
-                    
-                    
+
                     VStack {
-                        HStack() {
+                        HStack {
                             Image(systemName: "\(icon2)")
                                 .font(.title2)
                                 .foregroundColor(Color.ui.scheme)
                                 .padding(.bottom, 3)
                                 .frame(width: 32, height: 32)
-
-                        
-                                
                         }
                         Text("\(text2)")
                             .font(.caption2)
@@ -79,7 +63,6 @@ struct BetCountRow: View {
                             .padding(.bottom, 3)
                             .frame(width: 64, height: 32)
 
-                        
                         Text("\(betsPendingText2)")
                             .font(.headline)
                             .foregroundColor(Color.ui.secondary)
@@ -87,18 +70,14 @@ struct BetCountRow: View {
                     }
                     .padding(.vertical, 3)
                     .padding(.horizontal, 12)
-                    
-                    
+
                     VStack {
-                        HStack() {
+                        HStack {
                             Image(systemName: "\(icon3)")
                                 .font(.title2)
                                 .foregroundColor(Color.red)
                                 .padding(.bottom, 3)
                                 .frame(width: 32, height: 32)
-
-                        
-                                
                         }
                         Text("\(text3)")
                             .font(.caption2)
@@ -106,7 +85,6 @@ struct BetCountRow: View {
                             .padding(.bottom, 3)
                             .frame(width: 64, height: 32)
 
-                        
                         Text("\(betsPendingText3)")
                             .font(.headline)
                             .foregroundColor(Color.ui.secondary)
@@ -114,7 +92,6 @@ struct BetCountRow: View {
                     }
                     .padding(.vertical, 3)
                     .padding(.horizontal, 12)
-                    
                 }
             }
         }
@@ -126,9 +103,3 @@ struct BetCountRow: View {
         .shadow(color: Color.black.opacity(0.1), radius: 1, x: 3, y: 2)
     }
 }
-
-//struct BetCountRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BetCountRow(betsPendingText: "2")
-//    }
-//}

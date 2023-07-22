@@ -1,17 +1,8 @@
-//
-//  WonRateRow.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 14/05/2023.
-//
-
 import SwiftUI
 
-
 struct WonRateRow: View {
-    
+
     let cellTitle: String
-//    let icon: String
     let valueText: String
 
     var body: some View {
@@ -25,7 +16,6 @@ struct WonRateRow: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 HStack(alignment: .center) {
-                    
                     Text("\(valueText)%")
                         .font(.headline)
                         .foregroundColor(Color.ui.secondary)
@@ -41,8 +31,6 @@ struct WonRateRow: View {
                     .foregroundColor(Color.ui.onPrimary)
             }
             .shadow(color: Color.black.opacity(0.1), radius: 1, x: 3, y: 2)
-
         }
     }
 }
-

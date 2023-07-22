@@ -8,7 +8,8 @@
 import Foundation
 
 struct BetslipModel: Identifiable, Hashable {
-    let id: Int64
+    
+    let id: Int64?
     let name: String
     let date: Date
     let amount: NSDecimalNumber

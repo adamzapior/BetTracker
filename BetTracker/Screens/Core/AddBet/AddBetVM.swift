@@ -1,9 +1,8 @@
 import Combine
 import Foundation
-import SwiftDate
 import SwiftUI
 
-class AddBetVM: ObservableObject {
+final class AddBetVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
 
@@ -46,21 +45,21 @@ class AddBetVM: ObservableObject {
         }
     }
 
-    // MARK: - Defined variables:
-    
+    // MARK: - BET TYPE:
+
     @Published
     var betType: BetType = .solobet
-    
+
     func switchBetTypeToBetSlip() {
         betType = .betslip
-
     }
-    
+
     func switchBetTypeToSolobet() {
         betType = .solobet
     }
-    
-    
+
+    // MARK: -  SOLOBET
+
     /// ** AddBet - User input Textfield's variables **
     @Published
     var team1 = "" {
@@ -73,6 +72,29 @@ class AddBetVM: ObservableObject {
     var team2 = "" {
         didSet {
             team2IsError = false
+        }
+    }
+
+    @Published
+    var amount = "" {
+        didSet {
+            amountIsError = false
+            if amount.isEmpty {
+                return
+            }
+            let cleanedAmount = amount
+                .replacingOccurrences(of: ",", with: ".") // replace comma with dot
+            if cleanedAmount != amount {
+                amount =
+                    cleanedAmount // set the cleaned odds as the new value if they are different
+                return
+            }
+
+            if cleanedAmount.wholeMatch(of: /[1-9][0-9]{0,5}?((\.|,)[0-9]{,2})?/) == nil {
+                amount =
+                    oldValue // revert back to the old value if it doesn't match the regular
+                // expression
+            }
         }
     }
 
@@ -118,32 +140,7 @@ class AddBetVM: ObservableObject {
     }
 
     @Published
-    var amount = "" {
-        didSet {
-            amountIsError = false
-            if amount.isEmpty {
-                return
-            }
-            let cleanedAmount = amount
-                .replacingOccurrences(of: ",", with: ".") // replace comma with dot
-            if cleanedAmount != amount {
-                amount =
-                    cleanedAmount // set the cleaned odds as the new value if they are different
-                return
-            }
-
-            if cleanedAmount.wholeMatch(of: /[1-9][0-9]{0,5}?((\.|,)[0-9]{,2})?/) == nil {
-                amount =
-                    oldValue // revert back to the old value if it doesn't match the regular
-                // expression
-            }
-        }
-    }
-
-    @Published
     var league = ""
-
-    //
 
     @Published
     var category = ""
@@ -158,6 +155,9 @@ class AddBetVM: ObservableObject {
     @Published
     var profit: NSDecimalNumber = 0
 
+    @Published
+    var score: NSDecimalNumber = .zero
+
     // MARK: - Selected checkmark team logic:
 
     @Published
@@ -171,7 +171,90 @@ class AddBetVM: ObservableObject {
         selectedTeam = .team2
     }
 
-    // MARK: - Tax Row state logic:
+    // MARK: - BETSLIP
+
+    // ** Betslip variables **
+
+    @Published
+    var betslipName = ""
+
+    @Published
+    var betslipAmount = "" {
+        didSet {
+            betslipAmountIsError = false
+            if betslipAmount.isEmpty {
+                return
+            }
+            let cleanedAmount = betslipAmount
+                .replacingOccurrences(of: ",", with: ".") // replace comma with dot
+            if cleanedAmount != betslipAmount {
+                betslipAmount =
+                    cleanedAmount // set the cleaned odds as the new value if they are different
+                return
+            }
+
+            if cleanedAmount.wholeMatch(of: /[1-9][0-9]{0,5}?((\.|,)[0-9]{,2})?/) == nil {
+                betslipAmount =
+                    oldValue // revert back to the old value if it doesn't match the regular
+                // expression
+            }
+        }
+    }
+
+    @Published
+    var betslipOdds = "" {
+        didSet {
+            betslipOddsIsError = false
+            if betslipOdds.isEmpty {
+                return
+            }
+            let cleanedOdds = betslipOdds.replacingOccurrences(of: ",", with: ".")
+            if cleanedOdds != betslipOdds {
+                betslipOdds = cleanedOdds
+                return
+            }
+
+            if cleanedOdds
+                .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
+                betslipOdds = oldValue
+            }
+        }
+    }
+
+    @Published
+    var betslipCategory = ""
+
+    @Published
+    var betslipTax = "0.0" {
+        didSet {
+            if betslipTax.isEmpty {
+                return
+            }
+            let cleanedTax = betslipTax.replacingOccurrences(of: ",", with: ".")
+            if cleanedTax != betslipTax {
+                betslipTax = cleanedTax
+                return
+            }
+
+            if cleanedTax
+                .wholeMatch(of: /[1-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
+                betslipTax = oldValue
+            }
+        }
+    }
+
+    @Published
+    var betslipProfit: NSDecimalNumber = 0
+
+    @Published
+    var betslipNotificationID = UUID().uuidString
+
+    @Published
+    var betslipScore: NSDecimalNumber = 0
+
+    // MARK: - TAX STATE:
 
     enum taxRowState {
         case active
@@ -209,7 +292,7 @@ class AddBetVM: ObservableObject {
         }
     }
 
-    // MARK: - Event Date
+    // MARK: - EVENT DATE
 
     /// ReminderRowState methods:
     enum DateRowState {
@@ -231,14 +314,14 @@ class AddBetVM: ObservableObject {
     @Published
     var selectedDate = Date()
 
-    // MARK: - Reminder DatePicker Logic:
+    // MARK: - REMINDERS:
 
     @Published
     var showDatePicker: Bool = false
 
     @Published
     var selectedNotificationDate = Date.now
-    
+
     @Published
     var betNotificationID = UUID().uuidString
 
@@ -252,7 +335,7 @@ class AddBetVM: ObservableObject {
         case editing
         case delete
     }
-    
+
     @Published
     var reminderState: ReminderRowState = .add
 
@@ -268,24 +351,8 @@ class AddBetVM: ObservableObject {
     func saveIsClicked() {
         reminderState = .delete
     }
-    
-    /// ** Define variables **
-    @Published
-    var team1IsError = false
-    @Published
-    var team2IsError = false
-    @Published
-    var amountIsError = false
-    @Published
-    var oddsIsError = false
-    @Published
-    var taxIsError = false
-    
-    @Published
-    var score: NSDecimalNumber = .zero
 
-
-    // MARK: Methods:
+    // MARK: -  METHODS FOR ADD BET VIEWMODEL VARIABLES:
 
     /**
      The function saves the user's notification if the date is different from ' Date.now '
@@ -294,11 +361,11 @@ class AddBetVM: ObservableObject {
      - Parameter notificationTriggerDate:Selected date to trigger notification
      */
     private func saveReminder() {
-            UserNotificationsService().scheduleNotification(
-                withID: betNotificationID, // i need add this to BetDao
-                titleName: "\(team1 + team1)",
-                notificationTriggerDate: selectedNotificationDate
-            )
+        UserNotificationsService().scheduleNotification(
+            withID: betNotificationID, // i need add this to BetDao
+            titleName: "\(team1 + team1)",
+            notificationTriggerDate: selectedNotificationDate
+        )
     }
 
     var reminderDateClosedRange: ClosedRange<Date> {
@@ -354,7 +421,27 @@ class AddBetVM: ObservableObject {
         return predictedWin
     }
 
-    // MARK: - Validate & Saving to DB
+    // MARK: - ERROR HANDLING
+
+    /// ** Define variables **
+    @Published
+    var team1IsError = false
+    @Published
+    var team2IsError = false
+    @Published
+    var betslipNameIsError = false
+    @Published
+    var amountIsError = false
+    @Published
+    var betslipAmountIsError = false
+    @Published
+    var oddsIsError = false
+    @Published
+    var betslipOddsIsError = false
+    @Published
+    var taxIsError = false
+    @Published
+    var betslipTaxsIsError = false
 
     private func validateTeam1() {
         if team1.isEmpty {
@@ -376,9 +463,25 @@ class AddBetVM: ObservableObject {
         }
     }
 
+    private func validateBetslipName() {
+        if betslipName.isEmpty {
+            betslipNameIsError = true
+        } else if betslipName.wholeMatch(of: /\s+/) != nil {
+            betslipNameIsError = true
+        } else if betslipName.count < 3 {
+            betslipNameIsError = true
+        }
+    }
+
     private func validateAmount() {
         if amount.isEmpty {
             amountIsError = true
+        }
+    }
+
+    private func validateBetslipAmount() {
+        if betslipAmount.isEmpty {
+            betslipAmountIsError = true
         }
     }
 
@@ -388,11 +491,21 @@ class AddBetVM: ObservableObject {
         }
     }
 
+    private func validateBetslipOdds() {
+        if betslipOdds.isEmpty {
+            betslipOddsIsError = true
+        }
+    }
+
     private func validateTax() {
         if amount.isEmpty {
             amountIsError = true
         }
     }
+
+    private func validateBetslipTax() { }
+
+    // MARK: - SAVE TO DB
 
     /// ** Save data to DB **
     func saveBet() -> Bool {
@@ -453,9 +566,56 @@ class AddBetVM: ObservableObject {
         return true
     }
 
-    // MARK: - View Setup methods:
+    func saveBetslip() -> Bool {
+        validateBetslipName()
+        validateBetslipAmount()
+        validateBetslipOdds()
+        validateBetslipTax()
 
-    /// ** Methods are used to run inside .onApper and .onDissapear view methods **
+        if betslipNameIsError || betslipAmountIsError || betslipOddsIsError || betslipTaxsIsError {
+            return false
+        }
+        print("data saved")
+
+        saveReminder()
+
+        if taxStatus {
+            BetDao.saveBetslip(bet: BetslipModel(
+                id: nil,
+                name: betslipName,
+                date: selectedDate,
+                amount: NSDecimalNumber(string: betslipAmount),
+                odds: NSDecimalNumber(string: betslipOdds),
+                category: selectedCategory,
+                tax: NSDecimalNumber(string: betslipTax),
+                profit: betslipProfit,
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
+
+            ))
+        } else {
+            BetDao.saveBetslip(bet: BetslipModel(
+                id: nil,
+                name: betslipName,
+                date: selectedDate,
+                amount: NSDecimalNumber(string: betslipAmount),
+                odds: NSDecimalNumber(string: betslipOdds),
+                category: selectedCategory,
+                tax: NSDecimalNumber.zero,
+                profit: betslipProfit,
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
+            ))
+        }
+
+        return true
+    }
+
+    // MARK: - VIEW SETUP:
+
+    // ** Methods are used to run inside .onApper and .onDissapear view methods **
 
     func saveTextInTexfield() {
         defaults.set(.team1, to: team1)
@@ -495,10 +655,9 @@ class AddBetVM: ObservableObject {
 
 }
 
-
 enum BetType: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 
-    case solobet
+    case solobet = "Single Bet"
     case betslip
 }

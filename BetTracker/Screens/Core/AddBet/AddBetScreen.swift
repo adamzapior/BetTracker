@@ -34,19 +34,7 @@ struct AddBetScreen: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .pickerStyle(.menu)
                 .tint(Color.ui.secondary)
-//
-//                HStack  {
-//                    Text("ADD NEW BET")
-//                        .padding()
-//                        .font(.subheadline)
-//                    Image(systemName: "chevron.down")
-//                        .padding(.trailing, 4)
-//                        .foregroundColor(Color.red)
-//                        .opacity(0.7)
-//                        .font(.title2)
-//                        .onTapGesture {
-//                        }
-//                }
+
                 HStack {
                     Spacer()
                     Image(systemName: "xmark")
@@ -265,8 +253,8 @@ struct AddBetScreen: View {
                                 HStack {
                                     AmountInput(
                                         hint: "Enter your bet name*",
-                                        text: $vm.amount,
-                                        isError: vm.amountIsError,
+                                        text: $vm.betslipName,
+                                        isError: vm.betslipNameIsError,
                                         overlayText: ""
                                     )
                                 }
@@ -290,8 +278,8 @@ struct AddBetScreen: View {
                                 // ** Odds input **
                                 AmountInput(
                                     hint: "Bet odds*",
-                                    text: $vm.odds,
-                                    isError: vm.oddsIsError, // TODO:
+                                    text: $vm.betslipOdds,
+                                    isError: vm.betslipOddsIsError, // TODO:
                                     overlayText: "" // to funkcja stworzona, żeby zablokować
                                     // mozliwosc edytowania textfielda, musze wyciagnac kolejny
                                     // obiet tylko dla tego parametru
@@ -300,8 +288,8 @@ struct AddBetScreen: View {
                                 if vm.taxRowStateValue == .active {
                                     AmountInput(
                                         hint: "Insert your tax",
-                                        text: $vm.tax,
-                                        isError: vm.taxIsError,
+                                        text: $vm.betslipTax,
+                                        isError: vm.betslipTaxsIsError,
                                         overlayText: "%"
                                     )
                                 }
@@ -309,8 +297,8 @@ struct AddBetScreen: View {
 
                             AmountInput(
                                 hint: "Enter your bet amount*",
-                                text: $vm.amount,
-                                isError: vm.amountIsError,
+                                text: $vm.betslipAmount,
+                                isError: vm.betslipAmountIsError,
                                 overlayText: vm.defaultCurrency.rawValue.uppercased()
                             )
                             CategoryRow(
@@ -394,7 +382,7 @@ struct AddBetScreen: View {
 
                             PredictedProfit(
                                 labelText: "Your predicted profit:",
-                                profitText: vm.profit.stringValue,
+                                profitText: vm.betslipProfit.stringValue,
                                 currency: "PLN"
                             )
                             .padding(.horizontal, 12)

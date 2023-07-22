@@ -1,17 +1,8 @@
-//
-//  BetModel.swift
-//  BetTrackerUI
-//
-//  Created by Adam Zapiór on 22/02/2023.
-//
-
 import Foundation
 import GRDB
 
 struct BetModel: Identifiable, Hashable {
-    
-    
-    
+
     let id: Int64?
     let date: Date
     let team1: String
@@ -26,19 +17,14 @@ struct BetModel: Identifiable, Hashable {
     let isWon: Bool?
     let betNotificationID: String?
     let score: NSDecimalNumber?
-    
 
-    
-    
     var dateString: String {
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "M/d/yyyy"
-      return dateFormatter.string(from: date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M/d/yyyy"
+        return dateFormatter.string(from: date)
     }
 
 }
-
-
 
 enum SelectedTeam: Int {
     case team1
@@ -56,5 +42,3 @@ enum Category: String, CaseIterable {
 extension SelectedTeam: DatabaseValueConvertible { }
 
 extension Category: DatabaseValueConvertible { }
-
-
