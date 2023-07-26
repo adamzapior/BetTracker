@@ -3,8 +3,40 @@ import GRDB
 
 struct BetModel: Identifiable, Hashable {
 
-    let id: Int64?
-    let date: Date
+    init(
+        id: Int64?,
+        date: Date,
+        team1: String,
+        team2: String,
+        selectedTeam: SelectedTeam,
+        league: String?,
+        amount: NSDecimalNumber,
+        odds: NSDecimalNumber,
+        category: Category,
+        tax: NSDecimalNumber,
+        profit: NSDecimalNumber,
+        isWon: Bool?,
+        betNotificationID: String?,
+        score: NSDecimalNumber?
+    ) {
+        self.id = id
+        self.date = date
+        self.team1 = team1
+        self.team2 = team2
+        self.selectedTeam = selectedTeam
+        self.league = league
+        self.amount = amount
+        self.odds = odds
+        self.category = category
+        self.tax = tax
+        self.profit = profit
+        self.isWon = isWon
+        self.betNotificationID = betNotificationID
+        self.score = score
+    }
+
+    var id: Int64?
+    var date: Date
     let team1: String
     let team2: String
     let selectedTeam: SelectedTeam
@@ -31,14 +63,4 @@ enum SelectedTeam: Int {
     case team2
 }
 
-enum Category: String, CaseIterable {
-    case football
-    case basketball
-    case f1
-    case tenis
-    case volleyball
-}
-
 extension SelectedTeam: DatabaseValueConvertible { }
-
-extension Category: DatabaseValueConvertible { }

@@ -11,6 +11,7 @@ class BetDetailsVM: ObservableObject {
     
     let bet: BetModel
     
+    
     init(bet: BetModel) {
         self.bet = bet
         

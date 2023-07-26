@@ -30,6 +30,7 @@ class BetDao {
     }
     
 
+
     static func getSavedBets() -> AnyPublisher<[BetModel], Never> {
         ValueObservation
             .tracking { db in
@@ -534,5 +535,14 @@ class BetDao {
             .mapError { _ in Never.transferRepresentation }
             .eraseToAnyPublisher()
     }
-
+    
+    static func getBetslipBets() -> AnyPublisher<[BetslipModel], Never> {
+        ValueObservation
+            .tracking { db in
+                try BetslipModel.fetchAll(db)
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
 }

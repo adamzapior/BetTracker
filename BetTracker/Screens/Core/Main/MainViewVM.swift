@@ -12,6 +12,12 @@ class MainViewVM: ObservableObject {
     var historyBets: [BetModel]? = []
 
     @Published
+    var betslipHistory: [BetslipModel]? = []
+
+    @Published
+    var mergedBets: [BetWrapper]? = []
+
+    @Published
     var savedBets: [BetModel]? = []
 
     @Published
@@ -19,6 +25,9 @@ class MainViewVM: ObservableObject {
 
     @Published
     var getBetsAmountCancellables = Set<AnyCancellable>()
+    
+    @Published
+    private var cancellables = Set<AnyCancellable>()
 
     let bet: [BetModel] = [
         BetModel(
@@ -42,6 +51,8 @@ class MainViewVM: ObservableObject {
     var currency = UserDefaultsManager.defaultCurrencyValue
 
     init() {
+        getMerged()
+
         BetDao.getPendingBets()
             .map { .some($0) }
             .assign(to: &$pendingBets)
@@ -53,6 +64,20 @@ class MainViewVM: ObservableObject {
         BetDao.getSavedBets()
             .map { .some($0) }
             .assign(to: &$savedBets)
+        
+        BetDao.getBetslipBets()
+            .map { .some($0) }
+            .assign(to: &$betslipHistory)
+        
     }
-
+    
+    func getMerged() {
+        Publishers.CombineLatest($historyBets, $betslipHistory)
+                    .map { historyBets, betslipHistory -> [BetWrapper] in
+                        let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) + (betslipHistory?.map(BetWrapper.betslip) ?? [])
+                        return combinedBets.sorted(by: { $0.date > $1.date }) // Sort in descending order of date.
+                    }
+                    .assign(to: \.mergedBets, on: self)
+                    .store(in: &cancellables)
+    }
 }

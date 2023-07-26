@@ -392,7 +392,7 @@ struct AddBetScreen: View {
                     .safeAreaInset(edge: .bottom) {
                         VStack {
                             AddBetButton(text: "Add bet to pending") {
-                                if vm.saveBet() {
+                                if vm.saveBetslip() {
                                     dismiss()
                                     vm.clearTextField()
                                 } else {

@@ -15,33 +15,69 @@ final class AddBetVM: ObservableObject {
         configureTaxInput() // Pass to publisher
 
         // Predicted profit
-        if taxStatus {
-            Publishers.CombineLatest3($amount, $odds, $tax)
-                .map { [weak self] amount, odds, tax in
-                    guard let self else {
-                        return 0
+        updateProfit()
+    }
+    
+    func updateProfit() {
+        switch betType {
+        case .solobet:
+            if taxStatus {
+                Publishers.CombineLatest3($amount, $odds, $tax)
+                    .map { [weak self] amount, odds, tax in
+                        guard let self else {
+                            return 0
+                        }
+                        let profit = self.betProfitWithTax(
+                            amountString: amount,
+                            oddsString: odds,
+                            taxString: tax
+                        ) ?? Decimal()
+                        return profit as NSDecimalNumber
                     }
-                    let profit = self.betProfitWithTax(
-                        amountString: amount,
-                        oddsString: odds,
-                        taxString: tax
-                    ) ?? Decimal()
-                    return profit as NSDecimalNumber
-                }
-                .assign(to: &$profit)
-        } else {
-            Publishers.CombineLatest($amount, $odds)
-                .map { [weak self] amount, odds in
-                    guard let self else {
-                        return 0
+                    .assign(to: &$profit)
+            } else {
+                Publishers.CombineLatest($amount, $odds)
+                    .map { [weak self] amount, odds in
+                        guard let self else {
+                            return 0
+                        }
+                        let profit = self.betProfitWithoutTex(
+                            amountString: amount,
+                            oddsString: odds
+                        ) ?? Decimal()
+                        return profit as NSDecimalNumber
                     }
-                    let profit = self.betProfitWithoutTex(
-                        amountString: amount,
-                        oddsString: odds
-                    ) ?? Decimal()
-                    return profit as NSDecimalNumber
-                }
-                .assign(to: &$profit)
+                    .assign(to: &$profit)
+            }
+        case .betslip:
+            if taxStatus {
+                Publishers.CombineLatest3($betslipAmount, $betslipOdds, $betslipTax)
+                    .map { [weak self] betslipAmount, betslipOdds, betslipTax in
+                        guard let self else {
+                            return 0
+                        }
+                        let profit = self.betProfitWithTax(
+                            amountString: betslipAmount,
+                            oddsString: betslipOdds,
+                            taxString: betslipTax
+                        ) ?? Decimal()
+                        return profit as NSDecimalNumber
+                    }
+                    .assign(to: &$betslipProfit)
+            } else {
+                Publishers.CombineLatest($betslipAmount, $betslipOdds)
+                    .map { [weak self] betslipAmount, betslipOdds in
+                        guard let self else {
+                            return 0
+                        }
+                        let profit = self.betProfitWithoutTex(
+                            amountString: betslipAmount,
+                            oddsString: betslipOdds
+                        ) ?? Decimal()
+                        return profit as NSDecimalNumber
+                    }
+                    .assign(to: &$betslipProfit)
+            }
         }
     }
 
@@ -78,6 +114,7 @@ final class AddBetVM: ObservableObject {
     @Published
     var amount = "" {
         didSet {
+            updateProfit()
             amountIsError = false
             if amount.isEmpty {
                 return
@@ -101,6 +138,7 @@ final class AddBetVM: ObservableObject {
     @Published
     var odds = "" {
         didSet {
+            updateProfit()
             oddsIsError = false
             if odds.isEmpty {
                 return
@@ -122,6 +160,7 @@ final class AddBetVM: ObservableObject {
     @Published
     var tax = "0.0" {
         didSet {
+            updateProfit()
             if tax.isEmpty {
                 return
             }
@@ -181,6 +220,7 @@ final class AddBetVM: ObservableObject {
     @Published
     var betslipAmount = "" {
         didSet {
+            updateProfit()
             betslipAmountIsError = false
             if betslipAmount.isEmpty {
                 return
@@ -204,6 +244,7 @@ final class AddBetVM: ObservableObject {
     @Published
     var betslipOdds = "" {
         didSet {
+            updateProfit()
             betslipOddsIsError = false
             if betslipOdds.isEmpty {
                 return
@@ -228,6 +269,7 @@ final class AddBetVM: ObservableObject {
     @Published
     var betslipTax = "0.0" {
         didSet {
+            updateProfit()
             if betslipTax.isEmpty {
                 return
             }
@@ -582,8 +624,7 @@ final class AddBetVM: ObservableObject {
         if taxStatus {
             BetDao.saveBetslip(bet: BetslipModel(
                 id: nil,
-                name: betslipName,
-                date: selectedDate,
+                date: selectedDate, name: betslipName,
                 amount: NSDecimalNumber(string: betslipAmount),
                 odds: NSDecimalNumber(string: betslipOdds),
                 category: selectedCategory,
@@ -597,8 +638,7 @@ final class AddBetVM: ObservableObject {
         } else {
             BetDao.saveBetslip(bet: BetslipModel(
                 id: nil,
-                name: betslipName,
-                date: selectedDate,
+                date: selectedDate, name: betslipName,
                 amount: NSDecimalNumber(string: betslipAmount),
                 odds: NSDecimalNumber(string: betslipOdds),
                 category: selectedCategory,
