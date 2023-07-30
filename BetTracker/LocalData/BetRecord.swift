@@ -22,7 +22,7 @@ extension BetModel: TableRecord {
     }
 }
 
-extension BetModel: FetchableRecord {
+extension BetModel {
     init(row: Row) {
         id = row[Columns.id]
         date = row[Columns.date]

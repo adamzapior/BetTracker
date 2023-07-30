@@ -28,7 +28,7 @@ struct BetslipDetailsScreen: View {
                 .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
                     Button("Yes") {
 //                        vm.deleteBet(bet: vm.bet)
-                        vm.removeNotification()
+//                        vm.removeNotification()
                         dismiss()
                     }
                     Button("No", role: .cancel) { }
@@ -123,54 +123,38 @@ struct BetslipDetailsScreen: View {
                         Spacer()
                     }
 
-//                    HStack {
-//                        switch vm.buttonState {
-//                        case .uncleared:
-//                            VStack {
-//                                MarkButton(text: "Seta as won", backgroundColor: Color.ui.scheme)
-//                                    .padding()
-//                                    .onTapGesture {
-//                                        BetDao.markFinished(bet: vm.bet, isWon: true)
-//                                        BetDao.markProfitWon(
-//                                            bet: vm.bet,
-//                                            score: (vm.bet.profit).subtracting(vm.bet.amount)
-//                                        )
-//                                        dismiss()
-//                                    }
-//                                MarkButton(text: "Set as lost", backgroundColor: Color.red)
-//                                    .onTapGesture {
-//                                        BetDao.markFinished(bet: vm.bet, isWon: false)
-//                                        BetDao.markProfitLost(
-//                                            bet: vm.bet,
-//                                            score: (vm.bet.amount).multiplying(by: -1)
-//                                        )
-//                                        dismiss()
-//                                    }
-//                            }
-//
-//                        case .won:
-//                            MarkButton(text: "Set as lost", backgroundColor: Color.red)
-//                                .onTapGesture {
-//                                    BetDao.markFinished(bet: vm.bet, isWon: false)
-//                                    BetDao.markProfitLost(
-//                                        bet: vm.bet,
-//                                        score: (vm.bet.amount).multiplying(by: -1)
-//                                    )
-//                                    dismiss()
-//                                }
-//                        case .lost:
-//                            MarkButton(text: "Set as won", backgroundColor: Color.ui.scheme)
-//                                .onTapGesture {
-//                                    BetDao.markFinished(bet: vm.bet, isWon: true)
-//                                    BetDao.markProfitWon(
-//                                        bet: vm.bet,
-//                                        score: (vm.bet.profit).subtracting(vm.bet.amount)
-//                                    )
-//                                    dismiss()
-//                                }
-//                        }
-//                    }
-//                    .padding(.top, 36)
+                    HStack {
+                        switch vm.buttonState {
+                        case .uncleared:
+                            VStack {
+                                MarkButton(text: "Seta as won", backgroundColor: Color.ui.scheme)
+                                    .padding()
+                                    .onTapGesture {
+                                       
+                                        dismiss()
+                                    }
+                                MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                                    .onTapGesture {
+                                        
+                                        dismiss()
+                                    }
+                            }
+
+                        case .won:
+                            MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                                .onTapGesture {
+                                    
+                                    dismiss()
+                                }
+                        case .lost:
+                            MarkButton(text: "Set as won", backgroundColor: Color.ui.scheme)
+                                .onTapGesture {
+                                    
+                                    dismiss()
+                                }
+                        }
+                    }
+                    .padding(.top, 36)
                 }
 
                 .frame(maxWidth: .infinity)

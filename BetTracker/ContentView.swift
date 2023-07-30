@@ -19,7 +19,7 @@ struct ContentView: View {
                 TabBar()
                     .transition(.move(edge: .bottom))
             case .onboardingSetup:
-                OnboardingSetupView(vm: PreferencesVM(), action: session.completeOnboardingSetup)
+                OnboardingSetupView(vm: PreferencesVM(interactor: PreferencesInteractor()), action: session.completeOnboardingSetup)
                     .animation(.easeInOut, value: 0.5)
             case .onboarding:
                 OnboardingView(action: session.completeOnboarding)

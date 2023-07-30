@@ -3,8 +3,9 @@ import Foundation
 import GRDB
 import SwiftDate
 
-class MainViewVM: ObservableObject {
 
+class MainViewVM: ObservableObject {
+    
     @Published
     var pendingBets: [BetModel]? = []
 
@@ -24,10 +25,10 @@ class MainViewVM: ObservableObject {
     var isSearchClicked: Bool = false
 
     @Published
-    var getBetsAmountCancellables = Set<AnyCancellable>()
-    
-    @Published
     private var cancellables = Set<AnyCancellable>()
+    
+    let interactor: MainInteractor
+    
 
     let bet: [BetModel] = [
         BetModel(
@@ -50,32 +51,42 @@ class MainViewVM: ObservableObject {
 
     var currency = UserDefaultsManager.defaultCurrencyValue
 
-    init() {
+    init(interactor: MainInteractor) {
+        self.interactor = interactor
+    
         getMerged()
-
-        BetDao.getPendingBets()
+        
+        interactor.getPendingBets(model: BetModel.self)
             .map { .some($0) }
             .assign(to: &$pendingBets)
+        
 
-        BetDao.getHistoryBets()
+//        BetDao.getPendingBets()
+//            .map { .some($0) }
+//            .assign(to: &$pendingBets)
+
+        interactor.getHistoryBets(model: BetModel.self)
             .map { .some($0) }
             .assign(to: &$historyBets)
-
-        BetDao.getSavedBets()
+        
+        interactor.getSavedBets(model: BetModel.self)
             .map { .some($0) }
             .assign(to: &$savedBets)
         
-        BetDao.getBetslipBets()
-            .map { .some($0) }
-            .assign(to: &$betslipHistory)
         
+  
+//
+//        BetDao.getBetslipBets()
+//            .map { .some($0) }
+//            .assign(to: &$betslipHistory)
+//
     }
     
     func getMerged() {
         Publishers.CombineLatest($historyBets, $betslipHistory)
                     .map { historyBets, betslipHistory -> [BetWrapper] in
                         let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) + (betslipHistory?.map(BetWrapper.betslip) ?? [])
-                        return combinedBets.sorted(by: { $0.date > $1.date }) // Sort in descending order of date.
+                        return combinedBets.sorted(by: { $0.date > $1.date })
                     }
                     .assign(to: \.mergedBets, on: self)
                     .store(in: &cancellables)

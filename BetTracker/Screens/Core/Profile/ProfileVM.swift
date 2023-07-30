@@ -33,7 +33,7 @@ class ProfileVM: ObservableObject {
     }
 
     @Published
-    var getBetsAmountCancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
 
     @Published
     var balanceValue: NSDecimalNumber = .zero
@@ -113,7 +113,7 @@ class ProfileVM: ObservableObject {
                         self.balanceValue = balance
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         case .month:
             BetDao.getLastMonthBalanceValue()
                 .sink(
@@ -121,7 +121,7 @@ class ProfileVM: ObservableObject {
                         self.balanceValue = balance
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         case .year:
             BetDao.getLastYearBalanceValue()
                 .sink(
@@ -129,7 +129,7 @@ class ProfileVM: ObservableObject {
                         self.balanceValue = balance
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         case .alltime:
             BetDao.getBalanceValue()
                 .sink(
@@ -137,7 +137,7 @@ class ProfileVM: ObservableObject {
                         self.balanceValue = balance
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -156,7 +156,7 @@ class ProfileVM: ObservableObject {
                         self.totalSpent = sum
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
 
         case .month:
             BetDao
@@ -169,7 +169,7 @@ class ProfileVM: ObservableObject {
                         self.totalSpent = sum
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
 
         case .year:
             BetDao
@@ -182,7 +182,7 @@ class ProfileVM: ObservableObject {
                         self.totalSpent = sum
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
 
         case .alltime:
             BetDao.getTotalSpent()
@@ -191,7 +191,7 @@ class ProfileVM: ObservableObject {
                         self.totalSpent = sum
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -209,7 +209,7 @@ class ProfileVM: ObservableObject {
                     self.wonBetsCount = sum
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .month:
             BetDao.getWonBetsCounyByPeroid(
@@ -221,7 +221,7 @@ class ProfileVM: ObservableObject {
                     self.wonBetsCount = sum
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .year:
             BetDao.getWonBetsCounyByPeroid(
@@ -233,7 +233,7 @@ class ProfileVM: ObservableObject {
                     self.wonBetsCount = sum
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .alltime:
             BetDao.getWonBetsCount()
@@ -242,7 +242,7 @@ class ProfileVM: ObservableObject {
                         self.wonBetsCount = sum
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -260,7 +260,7 @@ class ProfileVM: ObservableObject {
                     self.lostBetsCount = count
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .month:
             BetDao.getLostBetsCountByPeroid(
                 startDate: calendar
@@ -271,7 +271,7 @@ class ProfileVM: ObservableObject {
                     self.lostBetsCount = count
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .year:
             BetDao.getLostBetsCountByPeroid(
                 startDate: calendar
@@ -282,7 +282,7 @@ class ProfileVM: ObservableObject {
                     self.lostBetsCount = count
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .alltime:
             BetDao.getLostBetsCount()
                 .sink(
@@ -290,7 +290,7 @@ class ProfileVM: ObservableObject {
                         self.lostBetsCount = count
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -303,7 +303,7 @@ class ProfileVM: ObservableObject {
                     self.pendingBetsCount = count
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
     }
 
     // ** Avg Won  Bets  **
@@ -320,7 +320,7 @@ class ProfileVM: ObservableObject {
                     self.avgWonBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .month:
             BetDao.getAvgWonBetByPeroid(
                 startDate: calendar
@@ -331,7 +331,7 @@ class ProfileVM: ObservableObject {
                     self.avgWonBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .year:
             BetDao.getAvgWonBetByPeroid(
@@ -343,7 +343,7 @@ class ProfileVM: ObservableObject {
                     self.avgWonBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .alltime:
             BetDao.getAvgWonBet()
                 .sink(
@@ -351,7 +351,7 @@ class ProfileVM: ObservableObject {
                         self.avgWonBet = avg
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -369,7 +369,7 @@ class ProfileVM: ObservableObject {
                     self.avgAmountBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .month:
             BetDao.getAvgLostBetByPeroid(
@@ -381,7 +381,7 @@ class ProfileVM: ObservableObject {
                     self.avgAmountBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .year:
             BetDao.getAvgLostBetByPeroid(
@@ -393,7 +393,7 @@ class ProfileVM: ObservableObject {
                     self.avgAmountBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .alltime:
             BetDao.getAvgLostBet()
@@ -402,7 +402,7 @@ class ProfileVM: ObservableObject {
                         self.avgLostBet = avg
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -420,7 +420,7 @@ class ProfileVM: ObservableObject {
                     self.avgAmountBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .month:
             BetDao.getAvgAmountBetByPeroid(
@@ -432,7 +432,7 @@ class ProfileVM: ObservableObject {
                     self.avgAmountBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .year:
             BetDao.getAvgAmountBetByPeroid(
@@ -444,7 +444,7 @@ class ProfileVM: ObservableObject {
                     self.avgAmountBet = avg
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .alltime:
             BetDao.getAvgAmountBet()
@@ -453,7 +453,7 @@ class ProfileVM: ObservableObject {
                         self.avgAmountBet = avg
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -471,7 +471,7 @@ class ProfileVM: ObservableObject {
                     self.largestBetProfit = largestBetProfit
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .month:
             BetDao.getLargestBetProfitByPeroid(
@@ -483,7 +483,7 @@ class ProfileVM: ObservableObject {
                     self.largestBetProfit = largestBetProfit
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .year:
             BetDao.getLargestBetProfitByPeroid(
@@ -495,7 +495,7 @@ class ProfileVM: ObservableObject {
                     self.largestBetProfit = largestBetProfit
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .alltime:
             BetDao.getLargestBetProfit()
@@ -504,7 +504,7 @@ class ProfileVM: ObservableObject {
                         self.largestBetProfit = largestBetProfit
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -522,7 +522,7 @@ class ProfileVM: ObservableObject {
                     self.biggestBetLoss = biggestLoss
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .month:
             BetDao.getBiggestBetLossByPeroid(
@@ -534,7 +534,7 @@ class ProfileVM: ObservableObject {
                     self.biggestBetLoss = biggestLoss
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .year:
             BetDao.getBiggestBetLossByPeroid(
@@ -546,7 +546,7 @@ class ProfileVM: ObservableObject {
                     self.biggestBetLoss = biggestLoss
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .alltime:
             BetDao.getBiggestBetLoss()
@@ -555,7 +555,7 @@ class ProfileVM: ObservableObject {
                         self.biggestBetLoss = biggestLoss
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -573,7 +573,7 @@ class ProfileVM: ObservableObject {
                     self.higgestBetOddsWon = higgestOds
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .month:
             BetDao.getHiggestBetOddsWonByPeroid(
@@ -585,7 +585,7 @@ class ProfileVM: ObservableObject {
                     self.higgestBetOddsWon = higgestOds
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .year:
             BetDao.getHiggestBetOddsWonByPeroid(
@@ -597,7 +597,7 @@ class ProfileVM: ObservableObject {
                     self.higgestBetOddsWon = higgestOds
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
 
         case .alltime:
             BetDao.getHiggestBetOddsWon()
@@ -606,7 +606,7 @@ class ProfileVM: ObservableObject {
                         self.higgestBetOddsWon = higgestOds
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 
@@ -624,7 +624,7 @@ class ProfileVM: ObservableObject {
                     self.higgestBetAmount = higgestAmount
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .month:
             BetDao.getHiggestBetAmountByPeroid(
                 startDate: calendar
@@ -635,7 +635,7 @@ class ProfileVM: ObservableObject {
                     self.higgestBetAmount = higgestAmount
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .year:
             BetDao.getHiggestBetAmountByPeroid(
                 startDate: calendar
@@ -646,7 +646,7 @@ class ProfileVM: ObservableObject {
                     self.higgestBetAmount = higgestAmount
                 }
             )
-            .store(in: &getBetsAmountCancellables)
+            .store(in: &cancellables)
         case .alltime:
             BetDao.getHiggestBetAmount()
                 .sink(
@@ -654,7 +654,7 @@ class ProfileVM: ObservableObject {
                         self.higgestBetAmount = higgestAmount
                     }
                 )
-                .store(in: &getBetsAmountCancellables)
+                .store(in: &cancellables)
         }
     }
 

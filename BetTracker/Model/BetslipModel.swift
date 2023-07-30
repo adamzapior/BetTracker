@@ -1,6 +1,6 @@
 import Foundation
 
-struct BetslipModel: Identifiable, Hashable {
+struct BetslipModel: Identifiable, Hashable, DatabaseModel {
 
     init(
         id: Int64?,
@@ -34,7 +34,7 @@ struct BetslipModel: Identifiable, Hashable {
     let amount: NSDecimalNumber
     let odds: NSDecimalNumber
     let category: Category
-    let tax: NSDecimalNumber
+    var tax: NSDecimalNumber
     let profit: NSDecimalNumber
     let isWon: Bool?
     let betNotificationID: String?

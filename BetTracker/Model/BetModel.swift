@@ -1,7 +1,7 @@
 import Foundation
 import GRDB
 
-struct BetModel: Identifiable, Hashable {
+struct BetModel: Identifiable, Hashable, DatabaseModel, FetchableRecord {
 
     init(
         id: Int64?,
@@ -44,7 +44,7 @@ struct BetModel: Identifiable, Hashable {
     let amount: NSDecimalNumber
     let odds: NSDecimalNumber
     let category: Category
-    let tax: NSDecimalNumber
+    var tax: NSDecimalNumber
     let profit: NSDecimalNumber
     let isWon: Bool?
     let betNotificationID: String?

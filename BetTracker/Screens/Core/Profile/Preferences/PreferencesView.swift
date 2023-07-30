@@ -6,12 +6,9 @@ struct PreferencesView: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @ObservedObject
-    var vm = PreferencesVM()
-    
-//    init(category: Category) {
-//        self._vm = ObservedObject(wrappedValue: PreferencesVM(category: category))
-//    }
+    @StateObject
+    var vm = PreferencesVM(interactor: PreferencesInteractor())
+
 
     @State
     private var selection = "Red"
@@ -48,7 +45,7 @@ struct PreferencesView: View {
                             }
                             .tint(Color.ui.scheme)
                             .pickerStyle(.menu)
-                            
+
                             Toggle("Do you want set default tax?", isOn: $vm.isDefaultTaxOn)
                                 .tint(Color.ui.scheme)
 
@@ -64,7 +61,7 @@ struct PreferencesView: View {
                                     .animation(.easeInOut, value: 1)
                             }
                         }
-                        
+
                         Section(
                             header: Text("About app")
                                 .foregroundColor(Color.ui.onPrimaryContainer)
@@ -82,12 +79,10 @@ struct PreferencesView: View {
                             .tint(Color.ui.scheme)
                             .pickerStyle(.menu)
                         }
-                        
                     }
                     .scrollContentBackground(.hidden)
                     .frame(height: 500, alignment: .topLeading)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-                    
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.bottom, 48)
@@ -100,10 +95,11 @@ struct PreferencesView: View {
         .onDisappear {
             vm.ifTaxEmpty()
             vm.savePreferences()
+            vm.save()
         }
         .onAppear {
-            vm.loadPreferences()
-            vm.getDefaultCurrency()
+//            vm.loadPreferences()
+//            vm.getDefaultCurrency()
         }
     }
 }

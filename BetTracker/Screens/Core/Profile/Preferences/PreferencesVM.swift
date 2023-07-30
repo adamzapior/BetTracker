@@ -4,8 +4,31 @@ import SwiftUI
 
 class PreferencesVM: ObservableObject {
 
-    init() {
-        getDefaultCurrency()
+    private let interactor: PreferencesInteractor
+
+    init(
+        interactor: PreferencesInteractor
+    ) {
+        self.interactor = interactor
+
+        get()
+    }
+
+    func save() {
+        interactor.execute(
+            username: username,
+            isDefaultTaxOn: isDefaultTaxOn,
+            defaultTax: "(\taxStatus)",
+            defaultCurrency: defaultCurrency
+        )
+    }
+
+    func get() {
+        interactor.execute(username: username, isDefaultTaxOn: isDefaultTaxOn, defaultTax: defaultTax, defaultCurrency: defaultCurrency)
+        self.username = username
+        self.isDefaultTaxOn = isDefaultTaxOn
+        self.defaultTax = defaultTax
+        self.defaultCurrency = defaultCurrency
     }
 
     let defaults = UserDefaultsManager.path
@@ -94,4 +117,47 @@ class PreferencesVM: ObservableObject {
                 .string(forKey: "defaultCurrency") ?? "usd"
         )!
     }
+}
+
+class PreferencesInteractor: SavePreferencesUseCase, LoadPreferencesUseCase {
+    func execute() -> (username: String, isDefaultTaxOn: Bool, defaultTax: String, defaultCurrency: Currency) {
+        let username = defaults.get(.username)
+        let isDefaultTaxOn = defaults.get(.isDefaultTaxOn)
+        let defaultTax = defaults.get(.defaultTax)
+        let defaultCurrency = Currency(
+            rawValue: UserDefaults.standard
+                .string(forKey: "defaultCurrency") ?? "usd"
+        )!
+
+        return (username, isDefaultTaxOn, defaultTax, defaultCurrency)
+    }
+    
+    let defaults = UserDefaultsManager.path
+
+    func execute(
+        username: String,
+        isDefaultTaxOn: Bool,
+        defaultTax: String,
+        defaultCurrency: Currency
+    ) {
+        defaults.set(.username, to: username)
+        defaults.set(.isDefaultTaxOn, to: isDefaultTaxOn)
+        defaults.set(.defaultTax, to: defaultTax)
+        UserDefaults.standard.set(defaultCurrency.rawValue, forKey: "defaultCurrency")
+    }
+
+}
+
+protocol SavePreferencesUseCase {
+    func execute(
+        username: String,
+        isDefaultTaxOn: Bool,
+        defaultTax: String,
+        defaultCurrency: Currency
+    )
+}
+
+protocol LoadPreferencesUseCase {
+    func execute()
+        -> (username: String, isDefaultTaxOn: Bool, defaultTax: String, defaultCurrency: Currency)
 }

@@ -5,8 +5,17 @@ import SwiftUI
 
 struct MainView: View {
 
+
     @StateObject
-    var vm = MainViewVM()
+    var vm: MainViewVM
+    
+    let database = BetDao()
+    
+    init(database: BetDao) {
+        let interactor = MainInteractor(db: database)
+        _vm = StateObject(wrappedValue: MainViewVM(interactor: interactor))
+    }
+
 
     var body: some View {
         VStack(spacing: 0) {
@@ -42,7 +51,7 @@ struct MainView: View {
                 .padding(.horizontal, 22)
                 .padding(.bottom, 1)
 
-                if vm.historyBets!.isEmpty && vm.betslipHistory!.isEmpty {
+                if vm.mergedBets!.isEmpty {
                     NoContentElement(
                         text: "History is empty"
                     )

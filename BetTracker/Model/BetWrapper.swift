@@ -17,5 +17,12 @@ enum BetWrapper: Identifiable, Hashable {
         case let .betslip(betslip): return betslip.date
         }
     }
+    
+    var amount: NSDecimalNumber {
+        switch self {
+            case let .bet(bet): return bet.amount
+            case let .betslip(betslip): return betslip.amount
+        }
+    }
 
 }

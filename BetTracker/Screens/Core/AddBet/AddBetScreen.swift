@@ -17,6 +17,8 @@ struct AddBetScreen: View {
     @StateObject
     var vm = AddBetVM()
 
+    
+    
     @State
     var alertCheck: Bool = false
 
@@ -48,7 +50,7 @@ struct AddBetScreen: View {
                 .padding(.trailing, 18)
             }
 
-            if vm.betType == .solobet {
+            if vm.betType == .singlebet {
                 ScrollView { // Here was ScrollView
                     Group {
                         VStack(alignment: .leading, spacing: 8) {
@@ -414,7 +416,7 @@ struct AddBetScreen: View {
         .onTapGesture { hideKeyboard() }
 
         .onDisappear {
-            vm.saveTextInTexfield()
+            vm.saveTextfield()
         }
         .onAppear {
             print(vm.tax)

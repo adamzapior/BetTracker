@@ -35,12 +35,15 @@
 		58076A9029C98B4000A0762B /* BetDb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A8F29C98B4000A0762B /* BetDb.swift */; };
 		58076A9329C98B9800A0762B /* BetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A9229C98B9800A0762B /* BetRecord.swift */; };
 		58076A9529CA37BF00A0762B /* BetDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A9429CA37BE00A0762B /* BetDao.swift */; };
+		580BC5C62A71E9AD00330998 /* BetslipDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580BC5C52A71E9AD00330998 /* BetslipDetailsVM.swift */; };
+		580BC5C92A727A1E00330998 /* AddBetInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580BC5C82A727A1E00330998 /* AddBetInteractor.swift */; };
 		580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */; };
 		580D2A472A15767F00F1F450 /* BetDetailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580D2A462A15767F00F1F450 /* BetDetailButton.swift */; };
 		583AB5A929D230A200F4B9DC /* ProfileVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AB5A829D230A200F4B9DC /* ProfileVM.swift */; };
 		583D2F5629EF1871000AB125 /* OptionalDataInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583D2F5529EF1871000AB125 /* OptionalDataInput.swift */; };
 		583D2F5829EF1E1C000AB125 /* SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583D2F5729EF1E1C000AB125 /* SortButton.swift */; };
 		5845A63029E6321700A95E2B /* PredictedProfit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5845A62F29E6321700A95E2B /* PredictedProfit.swift */; };
+		584E69BC2A75A57700084F78 /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584E69BB2A75A57700084F78 /* MainInteractor.swift */; };
 		5858E8312A0C2A4D00CD018F /* DatePickerWithButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5858E8302A0C2A4D00CD018F /* DatePickerWithButtons.swift */; };
 		586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4B2A05A51200309F91 /* ProfileImage.swift */; };
 		586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */; };
@@ -51,6 +54,7 @@
 		5887209D2A7081E300D57B16 /* BetslipDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887209C2A7081E300D57B16 /* BetslipDetailsScreen.swift */; };
 		588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588720A02A71A28B00D57B16 /* BetWrapper.swift */; };
 		588720A32A71AD0D00D57B16 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588720A22A71AD0D00D57B16 /* CategoryModel.swift */; };
+		5895C4B02A75C88900B66275 /* SearchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5895C4AF2A75C88900B66275 /* SearchInteractor.swift */; };
 		58A005432A476F870012B9CF /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005422A476F870012B9CF /* DateExt.swift */; };
 		58A005452A4776920012B9CF /* MarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005442A4776920012B9CF /* MarkButton.swift */; };
 		58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005462A478F1A0012B9CF /* BetslipModel.swift */; };
@@ -120,12 +124,15 @@
 		58076A8F29C98B4000A0762B /* BetDb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetDb.swift; sourceTree = "<group>"; };
 		58076A9229C98B9800A0762B /* BetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetRecord.swift; sourceTree = "<group>"; };
 		58076A9429CA37BE00A0762B /* BetDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetDao.swift; sourceTree = "<group>"; };
+		580BC5C52A71E9AD00330998 /* BetslipDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipDetailsVM.swift; sourceTree = "<group>"; };
+		580BC5C82A727A1E00330998 /* AddBetInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBetInteractor.swift; sourceTree = "<group>"; };
 		580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoVM.swift; sourceTree = "<group>"; };
 		580D2A462A15767F00F1F450 /* BetDetailButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetDetailButton.swift; sourceTree = "<group>"; };
 		583AB5A829D230A200F4B9DC /* ProfileVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVM.swift; sourceTree = "<group>"; };
 		583D2F5529EF1871000AB125 /* OptionalDataInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDataInput.swift; sourceTree = "<group>"; };
 		583D2F5729EF1E1C000AB125 /* SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButton.swift; sourceTree = "<group>"; };
 		5845A62F29E6321700A95E2B /* PredictedProfit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictedProfit.swift; sourceTree = "<group>"; };
+		584E69BB2A75A57700084F78 /* MainInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractor.swift; sourceTree = "<group>"; };
 		5858E8302A0C2A4D00CD018F /* DatePickerWithButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerWithButtons.swift; sourceTree = "<group>"; };
 		586D2B4B2A05A51200309F91 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardExt.swift; sourceTree = "<group>"; };
@@ -134,6 +141,7 @@
 		5887209C2A7081E300D57B16 /* BetslipDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipDetailsScreen.swift; sourceTree = "<group>"; };
 		588720A02A71A28B00D57B16 /* BetWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetWrapper.swift; sourceTree = "<group>"; };
 		588720A22A71AD0D00D57B16 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
+		5895C4AF2A75C88900B66275 /* SearchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInteractor.swift; sourceTree = "<group>"; };
 		58A005422A476F870012B9CF /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
 		58A005442A4776920012B9CF /* MarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkButton.swift; sourceTree = "<group>"; };
 		58A005462A478F1A0012B9CF /* BetslipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipModel.swift; sourceTree = "<group>"; };
@@ -203,6 +211,7 @@
 				58076A5929C9079F00A0762B /* Extensions */,
 				58076A5E29C9079F00A0762B /* Model */,
 				58076A8E29C98B1000A0762B /* LocalData */,
+				580BC5C72A7279C300330998 /* Interactor */,
 				5870E9DA29E456610023CC01 /* Screens */,
 				58076A4C29C906FE00A0762B /* Preview Content */,
 			);
@@ -267,6 +276,7 @@
 				58A005442A4776920012B9CF /* MarkButton.swift */,
 				58076A6329C907A000A0762B /* Components */,
 				5887209C2A7081E300D57B16 /* BetslipDetailsScreen.swift */,
+				580BC5C52A71E9AD00330998 /* BetslipDetailsVM.swift */,
 			);
 			path = BetDetails;
 			sourceTree = "<group>";
@@ -346,6 +356,16 @@
 				58076A9429CA37BE00A0762B /* BetDao.swift */,
 			);
 			path = LocalData;
+			sourceTree = "<group>";
+		};
+		580BC5C72A7279C300330998 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				580BC5C82A727A1E00330998 /* AddBetInteractor.swift */,
+				584E69BB2A75A57700084F78 /* MainInteractor.swift */,
+				5895C4AF2A75C88900B66275 /* SearchInteractor.swift */,
+			);
+			path = Interactor;
 			sourceTree = "<group>";
 		};
 		583AB5A729D2303A00F4B9DC /* Profile */ = {
@@ -551,6 +571,7 @@
 				588720A32A71AD0D00D57B16 /* CategoryModel.swift in Sources */,
 				58076A7B29C907A000A0762B /* BetButton.swift in Sources */,
 				5887209D2A7081E300D57B16 /* BetslipDetailsScreen.swift in Sources */,
+				584E69BC2A75A57700084F78 /* MainInteractor.swift in Sources */,
 				58A3878C2A0FFDF000ED95DB /* CategoryRow.swift in Sources */,
 				58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */,
 				580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */,
@@ -568,11 +589,13 @@
 				58076A8529C907A000A0762B /* NoContentElement.swift in Sources */,
 				58EC47752A1125300088E6DC /* BalanceRow.swift in Sources */,
 				58076A8029C907A000A0762B /* BetDetailsScreen.swift in Sources */,
+				5895C4B02A75C88900B66275 /* SearchInteractor.swift in Sources */,
 				58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */,
 				58076A7D29C907A000A0762B /* BetDetailsVM.swift in Sources */,
 				58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */,
 				58076A4929C906FC00A0762B /* ContentView.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */,
+				580BC5C62A71E9AD00330998 /* BetslipDetailsVM.swift in Sources */,
 				58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */,
 				58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */,
 				588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */,
@@ -595,6 +618,7 @@
 				58076A8A29C907A000A0762B /* AddBetScreen.swift in Sources */,
 				58076A7729C907A000A0762B /* SearchVM.swift in Sources */,
 				58076A4729C906FC00A0762B /* BetTrackerApp.swift in Sources */,
+				580BC5C92A727A1E00330998 /* AddBetInteractor.swift in Sources */,
 				586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */,
 				58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */,
 				580D2A472A15767F00F1F450 /* BetDetailButton.swift in Sources */,
