@@ -39,3 +39,34 @@ struct MarkButton: View {
             .clipShape(RoundedRectangle(cornerRadius: 25))
     }
 }
+
+struct MarkButton2: View {
+    let text: String
+
+    init(text: String) {
+        self.text = text
+    }
+
+    var body: some View {
+        HStack {
+            
+            Text(text)
+                .font(.title3)
+                .bold()
+            Spacer()
+            Image(systemName: "plus.app.fill")
+                .font(.title)
+        }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
+            .background {
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundColor(
+                        Color.ui.onPrimary
+                    )
+            }
+
+            .frame(maxWidth: .infinity)
+    }
+}
+

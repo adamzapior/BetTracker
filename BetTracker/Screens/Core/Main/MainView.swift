@@ -30,15 +30,31 @@ struct MainView: View {
                 }
                 .padding(.horizontal, 22)
                 .padding(.bottom, 1)
-                if vm.pendingBets!.isEmpty {
+                if vm.pendingMerged!.isEmpty {
                     NoContentElement(text: "Add bet to show pending")
                 } else {
                     LazyVStack(spacing: 12) {
-                        ForEach(vm.pendingBets!, id: \.id) { bet in
-                            NavigationLink(destination: BetDetailsScreen(bet: bet)) {
-                                BetListElement(bet: bet, currency: vm.currency)
+                        LazyVStack(spacing: 12) {
+                            ForEach(vm.pendingMerged!, id: \.id) { betWrapper in
+                                switch betWrapper {
+                                case let .bet(betModel):
+                                    NavigationLink(
+                                        destination: BetDetailsScreen(bet: betModel)
+                                    ) {
+                                        BetListElement(bet: betModel, currency: vm.currency)
+                                    }
+                                case let .betslip(betslipModel):
+                                    NavigationLink(
+                                        destination: BetslipDetailsScreen(bet: betslipModel)
+                                    ) {
+                                        BetslipListElement(bet: betslipModel, currency: vm.currency)
+                                    }
+                                }
                             }
                         }
+                        .frame(minWidth: 5)
+                        
+                        
                     }
                     .padding(.bottom, 24)
                 }
@@ -76,7 +92,6 @@ struct MainView: View {
                     }
                     .frame(minWidth: 5)
                     .onAppear {
-                        vm.getMerged()
                     }
                 }
             }

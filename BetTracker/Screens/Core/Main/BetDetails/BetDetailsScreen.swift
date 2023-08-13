@@ -135,7 +135,7 @@ struct BetDetailsScreen: View {
                         switch vm.buttonState {
                         case .uncleared:
                             VStack {
-                                MarkButton(text: "Seta as won", backgroundColor: Color.ui.scheme)
+                                MarkButton2(text: "Seta as won")
                                     .padding()
                                     .onTapGesture {
                                         BetDao.markFinished(bet: vm.bet, isWon: true)

@@ -1,6 +1,5 @@
-import Foundation
 import Combine
-
+import Foundation
 
 class SearchVM: ObservableObject {
 
@@ -11,12 +10,15 @@ class SearchVM: ObservableObject {
 
     @Published
     var betslips: [BetslipModel]? = []
-    
+
     @Published
     var savedBets: [BetWrapper]? = []
 
     @Published
-    private(set) var searchResults: [BetModel]? = nil
+    private(set) var searchResults: [BetWrapper]? = nil
+
+    @Published
+    private(set) var searchAllResults: [BetWrapper]? = nil
 
     @Published
     var searchText: String = ""
@@ -26,37 +28,17 @@ class SearchVM: ObservableObject {
     let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
 
     var currency: Currency = .usd
-    
+
     @Published
     private var cancellables = Set<AnyCancellable>()
-    
+
     init(interactor: SearchInteractor) {
         self.interactor = interactor
 
-        $searchText
-            .combineLatest($bets)
-            .map { searchText, bets in
-                bets?.filter { bets in
-                    if searchText.isEmpty {
-                        return true
-                    }
-
-                    let team1 = bets.team1
-                    let team2 = bets.team2
-
-                    return team1.localizedStandardContains(searchText) ||
-                        team2.localizedStandardContains(searchText)
-                }
-            }
-            .assign(to: &$searchResults)
-
-        interactor.getSavedBets(model: BetModel.self)
-            .map {
-                .some($0)
-            }
-            .assign(to: &$bets)
-
         loadCurrency()
+        getSavedBets()
+
+        findBet()
     }
 
     // MARK: Sorting logic
@@ -69,6 +51,25 @@ class SearchVM: ObservableObject {
         case amount
 
         var id: String { rawValue }
+    }
+
+    func findBet() {
+        $searchText
+            .combineLatest($savedBets)
+            .map { searchText, bets in
+                bets?.filter { bets in
+                    if searchText.isEmpty {
+                        return true
+                    }
+
+                    let matchTeam1 = bets.team1?.localizedStandardContains(searchText) ?? false
+                    let matchTeam2 = bets.team2?.localizedStandardContains(searchText) ?? false
+                    let matchName = bets.name?.localizedStandardContains(searchText) ?? false
+
+                    return matchTeam1 || matchTeam2 || matchName
+                }
+            }
+            .assign(to: &$searchResults)
     }
 
     // MARK: Database GET methods:
@@ -91,72 +92,55 @@ class SearchVM: ObservableObject {
             .assign(to: \.savedBets, on: self)
             .store(in: &cancellables)
     }
-    
-//    func mapBets() {
-//
-//        Publishers.CombineLatest($savedBets)
-//            .map { historyBets, betslipHistory -> [BetWrapper] in
-//                let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
-//                    (betslipHistory?.map(BetWrapper.betslip) ?? [])
-//                return combinedBets.sorted(by: { $0.date > $1.date })
-//            }
-//            .assign(to: \.savedBets, on: self)
-//            .store(in: &cancellables)
-//    }
-//
-    
-    
-    
-    
+
+    func allBets() {
+        $savedBets
+            .assign(to: \.searchResults, on: self)
+            .store(in: &cancellables)
+    }
 
     func getBetsFormTheOldestDate() {
-        
+        $savedBets
+            .map { savedBets in
+                savedBets?.sorted { $0.date.compare($1.date) == .orderedAscending }
+            }
+            .assign(to: \.searchResults, on: self)
+            .store(in: &cancellables)
+    }
+
+    func getWonBets() {
+        $savedBets
+            .map { savedBets in
+                savedBets?.filter { BetWrapper in
+                    BetWrapper.isWon != nil && BetWrapper.isWon! == true
+                }
+            }
+            .assign(to: \.searchResults, on: self)
+            .store(in: &cancellables)
+    }
+
+    func getLostBets() {
+        $savedBets
+            .map { savedBets in
+                savedBets?.filter { BetWrapper in
+                    BetWrapper.isWon != nil && BetWrapper.isWon! == false
+                }
+            }
+            .assign(to: \.searchResults, on: self)
+            .store(in: &cancellables)
+    }
+
+    func getBetsByAmount() {
         $savedBets
             .map { savedBets in
                 savedBets?.sorted { $0.amount.compare($1.amount) == .orderedDescending }
             }
-            .assign(to: \.savedBets, on: self)
+            .assign(to: \.searchResults, on: self)
             .store(in: &cancellables)
-            
-        
-        Publishers.CombineLatest($bets, $betslips)
-            .map { historyBets, betslipHistory -> [BetWrapper] in
-                let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
-                    (betslipHistory?.map(BetWrapper.betslip) ?? [])
-                return combinedBets.sorted(by: { $0.date > $1.date })
-            }
-            .assign(to: \.savedBets, on: self)
-            .store(in: &cancellables)
-
-        
-        interactor.getBetsFormTheOldestDate(model: BetModel.self)
-            .map { .some($0) }
-            .assign(to: &$bets)
-    }
-
-    func getWonBets() {
-        interactor.getWonBets(model: BetModel.self)
-            .map { .some($0) }
-            .assign(to: &$bets)
-    }
-
-    func getLostBets() {
-        interactor.getLostBets(model: BetModel.self)
-            .map { .some($0) }
-            .assign(to: &$bets)
-    }
-
-    func getBetsByAmount() {
-        interactor.getBetsByAmount(model: BetModel.self)
-            .map { .some($0) }
-            .assign(to: &$bets)
     }
 
     func loadCurrency() {
-        currency = Currency(
-            rawValue: UserDefaults.standard
-                .string(forKey: "defaultCurrency") ?? "usd"
-        )!
+        currency = Currency(rawValue: interactor.loadDefaultCurrency()) ?? .usd
     }
 
 }

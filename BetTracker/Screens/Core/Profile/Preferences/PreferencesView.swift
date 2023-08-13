@@ -7,7 +7,7 @@ struct PreferencesView: View {
     var colorScheme
 
     @StateObject
-    var vm = PreferencesVM(interactor: PreferencesInteractor())
+    var vm = PreferencesVM()
 
 
     @State
@@ -95,7 +95,6 @@ struct PreferencesView: View {
         .onDisappear {
             vm.ifTaxEmpty()
             vm.savePreferences()
-            vm.save()
         }
         .onAppear {
 //            vm.loadPreferences()

@@ -7,12 +7,15 @@ protocol SearchnteractorProtocol {
     func getWonBets<T: DatabaseModel>(model: T.Type) -> AnyPublisher<[T], Never>
     func getLostBets<T: DatabaseModel>(model: T.Type) -> AnyPublisher<[T], Never>
     func getBetsByAmount<T: DatabaseModel>(model: T.Type) -> AnyPublisher<[T], Never>
+    func loadDefaultCurrency() -> String
 
 }
 
 class SearchInteractor: SearchnteractorProtocol {
+
     
     let db: BetDao
+    let detaults = UserDefaultsManager.path
 
     init(db: BetDao) {
         self.db = db
@@ -38,5 +41,8 @@ class SearchInteractor: SearchnteractorProtocol {
         db.getBetsByHiggestAmount(model: model)
     }
     
+    func loadDefaultCurrency() -> String {
+        return detaults.get(.defaultCurrency)
+    }
     
 }

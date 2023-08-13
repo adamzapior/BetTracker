@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SearchView: View {
+    
     @StateObject
     var vm = SearchVM(interactor: SearchInteractor(db: BetDao()))
 
@@ -19,7 +20,7 @@ struct SearchView: View {
                             vm.selectedSortOption = button
                             switch button {
                             case .all:
-                                vm.getSavedBets()
+                                vm.allBets()
                             case .oldest:
                                 vm.getBetsFormTheOldestDate()
                             case .won:
@@ -41,10 +42,24 @@ struct SearchView: View {
             )
             .padding(.vertical, 4)
             ScrollView {
-                LazyVStack {
-                    ForEach(vm.searchResults ?? [], id: \.id) { bet in
-                        NavigationLink(destination: BetDetailsScreen(bet: bet)) {
-                            BetListElement(bet: bet, currency: vm.currency.rawValue)
+                LazyVStack(spacing: 12) {
+                    ForEach(vm.searchResults!, id: \.id) { betWrapper in
+                        switch betWrapper {
+                        case let .bet(betModel):
+                            NavigationLink(
+                                destination: BetDetailsScreen(bet: betModel)
+                            ) {
+                                BetListElement(bet: betModel, currency: vm.currency.rawValue)
+                            }
+                        case let .betslip(betslipModel):
+                            NavigationLink(
+                                destination: BetslipDetailsScreen(bet: betslipModel)
+                            ) {
+                                BetslipListElement(
+                                    bet: betslipModel,
+                                    currency: vm.currency.rawValue
+                                )
+                            }
                         }
                     }
                 }

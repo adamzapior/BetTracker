@@ -8,6 +8,8 @@ class ProfileVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
 
+    let respository: MainInteractor
+
     @Published
     var defaultCurrency: String = "USD"
 
@@ -36,19 +38,43 @@ class ProfileVM: ObservableObject {
     var cancellables = Set<AnyCancellable>()
 
     @Published
-    var balanceValue: NSDecimalNumber = .zero
+    var betsBalanceValue: NSDecimalNumber = .zero
+    @Published
+    var betslipBalanceValue: NSDecimalNumber = .zero
+    @Published
+    var mergedBalanceValue: NSDecimalNumber = .zero
 
     @Published
-    var totalSpent: NSDecimalNumber = .zero
+    var betsTotalSpent: NSDecimalNumber = .zero
+    @Published
+    var betslipTotalSpent: NSDecimalNumber = .zero
+    @Published
+    var betsTotalSpentSubject = PassthroughSubject<NSDecimalNumber, Never>()
+    @Published
+    var betslipTotalSpentSubject = PassthroughSubject<NSDecimalNumber, Never>()
+    @Published
+    var mergedTotalSpent: NSDecimalNumber = .zero
 
     @Published
-    var wonBetsCount: NSDecimalNumber = .zero
+    var betsWonBetsCount: NSDecimalNumber = .zero
+    @Published
+    var betslipWonBetsCount: NSDecimalNumber = .zero
+    @Published
+    var mergedWonBetsCount: NSDecimalNumber = .zero
 
     @Published
-    var lostBetsCount: NSDecimalNumber = .zero
+    var betsLostBetsCount: NSDecimalNumber = .zero
+    @Published
+    var betslipLostBetsCount: NSDecimalNumber = .zero
+    @Published
+    var mergedLostBetsCount: NSDecimalNumber = .zero
 
     @Published
-    var pendingBetsCount: NSDecimalNumber = .zero
+    var betsPendingBetsCount: NSDecimalNumber = .zero
+    @Published
+    var betslipPendingBetsCount: NSDecimalNumber = .zero
+    @Published
+    var mergedPendingBetsCount: NSDecimalNumber = .zero
 
     var wonRate: Double {
         0 // to fix
@@ -59,33 +85,70 @@ class ProfileVM: ObservableObject {
     }
 
     @Published
-    var avgWonBet: NSDecimalNumber = .zero
+    var betsAvgWonBet: NSDecimalNumber = .zero
+    @Published
+    var betslipAvgWonBet: NSDecimalNumber = .zero
+    @Published
+    var mergedAvgWonBet: NSDecimalNumber = .zero
 
     @Published
-    var avgLostBet: NSDecimalNumber = .zero
+    var betsAvgLostBet: NSDecimalNumber = .zero
+    @Published
+    var betslipAvgLostBet: NSDecimalNumber = .zero
+    @Published
+    var mergedAvgLostBet: NSDecimalNumber = .zero
 
     @Published
-    var avgAmountBet: NSDecimalNumber = .zero
+    var betsAvgAmountBet: NSDecimalNumber = .zero
+    @Published
+    var betslipAvgAmountBet: NSDecimalNumber = .zero
+    @Published
+    var mergedAvgAmountBet: NSDecimalNumber = .zero
 
     @Published
-    var largestBetProfit: NSDecimalNumber = .zero
+    var betsLargestBetProfit: NSDecimalNumber = .zero
+    @Published
+    var betslipLargestBetProfit: NSDecimalNumber = .zero
+    @Published
+    var mergedLargestBetProfit: NSDecimalNumber = .zero
 
     @Published
-    var biggestBetLoss: NSDecimalNumber = .zero
+    var betsBiggestBetLoss: NSDecimalNumber = .zero
+    @Published
+    var betslipBiggestBetLoss: NSDecimalNumber = .zero
+    @Published
+    var mergedBiggestBetLoss: NSDecimalNumber = .zero
 
     @Published
-    var higgestBetOddsWon: NSDecimalNumber = .zero
+    var betsHiggestBetOddsWon: NSDecimalNumber = .zero
+    @Published
+    var betslipHiggestBetOddsWon: NSDecimalNumber = .zero
+    @Published
+    var mergedHiggestBetOddsWon: NSDecimalNumber = .zero
 
     @Published
-    var higgestBetAmount: NSDecimalNumber = .zero
+    var betsHiggestBetAmount: NSDecimalNumber = .zero
+    @Published
+    var betslipHiggestBetAmount: NSDecimalNumber = .zero
+    @Published
+    var mergedHiggestBetAmount: NSDecimalNumber = .zero
+
 
     let currentDate = Date()
     let calendar = Calendar.current
 
-    init() {
+    init(respository: MainInteractor) {
+        self.respository = respository
+        
         getDefaultCurrency() // default preferences
         getDefaultUsername()
 
+        fetchData()
+    }
+
+    // MARK: fetchData
+    
+    func fetchData() {
         getBalanceValue()
         getTotalSpent()
         getWonBetsCount()
@@ -99,45 +162,192 @@ class ProfileVM: ObservableObject {
         getHiggestBetOddsWon()
         getHiggestBetAmount()
     }
+    
+    
+    // MARK: - fetchData methods.
 
-    // MARK: - Querries to DB for values stored in @Published variables.
+    enum TableName: String, CaseIterable {
+        case bet
+        case betslip
+    }
+
+    enum StartDate {
+        case last7days
+        case lastMonth
+        case lastYear
+        case allTime
+
+        var dateValue: Date? {
+            let calendar = Calendar.current
+            let currentDate = Date()
+            switch self {
+            case .last7days:
+                return calendar.date(byAdding: .day, value: -7, to: currentDate)
+            case .lastMonth:
+                return calendar.date(byAdding: .month, value: -1, to: currentDate)
+            case .lastYear:
+                return calendar.date(byAdding: .year, value: -1, to: currentDate)
+            case .allTime:
+                return calendar.date(byAdding: .year, value: -30, to: currentDate)
+            }
+        }
+    }
+
+    func mergeValues(
+        bet: NSDecimalNumber,
+        betslip: NSDecimalNumber,
+        resultKeyPath: ReferenceWritableKeyPath<ProfileVM, NSDecimalNumber>
+    ) {
+        Publishers.CombineLatest(Just(bet), Just(betslip))
+            .map { betValue, betslipValue -> NSDecimalNumber in
+                betValue.adding(betslipValue)
+            }
+            .assign(to: resultKeyPath, on: self)
+            .store(in: &cancellables)
+    }
+    
+    func mergeValues2(
+        bet: NSDecimalNumber,
+        betslip: NSDecimalNumber,
+        resultKeyPath: ReferenceWritableKeyPath<ProfileVM, NSDecimalNumber>
+    ) async {
+        let result = bet.adding(betslip)
+        self[keyPath: resultKeyPath] = result
+    }
 
     /// ** Balance Value **
     ///
     func getBalanceValue() {
         switch currentStatsState {
         case .week:
-            BetDao.getLast7DaysBalanceValue()
-                .sink(
-                    receiveValue: { balance in
-                        self.balanceValue = balance
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getBalanceValue(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betsBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBalanceValue(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBalanceValue,
+                betslip: betslipBalanceValue,
+                resultKeyPath: \.mergedBalanceValue
+            )
+
         case .month:
-            BetDao.getLastMonthBalanceValue()
-                .sink(
-                    receiveValue: { balance in
-                        self.balanceValue = balance
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getBalanceValue(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betsBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBalanceValue(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBalanceValue,
+                betslip: betslipBalanceValue,
+                resultKeyPath: \.mergedBalanceValue
+            )
         case .year:
-            BetDao.getLastYearBalanceValue()
-                .sink(
-                    receiveValue: { balance in
-                        self.balanceValue = balance
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getBalanceValue(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betsBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBalanceValue(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBalanceValue,
+                betslip: betslipBalanceValue,
+                resultKeyPath: \.mergedBalanceValue
+            )
         case .alltime:
-            BetDao.getBalanceValue()
-                .sink(
-                    receiveValue: { balance in
-                        self.balanceValue = balance
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getBalanceValue(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betsBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBalanceValue(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBalanceValue = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBalanceValue,
+                betslip: betslipBalanceValue,
+                resultKeyPath: \.mergedBalanceValue
+            )
         }
     }
 
@@ -146,52 +356,165 @@ class ProfileVM: ObservableObject {
     func getTotalSpent() {
         switch currentStatsState {
         case .week:
-            BetDao
-                .getTotalSpentByPeroid(
-                    startDate: calendar
-                        .date(byAdding: .day, value: -7, to: currentDate)!
+            respository.getTotalSpent(
+                    model: BetModel.self,
+                    tableName: TableName.bet.rawValue,
+                    startDate: StartDate.last7days.dateValue!
                 )
+                .receive(on: DispatchQueue.main)
                 .sink(
-                    receiveValue: { sum in
-                        self.totalSpent = sum
+                    receiveValue: { [weak self] balance in
+                        self?.betsTotalSpent = balance
+                        self?.betsTotalSpentSubject.send(balance)
                     }
                 )
                 .store(in: &cancellables)
+
+                //... W Twoim kodzie
+
+                respository.getBalanceValue(
+                    model: BetslipModel.self,
+                    tableName: TableName.betslip.rawValue,
+                    startDate: StartDate.last7days.dateValue!
+                )
+                .receive(on: DispatchQueue.main)
+                .sink(
+                    receiveValue: { [weak self] balance in
+                        self?.betslipTotalSpent = balance
+                        self?.betslipTotalSpentSubject.send(balance)
+                    }
+                )
+                .store(in: &cancellables)
+
+                // Teraz łączymy oba strumienie i wywołujemy mergeValues tylko wtedy, gdy obie wartości są dostępne
+                Publishers.CombineLatest(betsTotalSpentSubject, betslipTotalSpentSubject)
+                    .sink { [weak self] (betValue, betslipValue) in
+                        self?.mergeValues(
+                            bet: betValue,
+                            betslip: betslipValue,
+                            resultKeyPath: \.mergedBalanceValue
+                        )
+                    }
+                    .store(in: &cancellables)
+//            mergeValues(
+//                bet: betsTotalSpent,
+//                betslip: betslipTotalSpent,
+//                resultKeyPath: \.mergedTotalSpent
+//            )
 
         case .month:
-            BetDao
-                .getTotalSpentByPeroid(
-                    startDate: calendar
-                        .date(byAdding: .month, value: -1, to: currentDate)!
-                )
-                .sink(
-                    receiveValue: { sum in
-                        self.totalSpent = sum
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getTotalSpent(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betsTotalSpent = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getTotalSpent(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipTotalSpent = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            
+            
+            Task {
+                await mergeValues2(bet: betsTotalSpent, betslip: betslipTotalSpent, resultKeyPath: \.mergedTotalSpent)
+            }
+//            mergeValues(
+//                bet: betsTotalSpent,
+//                betslip: betslipTotalSpent,
+//                resultKeyPath: \.mergedTotalSpent
+//            )
 
         case .year:
-            BetDao
-                .getTotalSpentByPeroid(
-                    startDate: calendar
-                        .date(byAdding: .year, value: -1, to: currentDate)!
-                )
-                .sink(
-                    receiveValue: { sum in
-                        self.totalSpent = sum
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getTotalSpent(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betsTotalSpent = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getTotalSpent(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipTotalSpent = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            
+            Task {
+                await mergeValues2(bet: betsTotalSpent, betslip: betslipTotalSpent, resultKeyPath: \.mergedTotalSpent)
+            }
+//            mergeValues(
+//                bet: betsTotalSpent,
+//                betslip: betslipTotalSpent,
+//                resultKeyPath: \.mergedTotalSpent
+//            )
 
         case .alltime:
-            BetDao.getTotalSpent()
-                .sink(
-                    receiveValue: { sum in
-                        self.totalSpent = sum
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getTotalSpent(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betsTotalSpent = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getTotalSpent(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipTotalSpent = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            
+            
+            Task {
+                await mergeValues2(bet: betsTotalSpent, betslip: betslipTotalSpent, resultKeyPath: \.mergedTotalSpent)
+            }
+            
+//            mergeValues(
+//                bet: betsTotalSpent,
+//                betslip: betslipTotalSpent,
+//                resultKeyPath: \.mergedTotalSpent
+//            )
         }
     }
 
@@ -200,49 +523,136 @@ class ProfileVM: ObservableObject {
     func getWonBetsCount() {
         switch currentStatsState {
         case .week:
-            BetDao.getWonBetsCounyByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: true
             )
             .sink(
-                receiveValue: { sum in
-                    self.wonBetsCount = sum
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsWonBetsCount,
+                betslip: betslipWonBetsCount,
+                resultKeyPath: \.mergedWonBetsCount
+            )
 
         case .month:
-            BetDao.getWonBetsCounyByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: true
             )
             .sink(
-                receiveValue: { sum in
-                    self.wonBetsCount = sum
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsWonBetsCount,
+                betslip: betslipWonBetsCount,
+                resultKeyPath: \.mergedWonBetsCount
+            )
 
         case .year:
-            BetDao.getWonBetsCounyByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: true
             )
             .sink(
-                receiveValue: { sum in
-                    self.wonBetsCount = sum
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsWonBetsCount,
+                betslip: betslipWonBetsCount,
+                resultKeyPath: \.mergedWonBetsCount
+            )
+
         case .alltime:
-            BetDao.getWonBetsCount()
-                .sink(
-                    receiveValue: { sum in
-                        self.wonBetsCount = sum
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsWonBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsWonBetsCount,
+                betslip: betslipWonBetsCount,
+                resultKeyPath: \.mergedWonBetsCount
+            )
         }
     }
 
@@ -251,59 +661,171 @@ class ProfileVM: ObservableObject {
     func getLostBetsCount() {
         switch currentStatsState {
         case .week:
-            BetDao.getLostBetsCountByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: false
             )
             .sink(
-                receiveValue: { count in
-                    self.lostBetsCount = count
+                receiveValue: { balance in
+                    self.betsLostBetsCount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipLostBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLostBetsCount,
+                betslip: betslipLostBetsCount,
+                resultKeyPath: \.mergedLostBetsCount
+            )
+
         case .month:
-            BetDao.getLostBetsCountByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: false
             )
             .sink(
-                receiveValue: { count in
-                    self.lostBetsCount = count
+                receiveValue: { balance in
+                    self.betsLostBetsCount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipLostBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLostBetsCount,
+                betslip: betslipLostBetsCount,
+                resultKeyPath: \.mergedLostBetsCount
+            )
         case .year:
-            BetDao.getLostBetsCountByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: false
             )
             .sink(
-                receiveValue: { count in
-                    self.lostBetsCount = count
+                receiveValue: { balance in
+                    self.betsLostBetsCount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipLostBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLostBetsCount,
+                betslip: betslipLostBetsCount,
+                resultKeyPath: \.mergedLostBetsCount
+            )
         case .alltime:
-            BetDao.getLostBetsCount()
-                .sink(
-                    receiveValue: { count in
-                        self.lostBetsCount = count
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getBetsCount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsLostBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBetsCount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipLostBetsCount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLostBetsCount,
+                betslip: betslipLostBetsCount,
+                resultKeyPath: \.mergedLostBetsCount
+            )
         }
     }
 
     // ** Pending Bets Count **
 
     func getPendingBetsCount() {
-        BetDao.getPeningBetsCount()
-            .sink(
-                receiveValue: { count in
-                    self.pendingBetsCount = count
-                }
-            )
-            .store(in: &cancellables)
+        respository.getBetsCount(
+            model: BetModel.self,
+            tableName: TableName.bet.rawValue,
+            startDate: StartDate.allTime.dateValue!,
+            isWon: nil
+        )
+        .sink(
+            receiveValue: { balance in
+                self.betsPendingBetsCount = balance
+            }
+        )
+        .store(in: &cancellables)
+
+        respository.getBetsCount(
+            model: BetslipModel.self,
+            tableName: TableName.betslip.rawValue,
+            startDate: StartDate.allTime.dateValue!,
+            isWon: nil
+        )
+        .sink(
+            receiveValue: { balance in
+                self.betslipPendingBetsCount = balance
+            }
+        )
+        .store(in: &cancellables)
+
+        mergeValues(
+            bet: betsPendingBetsCount,
+            betslip: betslipPendingBetsCount,
+            resultKeyPath: \.mergedPendingBetsCount
+        )
     }
 
     // ** Avg Won  Bets  **
@@ -311,47 +833,134 @@ class ProfileVM: ObservableObject {
     func getAvgWonBet() {
         switch currentStatsState {
         case .week:
-            BetDao.getAvgWonBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: true
             )
             .sink(
-                receiveValue: { avg in
-                    self.avgWonBet = avg
-                }
-            )
-            .store(in: &cancellables)
-        case .month:
-            BetDao.getAvgWonBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
-            )
-            .sink(
-                receiveValue: { avg in
-                    self.avgWonBet = avg
+                receiveValue: { balance in
+                    self.betsAvgWonBet = balance
                 }
             )
             .store(in: &cancellables)
 
-        case .year:
-            BetDao.getAvgWonBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: true
             )
             .sink(
-                receiveValue: { avg in
-                    self.avgWonBet = avg
+                receiveValue: { balance in
+                    self.betslipAvgWonBet = balance
                 }
             )
             .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgWonBet,
+                betslip: betslipAvgWonBet,
+                resultKeyPath: \.mergedAvgWonBet
+            )
+
+        case .month:
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsAvgWonBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgWonBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgWonBet,
+                betslip: betslipAvgWonBet,
+                resultKeyPath: \.mergedAvgWonBet
+            )
+        case .year:
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsAvgWonBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgWonBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgWonBet,
+                betslip: betslipAvgWonBet,
+                resultKeyPath: \.mergedAvgWonBet
+            )
         case .alltime:
-            BetDao.getAvgWonBet()
-                .sink(
-                    receiveValue: { avg in
-                        self.avgWonBet = avg
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsAvgWonBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: true
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgWonBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgWonBet,
+                betslip: betslipAvgWonBet,
+                resultKeyPath: \.mergedAvgWonBet
+            )
         }
     }
 
@@ -360,49 +969,135 @@ class ProfileVM: ObservableObject {
     func getAvgLostBet() {
         switch currentStatsState {
         case .week:
-            BetDao.getAvgLostBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: false
             )
             .sink(
-                receiveValue: { avg in
-                    self.avgAmountBet = avg
+                receiveValue: { balance in
+                    self.betsAvgLostBet = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgLostBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgLostBet,
+                betslip: betslipAvgLostBet,
+                resultKeyPath: \.mergedAvgLostBet
+            )
 
         case .month:
-            BetDao.getAvgLostBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: false
             )
             .sink(
-                receiveValue: { avg in
-                    self.avgAmountBet = avg
+                receiveValue: { balance in
+                    self.betsAvgLostBet = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgLostBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgLostBet,
+                betslip: betslipAvgLostBet,
+                resultKeyPath: \.mergedAvgLostBet
+            )
 
         case .year:
-            BetDao.getAvgLostBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: false
             )
             .sink(
-                receiveValue: { avg in
-                    self.avgAmountBet = avg
+                receiveValue: { balance in
+                    self.betsAvgLostBet = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgLostBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgLostBet,
+                betslip: betslipAvgLostBet,
+                resultKeyPath: \.mergedAvgLostBet
+            )
         case .alltime:
-            BetDao.getAvgLostBet()
-                .sink(
-                    receiveValue: { avg in
-                        self.avgLostBet = avg
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getAvgWonBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betsAvgLostBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getAvgWonBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!,
+                isWon: false
+            )
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgLostBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgLostBet,
+                betslip: betslipAvgLostBet,
+                resultKeyPath: \.mergedAvgLostBet
+            )
         }
     }
 
@@ -411,49 +1106,117 @@ class ProfileVM: ObservableObject {
     func getAvgAmountBet() {
         switch currentStatsState {
         case .week:
-            BetDao.getAvgAmountBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
-            )
+            respository.getAvgAmountBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!)
             .sink(
-                receiveValue: { avg in
-                    self.avgAmountBet = avg
+                receiveValue: { balance in
+                    self.betsAvgAmountBet = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getAvgAmountBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgAmountBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgAmountBet,
+                betslip: betslipAvgAmountBet,
+                resultKeyPath: \.mergedAvgAmountBet
+            )
         case .month:
-            BetDao.getAvgAmountBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
-            )
+            respository.getAvgAmountBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
             .sink(
-                receiveValue: { avg in
-                    self.avgAmountBet = avg
+                receiveValue: { balance in
+                    self.betsAvgAmountBet = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getAvgAmountBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgAmountBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgAmountBet,
+                betslip: betslipAvgAmountBet,
+                resultKeyPath: \.mergedAvgAmountBet
+            )
         case .year:
-            BetDao.getAvgAmountBetByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
-            )
+            respository.getAvgAmountBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
             .sink(
-                receiveValue: { avg in
-                    self.avgAmountBet = avg
+                receiveValue: { balance in
+                    self.betsAvgAmountBet = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getAvgAmountBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgAmountBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgAmountBet,
+                betslip: betslipAvgAmountBet,
+                resultKeyPath: \.mergedAvgAmountBet
+            )
         case .alltime:
-            BetDao.getAvgAmountBet()
-                .sink(
-                    receiveValue: { avg in
-                        self.avgAmountBet = avg
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getAvgAmountBet(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betsAvgAmountBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getAvgAmountBet(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipAvgAmountBet = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsAvgAmountBet,
+                betslip: betslipAvgAmountBet,
+                resultKeyPath: \.mergedAvgAmountBet
+            )
         }
     }
 
@@ -462,49 +1225,118 @@ class ProfileVM: ObservableObject {
     func getLargestBetProfit() {
         switch currentStatsState {
         case .week:
-            BetDao.getLargestBetProfitByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
-            )
+            respository.getLargestBetProfit(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!)
             .sink(
-                receiveValue: { largestBetProfit in
-                    self.largestBetProfit = largestBetProfit
+                receiveValue: { balance in
+                    self.betsLargestBetProfit = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getLargestBetProfit(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipLargestBetProfit = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLargestBetProfit,
+                betslip: betslipLargestBetProfit,
+                resultKeyPath: \.mergedLargestBetProfit
+            )
         case .month:
-            BetDao.getLargestBetProfitByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
-            )
+            respository.getLargestBetProfit(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
             .sink(
-                receiveValue: { largestBetProfit in
-                    self.largestBetProfit = largestBetProfit
+                receiveValue: { balance in
+                    self.betsLargestBetProfit = balance
                 }
             )
             .store(in: &cancellables)
 
-        case .year:
-            BetDao.getLargestBetProfitByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
-            )
+            respository.getLargestBetProfit(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
             .sink(
-                receiveValue: { largestBetProfit in
-                    self.largestBetProfit = largestBetProfit
+                receiveValue: { balance in
+                    self.betslipLargestBetProfit = balance
                 }
             )
             .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLargestBetProfit,
+                betslip: betslipLargestBetProfit,
+                resultKeyPath: \.mergedLargestBetProfit
+            )
+        case .year:
+            respository.getLargestBetProfit(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betsLargestBetProfit = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getLargestBetProfit(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipLargestBetProfit = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLargestBetProfit,
+                betslip: betslipLargestBetProfit,
+                resultKeyPath: \.mergedLargestBetProfit
+            )
 
         case .alltime:
-            BetDao.getLargestBetProfit()
-                .sink(
-                    receiveValue: { largestBetProfit in
-                        self.largestBetProfit = largestBetProfit
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getLargestBetProfit(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betsLargestBetProfit = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getLargestBetProfit(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipLargestBetProfit = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsLargestBetProfit,
+                betslip: betslipLargestBetProfit,
+                resultKeyPath: \.mergedLargestBetProfit
+            )
         }
     }
 
@@ -513,49 +1345,120 @@ class ProfileVM: ObservableObject {
     func getBiggestBetLoss() {
         switch currentStatsState {
         case .week:
-            BetDao.getBiggestBetLossByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
-            )
+            respository.getBiggestBetLoss(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!)
             .sink(
-                receiveValue: { biggestLoss in
-                    self.biggestBetLoss = biggestLoss
+                receiveValue: { balance in
+                    self.betsBiggestBetLoss = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBiggestBetLoss = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBiggestBetLoss,
+                betslip: betslipBiggestBetLoss,
+                resultKeyPath: \.mergedBiggestBetLoss
+            )
 
         case .month:
-            BetDao.getBiggestBetLossByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
-            )
+            respository.getBiggestBetLoss(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
             .sink(
-                receiveValue: { biggestLoss in
-                    self.biggestBetLoss = biggestLoss
+                receiveValue: { balance in
+                    self.betsBiggestBetLoss = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBiggestBetLoss = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBiggestBetLoss,
+                betslip: betslipBiggestBetLoss,
+                resultKeyPath: \.mergedBiggestBetLoss
+            )
 
         case .year:
-            BetDao.getBiggestBetLossByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
-            )
+            respository.getBiggestBetLoss(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
             .sink(
-                receiveValue: { biggestLoss in
-                    self.biggestBetLoss = biggestLoss
+                receiveValue: { balance in
+                    self.betsBiggestBetLoss = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBiggestBetLoss = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBiggestBetLoss,
+                betslip: betslipBiggestBetLoss,
+                resultKeyPath: \.mergedBiggestBetLoss
+            )
+
         case .alltime:
-            BetDao.getBiggestBetLoss()
-                .sink(
-                    receiveValue: { biggestLoss in
-                        self.biggestBetLoss = biggestLoss
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getBiggestBetLoss(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betsBiggestBetLoss = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipBiggestBetLoss = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsBiggestBetLoss,
+                betslip: betslipBiggestBetLoss,
+                resultKeyPath: \.mergedBiggestBetLoss
+            )
         }
     }
 
@@ -564,49 +1467,118 @@ class ProfileVM: ObservableObject {
     func getHiggestBetOddsWon() {
         switch currentStatsState {
         case .week:
-            BetDao.getHiggestBetOddsWonByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
-            )
+            respository.getHiggestBetOddsWon(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!)
             .sink(
-                receiveValue: { higgestOds in
-                    self.higgestBetOddsWon = higgestOds
+                receiveValue: { balance in
+                    self.betsHiggestBetOddsWon = balance
                 }
             )
             .store(in: &cancellables)
 
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipHiggestBetOddsWon = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetOddsWon,
+                betslip: betslipHiggestBetOddsWon,
+                resultKeyPath: \.mergedHiggestBetOddsWon
+            )
         case .month:
-            BetDao.getHiggestBetOddsWonByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
-            )
+            respository.getHiggestBetOddsWon(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
             .sink(
-                receiveValue: { higgestOds in
-                    self.higgestBetOddsWon = higgestOds
+                receiveValue: { balance in
+                    self.betsHiggestBetOddsWon = balance
                 }
             )
             .store(in: &cancellables)
 
-        case .year:
-            BetDao.getHiggestBetOddsWonByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
-            )
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
             .sink(
-                receiveValue: { higgestOds in
-                    self.higgestBetOddsWon = higgestOds
+                receiveValue: { balance in
+                    self.betslipHiggestBetOddsWon = balance
                 }
             )
             .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetOddsWon,
+                betslip: betslipHiggestBetOddsWon,
+                resultKeyPath: \.mergedHiggestBetOddsWon
+            )
+        case .year:
+            respository.getHiggestBetOddsWon(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betsHiggestBetOddsWon = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipHiggestBetOddsWon = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetOddsWon,
+                betslip: betslipHiggestBetOddsWon,
+                resultKeyPath: \.mergedHiggestBetOddsWon
+            )
 
         case .alltime:
-            BetDao.getHiggestBetOddsWon()
-                .sink(
-                    receiveValue: { higgestOds in
-                        self.higgestBetOddsWon = higgestOds
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getHiggestBetOddsWon(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betsHiggestBetOddsWon = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getBiggestBetLoss(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipHiggestBetOddsWon = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetOddsWon,
+                betslip: betslipHiggestBetOddsWon,
+                resultKeyPath: \.mergedHiggestBetOddsWon
+            )
         }
     }
 
@@ -615,46 +1587,117 @@ class ProfileVM: ObservableObject {
     func getHiggestBetAmount() {
         switch currentStatsState {
         case .week:
-            BetDao.getHiggestBetAmountByPeroid(
-                startDate: calendar
-                    .date(byAdding: .day, value: -7, to: currentDate)!
-            )
+            respository.getHiggestBetAmount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.last7days.dateValue!)
             .sink(
-                receiveValue: { higgestAmount in
-                    self.higgestBetAmount = higgestAmount
+                receiveValue: { balance in
+                    self.betsHiggestBetAmount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getHiggestBetAmount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.last7days.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipHiggestBetAmount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetAmount,
+                betslip: betslipHiggestBetAmount,
+                resultKeyPath: \.mergedHiggestBetAmount
+            )
         case .month:
-            BetDao.getHiggestBetAmountByPeroid(
-                startDate: calendar
-                    .date(byAdding: .month, value: -1, to: currentDate)!
-            )
+            respository.getHiggestBetAmount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
             .sink(
-                receiveValue: { higgestAmount in
-                    self.higgestBetAmount = higgestAmount
+                receiveValue: { balance in
+                    self.betsHiggestBetAmount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getHiggestBetAmount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastMonth.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipHiggestBetAmount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetAmount,
+                betslip: betslipHiggestBetAmount,
+                resultKeyPath: \.mergedHiggestBetAmount
+            )
         case .year:
-            BetDao.getHiggestBetAmountByPeroid(
-                startDate: calendar
-                    .date(byAdding: .year, value: -1, to: currentDate)!
-            )
+            respository.getHiggestBetAmount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
             .sink(
-                receiveValue: { higgestAmount in
-                    self.higgestBetAmount = higgestAmount
+                receiveValue: { balance in
+                    self.betsHiggestBetAmount = balance
                 }
             )
             .store(in: &cancellables)
+
+            respository.getHiggestBetAmount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.lastYear.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipHiggestBetAmount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetAmount,
+                betslip: betslipHiggestBetAmount,
+                resultKeyPath: \.mergedHiggestBetAmount
+            )
         case .alltime:
-            BetDao.getHiggestBetAmount()
-                .sink(
-                    receiveValue: { higgestAmount in
-                        self.higgestBetAmount = higgestAmount
-                    }
-                )
-                .store(in: &cancellables)
+            respository.getHiggestBetAmount(
+                model: BetModel.self,
+                tableName: TableName.bet.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betsHiggestBetAmount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            respository.getHiggestBetAmount(
+                model: BetslipModel.self,
+                tableName: TableName.betslip.rawValue,
+                startDate: StartDate.allTime.dateValue!)
+            .sink(
+                receiveValue: { balance in
+                    self.betslipHiggestBetAmount = balance
+                }
+            )
+            .store(in: &cancellables)
+
+            mergeValues(
+                bet: betsHiggestBetAmount,
+                betslip: betslipHiggestBetAmount,
+                resultKeyPath: \.mergedHiggestBetAmount
+            )
         }
     }
 

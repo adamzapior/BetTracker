@@ -7,7 +7,7 @@ struct ProfileView: View {
     var colorScheme
 
     @StateObject
-    var vm = ProfileVM()
+    var vm = ProfileVM(respository: MainInteractor(db: BetDao()))
 
     @StateObject
     var vmProfilePhoto = ProfilePhotoVM()
@@ -60,9 +60,10 @@ struct ProfileView: View {
                 ZStack {
                     Group {
                         VStack(spacing: 12) {
+                            Button("tescik", action: vm.fetchData)
                             BalanceRow(
                                 cellTitle: "YOUR TOTAL BALANCE",
-                                valueText: vm.balanceValue.doubleValue.formattedWith2Digits(),
+                                valueText: vm.mergedBalanceValue.doubleValue.formattedWith2Digits(),
                                 font: .title2,
                                 currency: vm.defaultCurrency.uppercased()
                             )
@@ -70,7 +71,7 @@ struct ProfileView: View {
                             HStack {
                                 BalanceRow(
                                     cellTitle: "TOTAL SPENT",
-                                    valueText: vm.totalSpent.doubleValue.formattedWith2Digits(),
+                                    valueText: vm.mergedTotalSpent.doubleValue.formattedWith2Digits(),
                                     currency: vm.defaultCurrency.uppercased()
                                 )
                                 WonRateRow(
@@ -87,9 +88,9 @@ struct ProfileView: View {
                                 text: "PENDING",
                                 text2: "WON",
                                 text3: "LOST",
-                                betsPendingText: vm.pendingBetsCount.stringValue,
-                                betsPendingText2: vm.wonBetsCount.stringValue,
-                                betsPendingText3: vm.lostBetsCount.stringValue
+                                betsPendingText: vm.mergedPendingBetsCount.stringValue,
+                                betsPendingText2: vm.mergedWonBetsCount.stringValue,
+                                betsPendingText3: vm.mergedLostBetsCount.stringValue
                             )
 
                             BetAverageRow(
@@ -100,9 +101,9 @@ struct ProfileView: View {
                                 text1: "AVG WON",
                                 text2: "AVG LOSE",
                                 text3: "AVG AMOUNT",
-                                betsPendingText: vm.avgWonBet.doubleValue.formattedWith2Digits(),
-                                betsPendingText2: vm.avgLostBet.doubleValue.formattedWith2Digits(),
-                                betsPendingText3: vm.avgAmountBet.doubleValue
+                                betsPendingText: vm.mergedAvgWonBet.doubleValue.formattedWith2Digits(),
+                                betsPendingText2: vm.mergedAvgLostBet.doubleValue.formattedWith2Digits(),
+                                betsPendingText3: vm.mergedAvgAmountBet.doubleValue
                                     .formattedWith2Digits(),
                                 currency: vm.defaultCurrency.uppercased()
                             )
@@ -110,25 +111,25 @@ struct ProfileView: View {
                             HStack {
                                 BalanceRow(
                                     cellTitle: "LARGEST NET PROFIT",
-                                    valueText: vm.largestBetProfit.stringValue,
+                                    valueText: vm.mergedLargestBetProfit.stringValue,
                                     currency: vm.defaultCurrency.uppercased()
                                 )
                                 BalanceRow(
                                     cellTitle: "BIGGEST LOSS",
-                                    valueText: vm.biggestBetLoss.stringValue,
+                                    valueText: vm.mergedBiggestBetLoss.stringValue,
                                     currency: vm.defaultCurrency.uppercased()
                                 )
                             }
                             HStack {
                                 BalanceRow(
                                     cellTitle: "HIGHEST ODDS WON",
-                                    valueText: vm.higgestBetOddsWon.doubleValue
+                                    valueText: vm.mergedHiggestBetOddsWon.doubleValue
                                         .formattedWith2Digits(),
                                     currency: vm.defaultCurrency.uppercased()
                                 )
                                 BalanceRow(
                                     cellTitle: "HIGGEST AMOUNT",
-                                    valueText: vm.higgestBetAmount.stringValue,
+                                    valueText: vm.mergedHiggestBetAmount.stringValue,
                                     currency: vm.defaultCurrency.uppercased()
                                 )
                             }
@@ -141,6 +142,11 @@ struct ProfileView: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.horizontal, -8)
         }
+//        .onAppear {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                vm.fetchData()
+//            }
+//        }
         .onDisappear {
             vmProfilePhoto.saveImageIfNeeded()
         }

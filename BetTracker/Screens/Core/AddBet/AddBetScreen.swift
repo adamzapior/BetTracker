@@ -17,8 +17,6 @@ struct AddBetScreen: View {
     @StateObject
     var vm = AddBetVM()
 
-    
-    
     @State
     var alertCheck: Bool = false
 
@@ -396,7 +394,6 @@ struct AddBetScreen: View {
                             AddBetButton(text: "Add bet to pending") {
                                 if vm.saveBetslip() {
                                     dismiss()
-                                    vm.clearTextField()
                                 } else {
                                     alertCheck = true
                                 }
@@ -406,9 +403,7 @@ struct AddBetScreen: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .onAppear {
-                    vm.clearTextField()
-                }
+                .onAppear { }
             }
         }
         .padding(.top, 12)
@@ -421,6 +416,20 @@ struct AddBetScreen: View {
         .onAppear {
             print(vm.tax)
             vm.loadTextInTextfield()
+        }
+    }
+}
+
+struct AddBetAlert: View {
+    let title: String
+    @Binding
+    var text: String
+    @Binding
+    var isPresented: Bool
+
+    var body: some View {
+        VStack {
+            Text("")
         }
     }
 }

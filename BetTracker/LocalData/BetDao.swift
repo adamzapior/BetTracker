@@ -41,12 +41,15 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    func getPendingBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
+    func getPendingBets<T: DatabaseModel>(
+        model _: T.Type,
+        tableName: String
+    ) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
                 try T.fetchAll(
                     db,
-                    sql: "SELECT * FROM bet WHERE isWon IS NULL"
+                    sql: "SELECT * FROM \(tableName) WHERE isWon IS NULL"
                 )
             }
             .publisher(in: BetDb.db)
@@ -54,27 +57,15 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    func getHistoryBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
+    func getHistoryBets<T: DatabaseModel>(
+        model _: T.Type,
+        tableName: String
+    ) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
                 try T.fetchAll(
                     db,
-                    sql: "SELECT * FROM bet WHERE isWon IS NOT NULL ORDER BY date DESC"
-                )
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    // for Chart:
-
-    static func sevenDaysHistory() -> AnyPublisher<[BetModel], Never> {
-        ValueObservation
-            .tracking { db in
-                try BetModel.fetchAll(
-                    db,
-                    sql: "SELECT * FROM bet WHERE date date >= DATE_SUB(NOW(), INTERVAL 7 DAY)"
+                    sql: "SELECT * FROM \(tableName) WHERE isWon IS NOT NULL ORDER BY date DESC"
                 )
             }
             .publisher(in: BetDb.db)
@@ -111,7 +102,7 @@ class BetDao {
 
     // MARK: - Queries for SearachView & VM buttons
 
-     func getBetsFormTheOldestDate<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never>  {
+    func getBetsFormTheOldestDate<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
                 try T.fetchAll(
@@ -124,7 +115,7 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-     func getWonBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never>  {
+    func getWonBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
                 try T.fetchAll(
@@ -137,7 +128,7 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-     func getLostBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never>  {
+    func getLostBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
                 try T.fetchAll(
@@ -150,7 +141,7 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-     func getBetsByHiggestAmount<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never>  {
+    func getBetsByHiggestAmount<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
                 try T.fetchAll(
@@ -166,60 +157,17 @@ class BetDao {
     // MARK: Queries for ProfileVM
 
     /// ** Balance Value **
-    static func getBalanceValue() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getBalanceValue(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT SUM (score) FROM bet"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getLast7DaysBalanceValue() -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                let startDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-                return try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT SUM(score) FROM bet WHERE date >= ?",
-                        arguments: [startDate]
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getLastMonthBalanceValue() -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                let startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
-                return try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT SUM(score) FROM bet WHERE date >= ?",
-                        arguments: [startDate]
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getLastYearBalanceValue() -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                let startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
-                return try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT SUM(score) FROM bet WHERE date >= ?",
+                        sql: "SELECT SUM (score) FROM \(tableName) WHERE date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }
@@ -230,27 +178,17 @@ class BetDao {
 
     /// ** Total spent values **
     ///
-    static func getTotalSpent() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getTotalSpent(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT SUM (amount) FROM bet"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getTotalSpentByPeroid(startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT SUM (amount) FROM bet WHERE date >= ?",
+                        sql: "SELECT SUM (amount) FROM \(tableName) WHERE date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }
@@ -259,13 +197,40 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    static func getWonBetsCount() -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
+//    func getBetsCount(
+//        model _: (some DatabaseModel).Type,
+//        tableName: String,
+//        startDate: Date,
+//        isWon: Bool
+//    ) -> AnyPublisher<NSDecimalNumber, Never> {
+//        ValueObservation
+//            .tracking { db in
+//                try NSDecimalNumber
+//                    .fetchOne(
+//                        db,
+//                        sql: "SELECT COUNT (id) FROM \(tableName) WHERE isWon IS \(isWon.description)) AND date >= ?",
+//                        arguments: [startDate]
+//                    ) ?? .zero
+//            }
+//            .publisher(in: BetDb.db)
+//            .mapError { _ in Never.transferRepresentation }
+//            .eraseToAnyPublisher()
+//    }
+    
+    func getBetsCount(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date,
+        isWon: Bool
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
+        let isWonInt = isWon ? 1 : 0
+        return ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT COUNT (id) FROM bet WHERE isWon IS TRUE"
+                        sql: "SELECT COUNT(id) FROM \(tableName) WHERE isWon = ? AND date >= ?",
+                        arguments: [isWonInt, startDate]
                     ) ?? .zero
             }
             .publisher(in: BetDb.db)
@@ -273,87 +238,22 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    static func getWonBetsCounyByPeroid(startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT COUNT (id) FROM bet WHERE isWon IS TRUE AND date >= ?",
-                        arguments: [startDate]
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getLostBetsCount() -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT COUNT (id) FROM bet WHERE isWon IS FALSE"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getLostBetsCountByPeroid(startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT COUNT (id) FROM bet WHERE isWon IS FALSE AND date >= ?",
-                        arguments: [startDate]
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getPeningBetsCount() -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT COUNT (id) FROM bet WHERE isWon IS null"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
+    
 
     // ** average bets **
 
-    static func getAvgWonBet() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getAvgWonBet(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        isWon: Bool,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT AVG (profit) FROM bet WHERE isWon IS TRUE"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getAvgWonBetByPeroid(startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT AVG (profit) FROM bet WHERE isWon IS TRUE AND date >= ?",
+                        sql: "SELECT AVG (profit) FROM \(tableName) WHERE isWon IS \(isWon.description) AND date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }
@@ -362,27 +262,17 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    static func getAvgLostBet() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getAvgAmountBet(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT AVG (amount) FROM bet WHERE isWon IS FALSE"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getAvgLostBetByPeroid(startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT AVG (amount) FROM bet WHERE isWon IS FALSE AND date >= ?",
+                        sql: "SELECT AVG (amount) FROM \(tableName) WHERE date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }
@@ -391,27 +281,17 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    static func getAvgAmountBet() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getLargestBetProfit(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT AVG (amount) FROM bet"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getAvgAmountBetByPeroid(startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT AVG (amount) FROM bet WHERE date >= ?",
+                        sql: "SELECT MAX (profit) FROM \(tableName) WHERE isWon IS TRUE AND date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }
@@ -420,28 +300,17 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    static func getLargestBetProfit() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getBiggestBetLoss(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT MAX (profit) FROM bet WHERE isWon IS TRUE"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getLargestBetProfitByPeroid(startDate: Date)
-        -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT MAX (profit) FROM bet WHERE isWon IS TRUE AND date >= ?",
+                        sql: "SELECT MAX (amount) FROM \(tableName) WHERE isWon IS FALSE AND date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }
@@ -450,27 +319,17 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    static func getBiggestBetLoss() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getHiggestBetOddsWon(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT MAX (amount) FROM bet WHERE isWon IS FALSE"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getBiggestBetLossByPeroid(startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT MAX (amount) FROM bet WHERE isWon IS FALSE AND date >= ?",
+                        sql: "SELECT MAX (odds) FROM \(tableName) WHERE isWon IS TRUE AND date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }
@@ -479,58 +338,17 @@ class BetDao {
             .eraseToAnyPublisher()
     }
 
-    static func getHiggestBetOddsWon() -> AnyPublisher<NSDecimalNumber, Never> {
+    func getHiggestBetAmount(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         ValueObservation
             .tracking { db in
                 try NSDecimalNumber
                     .fetchOne(
                         db,
-                        sql: "SELECT MAX (odds) FROM bet WHERE isWon IS TRUE"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getHiggestBetOddsWonByPeroid(startDate: Date)
-        -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT MAX (odds) FROM bet WHERE isWon IS TRUE AND date >= ?",
-                        arguments: [startDate]
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getHiggestBetAmount() -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT MAX (amount) FROM bet"
-                    ) ?? .zero
-            }
-            .publisher(in: BetDb.db)
-            .mapError { _ in Never.transferRepresentation }
-            .eraseToAnyPublisher()
-    }
-
-    static func getHiggestBetAmountByPeroid(startDate: Date)
-        -> AnyPublisher<NSDecimalNumber, Never> {
-        ValueObservation
-            .tracking { db in
-                try NSDecimalNumber
-                    .fetchOne(
-                        db,
-                        sql: "SELECT MAX (odds) FROM bet WHERE isWon IS TRUE AND date >= ?",
+                        sql: "SELECT MAX (amount) FROM \(tableName) WHERE date >= ?",
                         arguments: [startDate]
                     ) ?? .zero
             }

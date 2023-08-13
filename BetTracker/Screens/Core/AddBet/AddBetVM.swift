@@ -18,7 +18,7 @@ class AddBetVM: ObservableObject {
         configureTaxInput() // Pass to publisher
 
         // Predicted profit
-        updateProfit()
+//        updateProfit()
     }
 
     @Published
@@ -44,11 +44,15 @@ class AddBetVM: ObservableObject {
     var selectedTeam = SelectedTeam.team1
 
     @Published
-    var amount: String = String() {
+    var amount: String = "" {
         didSet {
             updateProfit()
             amountIsError = false
-            let cleanedAmount = filterDecimalInput(input: amount, oldValue: oldValue)
+            let cleanedAmount = filterDecimalInput(
+                input: amount,
+                oldValue: oldValue,
+                filterType: .amount
+            )
             if cleanedAmount != amount {
                 amount = cleanedAmount
             }
@@ -56,11 +60,11 @@ class AddBetVM: ObservableObject {
     }
 
     @Published
-    var odds: String = String() {
+    var odds: String = "" {
         didSet {
             updateProfit()
             oddsIsError = false
-            let cleanedOdds = filterDecimalInput(input: odds, oldValue: oldValue)
+            let cleanedOdds = filterDecimalInput(input: odds, oldValue: oldValue, filterType: .tax)
             if cleanedOdds != odds {
                 odds = cleanedOdds
             }
@@ -71,7 +75,7 @@ class AddBetVM: ObservableObject {
     var tax: String = "0.0" {
         didSet {
             updateProfit()
-            let cleanedTax = filterDecimalInput(input: tax, oldValue: oldValue)
+            let cleanedTax = filterDecimalInput(input: tax, oldValue: oldValue, filterType: .amount)
             if cleanedTax != tax {
                 tax = cleanedTax
             }
@@ -107,9 +111,13 @@ class AddBetVM: ObservableObject {
         didSet {
             updateProfit()
             betslipAmountIsError = false
-            let cleanedAmount = filterDecimalInput(input: betslipAmount, oldValue: oldValue)
-            if cleanedAmount != betslipName {
-                betslipName = cleanedAmount
+            let cleanedAmount = filterDecimalInput(
+                input: betslipAmount,
+                oldValue: oldValue,
+                filterType: .amount
+            )
+            if cleanedAmount != betslipAmount {
+                betslipAmount = cleanedAmount
             }
         }
     }
@@ -119,7 +127,11 @@ class AddBetVM: ObservableObject {
         didSet {
             updateProfit()
             betslipOddsIsError = false
-            let cleanedOdds = filterDecimalInput(input: betslipOdds, oldValue: oldValue)
+            let cleanedOdds = filterDecimalInput(
+                input: betslipOdds,
+                oldValue: oldValue,
+                filterType: .amount
+            )
             if cleanedOdds != betslipOdds {
                 betslipOdds = cleanedOdds
             }
@@ -133,7 +145,11 @@ class AddBetVM: ObservableObject {
     var betslipTax = "0.0" {
         didSet {
             updateProfit()
-            let cleanedTax = filterDecimalInput(input: betslipTax, oldValue: oldValue)
+            let cleanedTax = filterDecimalInput(
+                input: betslipTax,
+                oldValue: oldValue,
+                filterType: .amount
+            )
             if cleanedTax != betslipTax {
                 betslipTax = cleanedTax
             }
@@ -234,6 +250,8 @@ class AddBetVM: ObservableObject {
     var taxIsError = false
     @Published
     var betslipTaxsIsError = false
+    @Published
+    var notificationIsError = false
 
     // MARK: - State Navigation
 
@@ -297,6 +315,7 @@ class AddBetVM: ObservableObject {
     // Predicted win methods:
     // Methods used to calculate data with Combine in Init
 
+    /// TODO: FIX THIS SHIT
     func betProfitWithoutTex(
         amountString: String?,
         oddsString: String?
@@ -304,7 +323,7 @@ class AddBetVM: ObservableObject {
         guard let amountString, !amountString.isEmpty,
               let oddsString, !oddsString.isEmpty
         else {
-            print("One or more input values is null or empty")
+            print("One or more input values is null or empty222")
             return nil
         }
 
@@ -414,8 +433,9 @@ class AddBetVM: ObservableObject {
      */
     private func saveReminder() {
         UserNotificationsService().scheduleNotification(
-            withID: betNotificationID, // i need add this to BetDao
-            titleName: "\(team1 + team1)",
+            withID: betNotificationID,
+            titleName: "\(team1 + team2)",
+            // Corrected the concatenation as previously suggested
             notificationTriggerDate: selectedNotificationDate
         )
     }
@@ -428,7 +448,18 @@ class AddBetVM: ObservableObject {
 
     // MARK: - Validate & Error handling methods
 
-    private func filterDecimalInput(input: String, oldValue: String) -> String {
+    enum filterType: CaseIterable {
+
+        case amount
+        case tax
+        case standard
+    }
+
+    private func filterDecimalInput(
+        input: String,
+        oldValue: String,
+        filterType: filterType
+    ) -> String {
         var myinput = input
 
         if myinput.isEmpty {
@@ -441,10 +472,26 @@ class AddBetVM: ObservableObject {
             myinput = cleanedInput
             return myinput
         }
-        if cleanedInput
-            .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
-            nil { // 5.55, 1.22, 1.22, 10.<22>
-            myinput = oldValue
+
+        switch filterType {
+        case .amount:
+            if cleanedInput
+                .wholeMatch(of: /[1-9][0-9]{0,6}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
+                myinput = oldValue
+            }
+        case .tax:
+            if cleanedInput
+                .wholeMatch(of: /[1-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
+                myinput = oldValue
+            }
+        case .standard:
+            if cleanedInput
+                .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
+                nil { // 5.55, 1.22, 1.22, 10.<22>
+                myinput = oldValue
+            }
         }
         return myinput
     }
@@ -511,6 +558,42 @@ class AddBetVM: ObservableObject {
 
     private func validateBetslipTax() { }
 
+    private func validateNotification() {
+        if selectedNotificationDate < Date.now {
+            notificationIsError = true
+        }
+    }
+    
+    enum ValidateError: CustomStringConvertible {
+        case team1
+        case team2
+        case name
+        case odds
+        case tax
+        case notification
+        
+        var description: String {
+            switch self {
+            case .team1:
+                return "Błąd zespołu 1"
+            case .team2:
+                return "Błąd zespołu 2"
+            case .name:
+                return "Błąd nazwy"
+            case .odds:
+                return "Błąd kursu"
+            case .tax:
+                return "Błąd podatku"
+            case .notification:
+                return "Błąd powiadomienia"
+            }
+        }       
+    }
+    
+    func pass() {
+        
+    }
+
     // MARK: - Save bet/betslip to DB
 
     func saveBet() -> Bool {
@@ -519,9 +602,10 @@ class AddBetVM: ObservableObject {
         validateAmount()
         validateOdds()
         validateTax()
+        validateNotification()
 
         if team1IsError || team2IsError || amountIsError || oddsIsError
-            || taxIsError {
+            || taxIsError || notificationIsError {
             return false
         }
         print("data saved")
@@ -545,7 +629,7 @@ class AddBetVM: ObservableObject {
             category: selectedCategory,
             league: league,
             selectedDate: selectedDate,
-            tax: NSDecimalNumber(string: newTax),
+            tax: NSDecimalNumber(string: tax),
             profit: profit,
             isWon: nil,
             betNotificationID: betNotificationID,
@@ -565,17 +649,18 @@ class AddBetVM: ObservableObject {
         }
         print("data saved")
 
-        saveReminder()
-
+     
+        
         var betslip = BetslipModel(
             id: nil,
-            date: selectedDate, name: betslipName,
+            date: selectedDate,
+            name: betslipName,
             amount: NSDecimalNumber(string: betslipAmount),
             odds: NSDecimalNumber(string: betslipOdds),
             category: selectedCategory,
             tax: NSDecimalNumber(string: betslipTax),
             profit: betslipProfit,
-            isWon: nil,
+            isWon: true,
             betNotificationID: betNotificationID,
             score: score
         )
@@ -648,3 +733,6 @@ enum BetType: String, CaseIterable, Identifiable {
     case singlebet = "Single Bet"
     case betslip
 }
+
+
+
