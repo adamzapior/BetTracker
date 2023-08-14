@@ -5,7 +5,7 @@ import SwiftDate
 
 class MainViewVM: ObservableObject {
 
-    let interactor: MainInteractor
+    let respository: MainInteractor
     let dbBets = "bet"
     let dbBetslip = "betslip"
 
@@ -61,7 +61,7 @@ class MainViewVM: ObservableObject {
     var currency = UserDefaultsManager.defaultCurrencyValue
 
     init(interactor: MainInteractor) {
-        self.interactor = interactor
+        self.respository = interactor
 
         getMerged()
 
@@ -99,11 +99,7 @@ class MainViewVM: ObservableObject {
 //                    .assign(to: \.historyMerged, on: self)
 //                    .store(in: &cancellables)
 
-        $mergedBets
-            .sink { mergedBets in
-                print("Merged bets: \(String(describing: mergedBets))")
-            }
-            .store(in: &cancellables)
+
     }
 
     ///

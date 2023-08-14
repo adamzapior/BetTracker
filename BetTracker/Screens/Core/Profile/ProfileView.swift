@@ -8,7 +8,7 @@ struct ProfileView: View {
 
     @StateObject
     var vm = ProfileVM(respository: MainInteractor(db: BetDao()))
-
+    
     @StateObject
     var vmProfilePhoto = ProfilePhotoVM()
 
@@ -60,7 +60,6 @@ struct ProfileView: View {
                 ZStack {
                     Group {
                         VStack(spacing: 12) {
-                            Button("tescik", action: vm.fetchData)
                             BalanceRow(
                                 cellTitle: "YOUR TOTAL BALANCE",
                                 valueText: vm.mergedBalanceValue.doubleValue.formattedWith2Digits(),
@@ -71,7 +70,8 @@ struct ProfileView: View {
                             HStack {
                                 BalanceRow(
                                     cellTitle: "TOTAL SPENT",
-                                    valueText: vm.mergedTotalSpent.doubleValue.formattedWith2Digits(),
+                                    valueText: vm.mergedTotalSpent.doubleValue
+                                        .formattedWith2Digits(),
                                     currency: vm.defaultCurrency.uppercased()
                                 )
                                 WonRateRow(
@@ -101,8 +101,10 @@ struct ProfileView: View {
                                 text1: "AVG WON",
                                 text2: "AVG LOSE",
                                 text3: "AVG AMOUNT",
-                                betsPendingText: vm.mergedAvgWonBet.doubleValue.formattedWith2Digits(),
-                                betsPendingText2: vm.mergedAvgLostBet.doubleValue.formattedWith2Digits(),
+                                betsPendingText: vm.mergedAvgWonBet.doubleValue
+                                    .formattedWith2Digits(),
+                                betsPendingText2: vm.mergedAvgLostBet.doubleValue
+                                    .formattedWith2Digits(),
                                 betsPendingText3: vm.mergedAvgAmountBet.doubleValue
                                     .formattedWith2Digits(),
                                 currency: vm.defaultCurrency.uppercased()
@@ -142,12 +144,8 @@ struct ProfileView: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.horizontal, -8)
         }
-//        .onAppear {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                vm.fetchData()
-//            }
-//        }
         .onDisappear {
+            // TODO: do wyjebania do deinit
             vmProfilePhoto.saveImageIfNeeded()
         }
     }

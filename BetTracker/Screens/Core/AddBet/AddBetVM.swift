@@ -605,7 +605,11 @@ class AddBetVM: ObservableObject {
         validateNotification()
 
         if team1IsError || team2IsError || amountIsError || oddsIsError
-            || taxIsError || notificationIsError {
+            || taxIsError
+            
+//            || notificationIsError
+        
+        {
             return false
         }
         print("data saved")
