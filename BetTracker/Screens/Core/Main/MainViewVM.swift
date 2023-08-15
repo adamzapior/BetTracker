@@ -5,9 +5,16 @@ import SwiftDate
 
 class MainViewVM: ObservableObject {
 
+    let defaults = UserDefaultsManager.path
     let respository: MainInteractor
     let dbBets = "bet"
     let dbBetslip = "betslip"
+    
+    @Published
+    var username: String = .init()
+    
+    @Published
+    var showUsername: Bool = false
 
     @Published
     var pendingBets: [BetModel]? = []
@@ -62,7 +69,13 @@ class MainViewVM: ObservableObject {
 
     init(interactor: MainInteractor) {
         self.respository = interactor
-
+        
+        getUsername()
+        
+        if checkStatus() {
+            showUsername = true
+        }
+        
         getMerged()
 
         interactor.getPendingBets(model: BetModel.self, tableName: dbBets)
@@ -112,5 +125,20 @@ class MainViewVM: ObservableObject {
             }
             .assign(to: \.mergedBets, on: self)
             .store(in: &cancellables)
+    }
+    
+    func getUsername() {
+        
+        self.username = defaults.get(.username)
+        print ("Username: \(self.username)")
+        print ("\(self.username.count)")
+    }
+    
+    func checkStatus() -> Bool {
+        if self.username.count == 0 {
+            return false
+        } else {
+            return true
+        }
     }
 }

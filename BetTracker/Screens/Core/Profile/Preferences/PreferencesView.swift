@@ -71,13 +71,6 @@ struct PreferencesView: View {
                                 )
                         ) {
                             Text("Help")
-                            Picker("Choose your currency", selection: $vm.defaultCurrency) {
-                                ForEach(Currency.allCases, id: \.self) { currency in
-                                    Text("\(currency.rawValue.uppercased())")
-                                }
-                            }
-                            .tint(Color.ui.scheme)
-                            .pickerStyle(.menu)
                         }
                     }
                     .scrollContentBackground(.hidden)

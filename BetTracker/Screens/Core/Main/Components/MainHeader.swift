@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct MainHeader: View {
+    let name: String
     var body: some View {
         ZStack {
-            Text("Welcome, Adam")
+            Text("\(name)")
             HStack {
                 Spacer()
                 NavigationLink(

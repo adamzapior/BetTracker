@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct BetDetailRowAmount: View {
 
     let cellTitle: String

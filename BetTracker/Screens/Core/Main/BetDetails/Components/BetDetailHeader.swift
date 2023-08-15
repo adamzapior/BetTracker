@@ -6,7 +6,7 @@ struct BetDetailHeader: View {
 
     var body: some View {
         ZStack {
-            Text("Bet details")
+            Text("Your pick")
             HStack {
                 Spacer()
                 Image(systemName: "trash")

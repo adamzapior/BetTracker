@@ -19,9 +19,15 @@ struct MainView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            MainHeader()
-                .padding(.top, 18)
-                .padding(.bottom, 26)
+            if vm.showUsername == true {
+                MainHeader(name: "Welcome \(vm.username)!")
+                    .padding(.top, 18)
+                    .padding(.bottom, 26)
+            } else {
+                MainHeader(name: "Welcome!")
+                    .padding(.top, 18)
+                    .padding(.bottom, 26)
+            }
             ScrollView {
                 HStack {
                     BetButton(text: "Pending")

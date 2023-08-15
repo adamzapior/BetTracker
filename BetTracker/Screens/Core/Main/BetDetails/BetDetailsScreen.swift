@@ -27,27 +27,19 @@ struct BetDetailsScreen: View {
                     Button("No", role: .cancel) { }
                 }
 
-                VStack {
-                    HStack {
-                        Text("YOUR PICK")
-                            .foregroundColor(Color.ui.scheme)
-                            .bold()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.top, 12)
-                .padding(.horizontal, 12)
+                Divider()
+                    .padding()
 
                 VStack(spacing: 5) {
                     HStack {
-                        Text(vm.bet.team1)
+                        Text(vm.bet.team1.uppercased())
                             .frame(maxWidth: .infinity, alignment: .center)
                             .font(.title3)
                             .bold()
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 8)
                             .foregroundColor(
                                 vm.bet.selectedTeam == .team1
-                                    ? Color.ui.onPrimaryContainer
+                                    ? Color.ui.scheme
                                     : Color.ui.secondary
                             )
                     }
@@ -58,34 +50,48 @@ struct BetDetailsScreen: View {
                             .frame(maxWidth: .infinity, alignment: .center)
                             .font(.title3)
                             .bold()
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 8)
                             .foregroundColor(
                                 vm.bet.selectedTeam == .team2
-                                    ? Color.ui.onPrimaryContainer
+                                    ? Color.ui.scheme
                                     : Color.ui.secondary
                             )
                     }
                 }
-                .background {
-                    RoundedRectangle(cornerRadius: 25)
-                        .foregroundColor(
-                            Color.ui.onPrimary
-                        )
-                }
+                
+//                .background {
+//                    RoundedRectangle(cornerRadius: 15)
+//                        .foregroundColor(Color.ui.background)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 15)
+//                                .stroke(Color.ui.secondary, lineWidth: 1)
+//                                .opacity(0.35)
+//                        )
+//                }
+//                .background {
+//                    RoundedRectangle(cornerRadius: 25)
+//                        .foregroundColor(
+//                            Color.ui.onPrimary
+//                        )
+//                }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 12)
                 .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
 
-                VStack {
-                    HStack {
-                        Text("BET VALUES")
-                            .foregroundColor(Color.ui.scheme)
-                            .bold()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.top, 12)
-                .padding(.horizontal, 12)
+                
+                Divider()
+                    .padding()
+                
+//                VStack {
+//                    HStack {
+//                        Text("BET VALUES")
+//                            .foregroundColor(Color.ui.scheme)
+//                            .bold()
+//                    }
+//                    .frame(maxWidth: .infinity, alignment: .leading)
+//                }
+//                .padding(.top, 12)
+//                .padding(.horizontal, 12)
 
                 VStack(spacing: 12) {
                     Group {
@@ -131,12 +137,14 @@ struct BetDetailsScreen: View {
                         Spacer()
                     }
 
+                   
+                    
                     HStack {
                         switch vm.buttonState {
                         case .uncleared:
-                            VStack {
-                                MarkButton2(text: "Seta as won")
-                                    .padding()
+                            VStack (spacing: 16) {
+                                MarkWonButton(text: "Set as won")
+                                    .padding(.horizontal, 64)
                                     .onTapGesture {
                                         BetDao.markFinished(bet: vm.bet, isWon: true)
                                         BetDao.markProfitWon(
@@ -145,7 +153,8 @@ struct BetDetailsScreen: View {
                                         )
                                         dismiss()
                                     }
-                                MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                                MarkLostButton(text: "Set as lost")
+                                    .padding(.horizontal, 64)
                                     .onTapGesture {
                                         BetDao.markFinished(bet: vm.bet, isWon: false)
                                         BetDao.markProfitLost(
@@ -157,7 +166,8 @@ struct BetDetailsScreen: View {
                             }
 
                         case .won:
-                            MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                            MarkLostButton(text: "Set as lost")
+                                .padding(.horizontal, 64)
                                 .onTapGesture {
                                     BetDao.markFinished(bet: vm.bet, isWon: false)
                                     BetDao.markProfitLost(
@@ -167,7 +177,8 @@ struct BetDetailsScreen: View {
                                     dismiss()
                                 }
                         case .lost:
-                            MarkButton(text: "Set as won", backgroundColor: Color.ui.scheme)
+                            MarkWonButton(text: "Set as won")
+                                .padding(.horizontal, 64)
                                 .onTapGesture {
                                     BetDao.markFinished(bet: vm.bet, isWon: true)
                                     BetDao.markProfitWon(
@@ -175,8 +186,7 @@ struct BetDetailsScreen: View {
                                         score: (vm.bet.profit).subtracting(vm.bet.amount)
                                     )
                                     dismiss()
-                                }
-                        }
+                                }                        }
                     }
                     .padding(.top, 36)
                 }

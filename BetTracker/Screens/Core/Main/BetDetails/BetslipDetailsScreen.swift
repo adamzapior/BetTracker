@@ -127,13 +127,14 @@ struct BetslipDetailsScreen: View {
                         switch vm.buttonState {
                         case .uncleared:
                             VStack {
-                                MarkButton(text: "Seta as won", backgroundColor: Color.ui.scheme)
-                                    .padding()
+                                MarkWonButton(text: "Set as won")
+                                    .padding(.horizontal, 64)
                                     .onTapGesture {
                                        
                                         dismiss()
                                     }
-                                MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                                MarkLostButton(text: "Set as lost")
+                                    .padding(.horizontal, 64)
                                     .onTapGesture {
                                         
                                         dismiss()
@@ -141,13 +142,15 @@ struct BetslipDetailsScreen: View {
                             }
 
                         case .won:
-                            MarkButton(text: "Set as lost", backgroundColor: Color.red)
+                            MarkLostButton(text: "Set as lost")
+                                .padding(.horizontal, 64)
                                 .onTapGesture {
                                     
                                     dismiss()
                                 }
                         case .lost:
-                            MarkButton(text: "Set as won", backgroundColor: Color.ui.scheme)
+                            MarkWonButton(text: "Set as won")
+                                .padding(.horizontal, 64)
                                 .onTapGesture {
                                     
                                     dismiss()

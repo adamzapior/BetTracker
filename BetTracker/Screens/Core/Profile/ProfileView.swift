@@ -8,7 +8,7 @@ struct ProfileView: View {
 
     @StateObject
     var vm = ProfileVM(respository: MainInteractor(db: BetDao()))
-    
+
     @StateObject
     var vmProfilePhoto = ProfilePhotoVM()
 
@@ -62,7 +62,8 @@ struct ProfileView: View {
                         VStack(spacing: 12) {
                             BalanceRow(
                                 cellTitle: "YOUR TOTAL BALANCE",
-                                valueText: vm.mergedBalanceValue.doubleValue.formattedWith2Digits(),
+                                valueText: vm.mergedBalanceValue.doubleValue
+                                    .formattedWith2Digits(),
                                 font: .title2,
                                 currency: vm.defaultCurrency.uppercased()
                             )
