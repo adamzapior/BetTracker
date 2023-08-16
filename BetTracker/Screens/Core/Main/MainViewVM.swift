@@ -9,10 +9,10 @@ class MainViewVM: ObservableObject {
     let respository: MainInteractor
     let dbBets = "bet"
     let dbBetslip = "betslip"
-    
+
     @Published
     var username: String = .init()
-    
+
     @Published
     var showUsername: Bool = false
 
@@ -59,6 +59,7 @@ class MainViewVM: ObservableObject {
             category: .football,
             tax: 1,
             profit: 24,
+            note: "",
             isWon: nil,
             betNotificationID: "",
             score: 24
@@ -68,14 +69,14 @@ class MainViewVM: ObservableObject {
     var currency = UserDefaultsManager.defaultCurrencyValue
 
     init(interactor: MainInteractor) {
-        self.respository = interactor
-        
+        respository = interactor
+
         getUsername()
-        
+
         if checkStatus() {
             showUsername = true
         }
-        
+
         getMerged()
 
         interactor.getPendingBets(model: BetModel.self, tableName: dbBets)
@@ -102,17 +103,6 @@ class MainViewVM: ObservableObject {
         interactor.getHistoryBets(model: BetslipModel.self, tableName: dbBetslip)
             .map { .some($0) }
             .assign(to: &$betslipHistory)
-
-//        Publishers.CombineLatest($historyBets, $betslipHistory)
-//                    .map { historyBets, betslipHistory -> [BetWrapper] in
-//                        let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
-//                        (betslipHistory?.map(BetWrapper.betslip) ?? [])
-//                        return combinedBets.sorted(by: { $0.date > $1.date })
-//                    }
-//                    .assign(to: \.historyMerged, on: self)
-//                    .store(in: &cancellables)
-
-
     }
 
     ///
@@ -126,16 +116,15 @@ class MainViewVM: ObservableObject {
             .assign(to: \.mergedBets, on: self)
             .store(in: &cancellables)
     }
-    
+
     func getUsername() {
-        
-        self.username = defaults.get(.username)
-        print ("Username: \(self.username)")
-        print ("\(self.username.count)")
+        username = defaults.get(.username)
+        print("Username: \(username)")
+        print("\(username.count)")
     }
-    
+
     func checkStatus() -> Bool {
-        if self.username.count == 0 {
+        if username.isEmpty {
             return false
         } else {
             return true

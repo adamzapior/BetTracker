@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BetButton: View {
+struct MainLabel: View {
     let text: String
     let backgroundColor: Color
 
@@ -35,6 +35,6 @@ struct BetButton: View {
 
 struct BetButton_Previews: PreviewProvider {
     static var previews: some View {
-        BetButton(text: "Pending")
+        MainLabel(text: "Pending")
     }
 }

@@ -30,7 +30,7 @@ final class SessionManager: ObservableObject {
     func configureCurrentState() {
         /*
          - User closes the app during the onboarding phase > Resume the app from the onboarding screen
-         - User closes the app after viewing onboarding > Resume the app from the log in screen (main app)
+         - User closes the app after viewing onboarding > Resume the app from the main view (main app)
          */
 
         let hasCompletedOnboarding = defaults.get(.hasSeenOnboarding)

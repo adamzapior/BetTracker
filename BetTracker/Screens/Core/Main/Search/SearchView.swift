@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    
+
     @StateObject
     var vm = SearchVM(interactor: SearchInteractor(db: BetDao()))
 
@@ -34,7 +34,6 @@ struct SearchView: View {
                     }
                 }
                 .padding(.horizontal, 12)
-//                .shadow(color: Color.ui.scheme.opacity(0.5), radius: 3, x: 3, y: 3)
             }
             .shadow(
                 color: Color.ui.shadow,
@@ -72,7 +71,6 @@ struct SearchView: View {
             SearchBarView(searchText: $vm.searchText)
                 .padding(.top, 6)
                 .padding(.horizontal, 12)
-//                .shadow(color: Color.ui.scheme.opacity(0.2), radius: 6, x: 3, y: 3)
         }
     }
 

@@ -77,7 +77,12 @@ class MainInteractor: MainInteractorProtocol {
         startDate: Date,
         isWon: Bool?
     ) -> AnyPublisher<NSDecimalNumber, Never> {
-        db.getBetsCount(model: model, tableName: tableName, startDate: startDate, isWon: (isWon ?? true)!)
+        db.getBetsCount(
+            model: model,
+            tableName: tableName,
+            startDate: startDate,
+            isWon: (isWon ?? true)!
+        )
     }
 
     func getAvgWonBet(

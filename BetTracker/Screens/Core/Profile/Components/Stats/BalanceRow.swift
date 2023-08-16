@@ -24,15 +24,29 @@ struct BalanceRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             HStack(alignment: .center) {
-                Text("\(valueText) \(currency)")
+                Text("\(valueText)")
+                    .bold()
                     .font(font)
+                    .scaledToFit()
+                    .foregroundColor(Color.ui.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+//                    .padding(.bottom, 6)
+            }
+//            .padding(.vertical, 3)
+            .padding(.horizontal, 12)
+            
+            HStack {
+                Text(" \(currency)")
+                    .font(.subheadline)
+                    .scaledToFit()
                     .foregroundColor(Color.ui.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .padding(.bottom, 6)
             }
-            .padding(.vertical, 3)
-            .padding(.horizontal, 12)
+            
+            Spacer()
         }
         .frame(maxWidth: .infinity)
         .background {

@@ -16,6 +16,7 @@ extension BetModel: TableRecord {
         case category
         case tax
         case profit
+        case note
         case isWon
         case betNotificationID
         case score
@@ -35,6 +36,7 @@ extension BetModel {
         category = row[Columns.category]
         tax = row[Columns.tax]
         profit = row[Columns.profit]
+        note = row[Columns.note]
         isWon = row[Columns.isWon]
         betNotificationID = row[Columns.betNotificationID]
         score = row[Columns.score]
@@ -54,6 +56,7 @@ extension BetModel: PersistableRecord {
         container[Columns.category] = category
         container[Columns.tax] = tax
         container[Columns.profit] = profit
+        container[Columns.note] = note
         container[Columns.isWon] = isWon
         container[Columns.betNotificationID] = betNotificationID
         container[Columns.score] = score
@@ -72,6 +75,7 @@ extension BetslipModel: TableRecord {
         case category
         case tax
         case profit
+        case note
         case isWon
         case betNotificationID
         case score
@@ -88,6 +92,7 @@ extension BetslipModel: FetchableRecord {
         category = row[Columns.category]
         tax = row[Columns.tax]
         profit = row[Columns.profit]
+        note = row[Columns.note]
         isWon = row[Columns.isWon]
         betNotificationID = row[Columns.betNotificationID]
         score = row[Columns.score]
@@ -104,6 +109,7 @@ extension BetslipModel: PersistableRecord {
         container[Columns.category] = category
         container[Columns.tax] = tax
         container[Columns.profit] = profit
+        container[Columns.note] = note
         container[Columns.isWon] = isWon
         container[Columns.betNotificationID] = betNotificationID
         container[Columns.score] = score

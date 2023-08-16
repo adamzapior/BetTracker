@@ -3,7 +3,8 @@ import Foundation
 
 class SearchVM: ObservableObject {
 
-    let interactor: SearchInteractor
+    let defaults = UserDefaultsManager.path
+    let respository: SearchInteractor
 
     @Published
     var bets: [BetModel]? = []
@@ -33,7 +34,7 @@ class SearchVM: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init(interactor: SearchInteractor) {
-        self.interactor = interactor
+        self.respository = interactor
 
         loadCurrency()
         getSavedBets()
@@ -75,11 +76,11 @@ class SearchVM: ObservableObject {
     // MARK: Database GET methods:
 
     func getSavedBets() {
-        interactor.getSavedBets(model: BetModel.self)
+        respository.getSavedBets(model: BetModel.self)
             .map { .some($0) }
             .assign(to: &$bets)
 
-        interactor.getSavedBets(model: BetslipModel.self)
+        respository.getSavedBets(model: BetslipModel.self)
             .map { .some($0) }
             .assign(to: &$betslips)
 
@@ -140,7 +141,8 @@ class SearchVM: ObservableObject {
     }
 
     func loadCurrency() {
-        currency = Currency(rawValue: interactor.loadDefaultCurrency()) ?? .usd
+        currency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
 
 }
+

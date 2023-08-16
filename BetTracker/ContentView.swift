@@ -1,17 +1,10 @@
-//
-//  ContentView.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 20/03/2023.
-//
-
 import SwiftUI
 
 struct ContentView: View {
-        
-    @EnvironmentObject var session: SessionManager
 
-    
+    @EnvironmentObject
+    var session: SessionManager
+
     var body: some View {
         ZStack {
             switch session.currentState {
@@ -50,7 +43,6 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
 
     public func gestureRecognizerShouldBegin(_: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+        viewControllers.count > 1
     }
 }
-

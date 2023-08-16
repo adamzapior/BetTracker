@@ -3,10 +3,9 @@ import Foundation
 import SwiftUI
 
 class PreferencesVM: ObservableObject {
-    
+
     let defaults = UserDefaultsManager.path
 
-    
     @Published
     var username = ""
 
@@ -21,18 +20,16 @@ class PreferencesVM: ObservableObject {
             }
         }
     }
-    
+
     @Published
     var taxStatus = DefaultTax.taxUnsaved
 
     @Published
     var defaultCurrency: Currency = Currency.usd
 
-
     init() {
         loadPreferences()
     }
-
 
     @Published
     var isDefaultTaxOn: Bool = false {

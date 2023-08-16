@@ -232,6 +232,8 @@ struct AddBetScreen: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                .transition(.slide) // Apply slide transition
+                .animation(.easeInOut(duration: 0.5), value: vm.betType)
             }
 
             if vm.betType == .betslip {
@@ -403,8 +405,10 @@ struct AddBetScreen: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                
                 .onAppear { }
             }
+            
         }
         .padding(.top, 12)
         .navigationBarBackButtonHidden()

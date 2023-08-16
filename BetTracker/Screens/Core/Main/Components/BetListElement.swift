@@ -1,16 +1,9 @@
-//
-//  HistoryRow.swift
-//  BetTrackerUI
-//
-//  Created by Adam Zapiór on 22/02/2023.
-//
-
 import SwiftUI
 
 struct BetListElement: View {
     let bet: BetModel
     let currency: String
-    
+
     var body: some View {
         VStack {
             HStack(spacing: 0) {
@@ -53,11 +46,11 @@ struct BetListElement: View {
                     .font(.subheadline)
                     .foregroundColor(Color.ui.secondary)
                     .padding(.vertical, -8)
-                    .background {
-                        RoundedRectangle(cornerRadius: 25)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, -10)
-                    }
+//                    .background {
+//                        RoundedRectangle(cornerRadius: 25)
+//                            .padding(.horizontal, 24)
+//                            .padding(.vertical, -10)
+//                    }
             }
             .padding(.vertical, 1)
             .padding(.horizontal, 24)
@@ -90,4 +83,3 @@ extension Bool? {
         }
     }
 }
-

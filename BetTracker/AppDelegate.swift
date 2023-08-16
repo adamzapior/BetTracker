@@ -7,6 +7,9 @@
 
 import UIKit
 
+// TODO: Reminders do ogarnięcia
+
+
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(
     _ application: UIApplication,

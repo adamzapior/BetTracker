@@ -15,6 +15,7 @@ struct BetModel: Identifiable, Hashable, DatabaseModel, FetchableRecord {
         category: Category,
         tax: NSDecimalNumber,
         profit: NSDecimalNumber,
+        note: String?,
         isWon: Bool?,
         betNotificationID: String?,
         score: NSDecimalNumber?
@@ -30,6 +31,7 @@ struct BetModel: Identifiable, Hashable, DatabaseModel, FetchableRecord {
         self.category = category
         self.tax = tax
         self.profit = profit
+        self.note = note
         self.isWon = isWon
         self.betNotificationID = betNotificationID
         self.score = score
@@ -46,6 +48,7 @@ struct BetModel: Identifiable, Hashable, DatabaseModel, FetchableRecord {
     let category: Category
     var tax: NSDecimalNumber
     let profit: NSDecimalNumber
+    let note: String?
     let isWon: Bool?
     let betNotificationID: String?
     let score: NSDecimalNumber?

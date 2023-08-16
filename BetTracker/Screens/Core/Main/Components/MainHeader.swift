@@ -12,7 +12,7 @@ struct MainHeader: View {
                     label: {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(Color.ui.scheme)
-                            .opacity(1) // before 0.7
+                            .opacity(1)
                             .font(.title2)
                     }
                 )

@@ -53,8 +53,11 @@ struct TabBar: View {
                         NavigationLink(destination: AddBetScreen()) {
                             Image(systemName: "plus")
                                 .renderingMode(.template)
+                                .font(.system(size: 18))
                                 .foregroundColor(Color.ui.secondary.opacity(1))
                                 .padding()
+                                .background(Color.clear)
+                                .clipShape(Circle())
                         }
 
                         ForEach(TabBar.destinations, id: \.icon) { tab in
@@ -88,8 +91,11 @@ struct TabBar: View {
         var body: some View {
             Image(systemName: tab.icon)
                 .renderingMode(.template)
+                .font(.system(size: 18))
                 .foregroundColor(isSelected ? Color.ui.scheme : Color.ui.secondary.opacity(1))
                 .padding()
+                .background(Color.clear)
+                .clipShape(Circle())
         }
     }
 

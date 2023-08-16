@@ -17,40 +17,42 @@ enum BetWrapper: Identifiable, Hashable {
         case let .betslip(betslip): return betslip.date
         }
     }
+
     var team1: String? {
         switch self {
         case let .bet(bet): return bet.team1
-        case .betslip(_):
-           return nil
+        case .betslip:
+            return nil
         }
     }
+
     var team2: String? {
         switch self {
         case let .bet(bet): return bet.team2
-        case .betslip(_):
-           return nil
+        case .betslip:
+            return nil
         }
     }
+
     var name: String? {
         switch self {
-        case .bet(_):
+        case .bet:
             return nil
         case let .betslip(betslip): return betslip.name
         }
     }
-    
+
     var amount: NSDecimalNumber {
         switch self {
-            case let .bet(bet): return bet.amount
-            case let .betslip(betslip): return betslip.amount
+        case let .bet(bet): return bet.amount
+        case let .betslip(betslip): return betslip.amount
         }
     }
-    
+
     var isWon: Bool? {
         switch self {
         case let .bet(bet): return bet.isWon
         case let .betslip(betslip): return betslip.isWon
-
         }
     }
 

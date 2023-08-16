@@ -14,11 +14,9 @@ class AddBetVM: ObservableObject {
         savedDate = defaults.get(.savedNotificationDate)
         isReminderSaved = defaults.get(.isNotificationSaved)
 
-        taxStatus = defaults.get(.isDefaultTaxOn) // Read isTaxOn from UserDefault
-        configureTaxInput() // Pass to publisher
+        taxStatus = defaults.get(.isDefaultTaxOn) 
+        configureTaxInput()
 
-        // Predicted profit
-//        updateProfit()
     }
 
     @Published
@@ -45,7 +43,6 @@ class AddBetVM: ObservableObject {
     var team2: String = String() {
         didSet {
             team2IsError = false
-            
         }
     }
 
@@ -87,7 +84,8 @@ class AddBetVM: ObservableObject {
             let cleanedTax = filterDecimalInput(
                 input: tax,
                 oldValue: oldValue,
-                filterType: .amount)
+                filterType: .amount
+            )
             if cleanedTax != tax {
                 tax = cleanedTax
             }
@@ -510,7 +508,7 @@ class AddBetVM: ObservableObject {
             }
         case .tax:
             if cleanedInput
-                .wholeMatch(of: /[1-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
+                .wholeMatch(of: /[1-9][0-9]{0,4}?((\.|,)[0-9]{,2})?/) ==
                 nil { // 5.55, 1.22, 1.22, 10.<22>
                 myinput = oldValue
             }
@@ -665,6 +663,7 @@ class AddBetVM: ObservableObject {
             selectedDate: selectedDate,
             tax: NSDecimalNumber(string: newTax),
             profit: profit,
+            note: "",
             isWon: nil,
             betNotificationID: betNotificationID,
             score: score
@@ -692,6 +691,7 @@ class AddBetVM: ObservableObject {
             category: selectedCategory,
             tax: NSDecimalNumber(string: betslipTax),
             profit: betslipProfit,
+            note: "",
             isWon: true,
             betNotificationID: betNotificationID,
             score: score

@@ -9,7 +9,6 @@ struct PreferencesView: View {
     @StateObject
     var vm = PreferencesVM()
 
-
     @State
     private var selection = "Red"
 
@@ -70,6 +69,8 @@ struct PreferencesView: View {
                                     alignment: .leading
                                 )
                         ) {
+                            Text("Help")
+                            Text("Help")
                             Text("Help")
                         }
                     }

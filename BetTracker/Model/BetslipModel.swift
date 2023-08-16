@@ -11,6 +11,7 @@ struct BetslipModel: Identifiable, Hashable, DatabaseModel {
         category: Category,
         tax: NSDecimalNumber,
         profit: NSDecimalNumber,
+        note: String?,
         isWon: Bool?,
         betNotificationID: String?,
         score: NSDecimalNumber?
@@ -23,6 +24,7 @@ struct BetslipModel: Identifiable, Hashable, DatabaseModel {
         self.category = category
         self.tax = tax
         self.profit = profit
+        self.note = note
         self.isWon = isWon
         self.betNotificationID = betNotificationID
         self.score = score
@@ -36,6 +38,7 @@ struct BetslipModel: Identifiable, Hashable, DatabaseModel {
     let category: Category
     var tax: NSDecimalNumber
     let profit: NSDecimalNumber
+    let note: String?
     let isWon: Bool?
     let betNotificationID: String?
     let score: NSDecimalNumber?

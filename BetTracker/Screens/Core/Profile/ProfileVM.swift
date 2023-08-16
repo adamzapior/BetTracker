@@ -17,7 +17,7 @@ class ProfileVM: ObservableObject {
     var defaultUsername: String = ""
 
     @Published
-    var currentStatsState: StatsState = .alltime
+    var currentStatsState: StatsState = .week
 
     @Published
     var cancellables = Set<AnyCancellable>()

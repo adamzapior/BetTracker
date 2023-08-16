@@ -11,18 +11,6 @@ struct OnboardingSetupView: View {
 
     let action: () -> Void
 
-    enum Currency2: String, RawRepresentable, CaseIterable {
-
-        case usd
-        case eur
-        case gbp
-        case pln
-
-    }
-
-    @State
-    private var currency: Currency2 = .usd
-
     var body: some View {
         VStack(spacing: 48) {
             VStack {

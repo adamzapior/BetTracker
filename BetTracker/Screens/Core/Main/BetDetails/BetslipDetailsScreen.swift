@@ -1,10 +1,3 @@
-//
-//  BetslipDetailsScreen.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 26/07/2023.
-//
-
 import SwiftUI
 
 struct BetslipDetailsScreen: View {
@@ -21,30 +14,12 @@ struct BetslipDetailsScreen: View {
 
     var body: some View {
         VStack {
-            ScrollView {
-                BetDetailHeader {
-                    vm.isShowingAlert = true
-                }
-                .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
-                    Button("Yes") {
-//                        vm.deleteBet(bet: vm.bet)
-//                        vm.removeNotification()
-                        dismiss()
-                    }
-                    Button("No", role: .cancel) { }
-                }
-
-                VStack {
-                    HStack {
-                        Text("YOUR PICK")
-                            .foregroundColor(Color.ui.scheme)
-                            .bold()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.top, 12)
-                .padding(.horizontal, 12)
-
+            BetDetailHeader(title: "Your betslip") {
+                dismiss()
+            } onDelete: {
+                vm.isShowingAlert = true
+            }
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 5) {
                     HStack {
                         Text(vm.bet.name)
@@ -52,120 +27,131 @@ struct BetslipDetailsScreen: View {
                             .font(.title3)
                             .bold()
                             .padding(.vertical, 16)
-                         
                     }
                     Spacer()
-                    Spacer()
-             
-                }
-                .background {
-                    RoundedRectangle(cornerRadius: 25)
-                        .foregroundColor(
-                            Color.ui.onPrimary
-                        )
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 12)
                 .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
 
-                VStack {
-                    HStack {
-                        Text("BET VALUES")
-                            .foregroundColor(Color.ui.scheme)
-                            .bold()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.top, 12)
-                .padding(.horizontal, 12)
+                Divider()
+                    .padding()
 
-                VStack(spacing: 12) {
+                VStack(spacing: 8) {
                     Group {
-                        BetDetailRowAmount(
-                            cellTitle: "AMOUNT",
-                            valueText: vm.bet.amount.doubleValue.formattedWith2Digits(),
+                        BetsDetailRow(
+                            icon: "calendar",
+                            labelText: "DATE",
+                            profitText: vm.bet.date.toString()
+                        )
+                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        BetsDetailRow(
+                            icon: "sportscourt",
+                            labelText: "CATEGORY",
+                            profitText: vm.bet.category.rawValue.uppercased()
+                        )
+                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+
+                        BetsDetailRow(
+                            icon: "banknote",
+                            labelText: "AMOUNT",
+                            profitText: vm.bet.amount.stringValue,
                             currency: vm.currency
                         )
-                        .frame(maxHeight: 70)
-                        HStack {
-                            BetDetailRow(
-                                cellTitle: "ODDS",
-                                valueText: vm.bet.odds.doubleValue.formattedWith2Digits()
-                            )
-                            .frame(maxHeight: 70)
-                            BetDetailRow(
-                                cellTitle: "TAX",
-                                valueText: "\(vm.bet.tax.doubleValue.formattedWith2Digits())%"
-                            )
-                            .frame(maxHeight: 70)
-                        }
+                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        BetsDetailRow(
+                            icon: "dice",
+                            labelText: "ODDS",
+                            profitText: vm.bet.odds.doubleValue.formattedWith2Digits()
+                        )
+                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
 
-                        //                    if vm.bet.isWon == true {
-                        //                        BetDetailRowAmount(cellTitle: "NET PROFIT", valueText: (vm.bet.score), currency: vm.currency)
-                        //                    } else if vm.bet.isWon == false {
-                        //                        BetDetailRowAmount(cellTitle: "LOSS", valueText: ("-\(vm.bet.amount)"), currency: vm.currency)
-                        //
-                        //                    } else if vm.bet.isWon == nil {
-                        //                        BetDetailRowAmount(cellTitle: "PREDICTED WIN", valueText: vm.bet.profit, currency: vm.currency)
-                        //
-                        //                    }
+                        BetsDetailRow(
+                            icon: "dollarsign.circle",
+                            labelText: "TAX",
+                            profitText: "\(vm.bet.tax.doubleValue.formattedWith2Digits()) %"
+                        )
+                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
 
-                        HStack {
-                            BetDetailRow(cellTitle: "DATE", valueText: vm.bet.date.formatSelectedDate())
-                                .frame(maxHeight: 70)
-                            BetDetailRow(
-                                cellTitle: "CATEGORY",
-                                valueText: vm.bet.category.rawValue.uppercased()
-                            )
-                            .frame(maxHeight: 70)
-                        }
+                        BetsDetailRow(
+                            icon: "calendar",
+                            labelText: "NET PROFIT",
+                            profitText: vm.bet.profit.stringValue
+                        )
+                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
 
-                        Spacer()
+                        BetsDetailRow(
+                            icon: "dice",
+                            labelText: "NOTE",
+                            profitText: vm.bet.odds.doubleValue.formattedWith2Digits()
+                        )
+                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                     }
-
-                    HStack {
-                        switch vm.buttonState {
-                        case .uncleared:
-                            VStack {
-                                MarkWonButton(text: "Set as won")
-                                    .padding(.horizontal, 64)
-                                    .onTapGesture {
-                                       
-                                        dismiss()
-                                    }
-                                MarkLostButton(text: "Set as lost")
-                                    .padding(.horizontal, 64)
-                                    .onTapGesture {
-                                        
-                                        dismiss()
-                                    }
-                            }
-
-                        case .won:
-                            MarkLostButton(text: "Set as lost")
-                                .padding(.horizontal, 64)
-                                .onTapGesture {
-                                    
-                                    dismiss()
-                                }
-                        case .lost:
-                            MarkWonButton(text: "Set as won")
-                                .padding(.horizontal, 64)
-                                .onTapGesture {
-                                    
-                                    dismiss()
-                                }
-                        }
-                    }
-                    .padding(.top, 36)
                 }
 
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 12)
             }
         }
+        .safeAreaInset(
+            edge: .bottom,
+            alignment: .center,
+            content: {
+                VStack {
+                    HStack {
+                        switch vm.buttonState {
+                        case .uncleared:
+                            HStack(spacing: 16) {
+                                MarkWonButton(text: "BET WON")
+                                    .onTapGesture {
+                                        // TODO: vm and respository
+
+                                        dismiss()
+                                    }
+                                MarkLostButton(text: "BET LOST")
+                                    .onTapGesture {
+                                        // TODO: vm and respository
+
+                                        dismiss()
+                                    }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 90)
+                            .padding(.horizontal, 18)
+                            .padding(.vertical, 12)
+
+                        case .won:
+                            MarkLostButton(text: "Set as lost")
+                                .padding(.horizontal, 64)
+                                .onTapGesture {
+                                    // TODO: vm and respository
+
+                                    dismiss()
+                                }
+                                .padding(.vertical, 12)
+
+                        case .lost:
+                            MarkWonButton(text: "Set as won")
+                                .padding(.horizontal, 64)
+                                .onTapGesture {
+                                    // TODO: vm and respository
+
+                                    dismiss()
+                                }
+                                .padding(.vertical, 12)
+                        }
+                    }
+                }
+                .background {
+                    RoundedRectangle(cornerRadius: 0, style: .continuous)
+                        .foregroundColor(Color.clear)
+                        .background(Material.bar.opacity(0.7))
+                        .blur(radius: 12)
+                }
+                .padding(.top, 36)
+            }
+        )
+        .padding(.top, 24)
         .navigationBarBackButtonHidden()
-        Spacer()
-        Spacer()
     }
 }

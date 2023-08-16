@@ -216,7 +216,7 @@ class BetDao {
 //            .mapError { _ in Never.transferRepresentation }
 //            .eraseToAnyPublisher()
 //    }
-    
+
     func getBetsCount(
         model _: (some DatabaseModel).Type,
         tableName: String,
@@ -237,8 +237,6 @@ class BetDao {
             .mapError { _ in Never.transferRepresentation }
             .eraseToAnyPublisher()
     }
-
-    
 
     // ** average bets **
 

@@ -1,16 +1,9 @@
-//
-//  BetslipListElement.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 26/07/2023.
-//
-
 import SwiftUI
 
 struct BetslipListElement: View {
     let bet: BetslipModel
     let currency: String
-    
+
     var body: some View {
         VStack {
             HStack(spacing: 0) {
@@ -74,4 +67,3 @@ struct BetslipListElement: View {
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
     }
 }
-

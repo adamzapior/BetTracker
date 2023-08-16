@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 /// exmp for mock
 protocol AddBetInteractorProtocol {
 
@@ -20,6 +18,7 @@ protocol AddBetInteractorProtocol {
         selectedDate: Date,
         tax: NSDecimalNumber,
         profit: NSDecimalNumber,
+        note: String?,
         isWon: Bool?,
         betNotificationID: String,
         score: NSDecimalNumber
@@ -43,15 +42,13 @@ protocol AddBetInteractorProtocol {
 
 /// use case
 class AddBetInteractor: AddBetInteractorProtocol {
- 
- 
-    
+
     func savebetTest(
         id: Int64?,
-        date: Date,
+        date _: Date,
         team1: String,
         team2: String,
-        selectedTeam: SelectedTeam,
+        selectedTeam _: SelectedTeam,
         amount: NSDecimalNumber,
         odds: NSDecimalNumber,
         category: Category,
@@ -59,6 +56,7 @@ class AddBetInteractor: AddBetInteractorProtocol {
         selectedDate: Date,
         tax: NSDecimalNumber,
         profit: NSDecimalNumber,
+        note: String?,
         isWon: Bool?,
         betNotificationID: String,
         score: NSDecimalNumber
@@ -75,11 +73,12 @@ class AddBetInteractor: AddBetInteractorProtocol {
             category: category,
             tax: tax,
             profit: profit,
+            note: note,
             isWon: isWon,
             betNotificationID: betNotificationID,
             score: score
         )
-        
+
         saveBet(model: xd)
     }
 

@@ -2,7 +2,8 @@ import SwiftUI
 
 @main
 struct BetTrackerApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self)
+    var appDelegate
 
     @StateObject
     private var session = SessionManager()
@@ -17,8 +18,8 @@ struct BetTrackerApp: App {
                 .environmentObject(session)
         }
     }
-    
-    // Notification acces to user options: [.x, y. etc...]
+
+    // TODO: Przeniesienie tej usługi do dodania powiadomienia/ustawień deeplink
     func requestNotificationPermission() {
         UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in

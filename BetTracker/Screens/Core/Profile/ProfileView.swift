@@ -75,9 +75,10 @@ struct ProfileView: View {
                                         .formattedWith2Digits(),
                                     currency: vm.defaultCurrency.uppercased()
                                 )
-                                WonRateRow(
+                                BalanceRow(
                                     cellTitle: "WON RATE",
-                                    valueText: vm.wonRate.formattedWith2Digits()
+                                    valueText: vm.wonRate.formattedWith2Digits(),
+                                    currency: "%"
                                 )
                             }
 
@@ -113,7 +114,7 @@ struct ProfileView: View {
 
                             HStack {
                                 BalanceRow(
-                                    cellTitle: "LARGEST NET PROFIT",
+                                    cellTitle: "BIGGEST PROFIT",
                                     valueText: vm.mergedLargestBetProfit.stringValue,
                                     currency: vm.defaultCurrency.uppercased()
                                 )
