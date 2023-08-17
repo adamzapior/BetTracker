@@ -7,7 +7,7 @@ struct BetslipDetailsScreen: View {
     /// to pozmnielem moze byc zle
     @StateObject
     var vm: BetslipDetailsVM
-
+    
     init(bet: BetslipModel, backgroundColor _: Color = .clear) {
         _vm = StateObject(wrappedValue: BetslipDetailsVM(bet: bet))
     }

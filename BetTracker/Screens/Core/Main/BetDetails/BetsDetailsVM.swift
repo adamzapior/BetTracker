@@ -2,7 +2,7 @@ import Foundation
 
 class BetsDetailsVM: ObservableObject {
 
-    let respository: MainInteractor
+//    let respository: MainInteractor
     let bet: BetModel
 
     var buttonState: BetButtonState = .uncleared
@@ -18,9 +18,9 @@ class BetsDetailsVM: ObservableObject {
         case lost
     }
 
-    init(respository: MainInteractor, bet: BetModel) {
+    init(bet: BetModel) {
         self.bet = bet
-        self.respository = respository
+//        self.respository = respository
 
         checkButtonState()
     }

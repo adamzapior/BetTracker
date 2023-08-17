@@ -63,6 +63,7 @@
 		58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715A2A082AEA00439B98 /* OnboardingView.swift */; };
 		58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */; };
 		58B55B032A8C2DC70088A72B /* BetsDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B55B022A8C2DC70088A72B /* BetsDetailRow.swift */; };
+		58B80F752A8E1DB50011407E /* BetslipDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B80F742A8E1DB50011407E /* BetslipDetailsVM.swift */; };
 		58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4102A0A706500C8CCCC /* SessionManager.swift */; };
 		58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */; };
 		58BEC4322A0B623D00C8CCCC /* UserNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */; };
@@ -147,6 +148,7 @@
 		58B0715A2A082AEA00439B98 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupView.swift; sourceTree = "<group>"; };
 		58B55B022A8C2DC70088A72B /* BetsDetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetsDetailRow.swift; sourceTree = "<group>"; };
+		58B80F742A8E1DB50011407E /* BetslipDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipDetailsVM.swift; sourceTree = "<group>"; };
 		58BEC4102A0A706500C8CCCC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsService.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				58076A6629C907A000A0762B /* BetDetailsScreen.swift */,
 				5887209C2A7081E300D57B16 /* BetslipDetailsScreen.swift */,
 				58076A6229C907A000A0762B /* BetsDetailsVM.swift */,
+				58B80F742A8E1DB50011407E /* BetslipDetailsVM.swift */,
 				58076A6329C907A000A0762B /* Components */,
 			);
 			path = BetDetails;
@@ -577,6 +580,7 @@
 				58076A8429C907A000A0762B /* MainHeader.swift in Sources */,
 				58076A8629C907A000A0762B /* MainView.swift in Sources */,
 				58B55B032A8C2DC70088A72B /* BetsDetailRow.swift in Sources */,
+				58B80F752A8E1DB50011407E /* BetslipDetailsVM.swift in Sources */,
 				58076A8529C907A000A0762B /* NoContentElement.swift in Sources */,
 				58EC47752A1125300088E6DC /* BalanceRow.swift in Sources */,
 				58076A8029C907A000A0762B /* BetDetailsScreen.swift in Sources */,
