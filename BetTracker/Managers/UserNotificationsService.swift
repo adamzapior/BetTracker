@@ -49,5 +49,19 @@ struct UserNotificationsService {
             .removePendingNotificationRequests(withIdentifiers: [notificationId])
         print("DEBUG: Removed notification with id: \(notificationId)")
     }
+    
+    func isNotificationDateInFuture(notificationId: String, completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
+            if let matchingRequest = requests.first(where: { $0.identifier == notificationId }),
+               let trigger = matchingRequest.trigger as? UNCalendarNotificationTrigger {
 
+                let notificationDate = trigger.nextTriggerDate()
+                let now = Date()
+
+                completion(notificationDate?.compare(now) == .orderedDescending)
+            } else {
+                completion(false)
+            }
+        }
+    }
 }

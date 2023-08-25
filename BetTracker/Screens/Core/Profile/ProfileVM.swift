@@ -37,6 +37,7 @@ class ProfileVM: ObservableObject {
     @Published
     var mergedPendingBetsCount: NSDecimalNumber = .zero
 
+    // TODO: 
     var wonRate: Double {
         0 // to fix
 //        let score = 0

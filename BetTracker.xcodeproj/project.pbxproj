@@ -36,6 +36,7 @@
 		58076A9529CA37BF00A0762B /* BetDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A9429CA37BE00A0762B /* BetDao.swift */; };
 		580BC5C92A727A1E00330998 /* AddBetInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580BC5C82A727A1E00330998 /* AddBetInteractor.swift */; };
 		580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */; };
+		5820EDAB2A96B1DF00C06DBC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820EDAA2A96B1DE00C06DBC /* NoteRow.swift */; };
 		583AB5A929D230A200F4B9DC /* ProfileVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AB5A829D230A200F4B9DC /* ProfileVM.swift */; };
 		583D2F5629EF1871000AB125 /* OptionalDataInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583D2F5529EF1871000AB125 /* OptionalDataInput.swift */; };
 		583D2F5829EF1E1C000AB125 /* SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583D2F5729EF1E1C000AB125 /* SortButton.swift */; };
@@ -67,7 +68,7 @@
 		58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4102A0A706500C8CCCC /* SessionManager.swift */; };
 		58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */; };
 		58BEC4322A0B623D00C8CCCC /* UserNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */; };
-		58C4854F2A0E8A9E00E62522 /* ReminderIsActive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C4854E2A0E8A9E00E62522 /* ReminderIsActive.swift */; };
+		58C4854F2A0E8A9E00E62522 /* IconTextActionButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C4854E2A0E8A9E00E62522 /* IconTextActionButtonRow.swift */; };
 		58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C485552A0EE80400E62522 /* AppDelegate.swift */; };
 		58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C485572A0EEE0300E62522 /* HapticsManager.swift */; };
 		58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E887AC2A00528A0079C045 /* ProfileView.swift */; };
@@ -123,6 +124,7 @@
 		58076A9429CA37BE00A0762B /* BetDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetDao.swift; sourceTree = "<group>"; };
 		580BC5C82A727A1E00330998 /* AddBetInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBetInteractor.swift; sourceTree = "<group>"; };
 		580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoVM.swift; sourceTree = "<group>"; };
+		5820EDAA2A96B1DE00C06DBC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
 		583AB5A829D230A200F4B9DC /* ProfileVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVM.swift; sourceTree = "<group>"; };
 		583D2F5529EF1871000AB125 /* OptionalDataInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDataInput.swift; sourceTree = "<group>"; };
 		583D2F5729EF1E1C000AB125 /* SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButton.swift; sourceTree = "<group>"; };
@@ -152,7 +154,7 @@
 		58BEC4102A0A706500C8CCCC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsService.swift; sourceTree = "<group>"; };
-		58C4854E2A0E8A9E00E62522 /* ReminderIsActive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderIsActive.swift; sourceTree = "<group>"; };
+		58C4854E2A0E8A9E00E62522 /* IconTextActionButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextActionButtonRow.swift; sourceTree = "<group>"; };
 		58C485542A0EA84100E62522 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		58C485552A0EE80400E62522 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		58C485572A0EEE0300E62522 /* HapticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
@@ -206,7 +208,7 @@
 				58BEC40F2A0999BE00C8CCCC /* Managers */,
 				58076A5929C9079F00A0762B /* Extensions */,
 				58076A5E29C9079F00A0762B /* Model */,
-				58076A8E29C98B1000A0762B /* LocalData */,
+				58076A8E29C98B1000A0762B /* Data */,
 				580BC5C72A7279C300330998 /* Interactor */,
 				5870E9DA29E456610023CC01 /* Screens */,
 				58076A4C29C906FE00A0762B /* Preview Content */,
@@ -338,18 +340,19 @@
 				5845A62F29E6321700A95E2B /* PredictedProfit.swift */,
 				5885E3FF29D8E4BF005B764E /* AddBetButton.swift */,
 				58A3878B2A0FFDF000ED95DB /* CategoryRow.swift */,
+				5820EDAA2A96B1DE00C06DBC /* NoteRow.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
 		};
-		58076A8E29C98B1000A0762B /* LocalData */ = {
+		58076A8E29C98B1000A0762B /* Data */ = {
 			isa = PBXGroup;
 			children = (
 				58076A8F29C98B4000A0762B /* BetDb.swift */,
 				58076A9229C98B9800A0762B /* BetRecord.swift */,
 				58076A9429CA37BE00A0762B /* BetDao.swift */,
 			);
-			path = LocalData;
+			path = Data;
 			sourceTree = "<group>";
 		};
 		580BC5C72A7279C300330998 /* Interactor */ = {
@@ -441,7 +444,7 @@
 		58C4854D2A0E8A6300E62522 /* ReminderRow */ = {
 			isa = PBXGroup;
 			children = (
-				58C4854E2A0E8A9E00E62522 /* ReminderIsActive.swift */,
+				58C4854E2A0E8A9E00E62522 /* IconTextActionButtonRow.swift */,
 				5858E8302A0C2A4D00CD018F /* DatePickerWithButtons.swift */,
 				58A387852A0FE25900ED95DB /* EventDatePicker.swift */,
 				58A387872A0FEA5E00ED95DB /* EventDateRow.swift */,
@@ -569,6 +572,7 @@
 				58A3878C2A0FFDF000ED95DB /* CategoryRow.swift in Sources */,
 				58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */,
 				580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */,
+				5820EDAB2A96B1DF00C06DBC /* NoteRow.swift in Sources */,
 				58EC477B2A1142AD0088E6DC /* WonRateRow.swift in Sources */,
 				58BEC4322A0B623D00C8CCCC /* UserNotificationsService.swift in Sources */,
 				58EC47792A11417F0088E6DC /* NumbersExt.swift in Sources */,
@@ -600,7 +604,7 @@
 				58A387882A0FEA5E00ED95DB /* EventDateRow.swift in Sources */,
 				58076A7629C907A000A0762B /* SearchView.swift in Sources */,
 				58076A7929C907A000A0762B /* Theme.swift in Sources */,
-				58C4854F2A0E8A9E00E62522 /* ReminderIsActive.swift in Sources */,
+				58C4854F2A0E8A9E00E62522 /* IconTextActionButtonRow.swift in Sources */,
 				5803FD4D2A7080AC00DA7925 /* BetslipListElement.swift in Sources */,
 				58076A9029C98B4000A0762B /* BetDb.swift in Sources */,
 				58076A7E29C907A000A0762B /* BetDetailHeader.swift in Sources */,

@@ -8,7 +8,10 @@ class BetsDetailsVM: ObservableObject {
     var buttonState: BetButtonState = .uncleared
 
     @Published
-    var isShowingAlert = false
+    var isAlertSet: Bool = false
+    
+    @Published
+    var isShowingAlert: Bool = false
 
     var currency = UserDefaultsManager.defaultCurrencyValue
 
@@ -23,12 +26,25 @@ class BetsDetailsVM: ObservableObject {
 //        self.respository = respository
 
         checkButtonState()
+        isNotificationInFuture()
+        print(isAlertSet.description)
     }
 
     func deleteBet(bet: BetModel) {
         BetDao.deleteBet(bet: bet)
     }
-
+    
+    func isNotificationInFuture() {
+        if let notificationID = bet.betNotificationID, !notificationID.isEmpty {
+            UserNotificationsService().isNotificationDateInFuture(notificationId: notificationID) { isInFuture in
+                DispatchQueue.main.async {
+                    self.isAlertSet = isInFuture
+                }
+                print("it is")
+            }
+        }
+    }
+    
     func removeNotification() {
         UserNotificationsService().removeNotification(notificationId: bet.betNotificationID ?? "")
     }

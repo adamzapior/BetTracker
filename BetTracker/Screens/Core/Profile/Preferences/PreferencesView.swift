@@ -36,16 +36,19 @@ struct PreferencesView: View {
                                 )
                         ) {
                             TextField("Enter your name", text: $vm.username)
+                                .listRowBackground(Color.ui.onPrimary)
                                 .textFieldStyle(.plain)
                             Picker("Choose your currency", selection: $vm.defaultCurrency) {
                                 ForEach(Currency.allCases, id: \.self) { currency in
                                     Text("\(currency.rawValue.uppercased())")
                                 }
                             }
+                            .listRowBackground(Color.ui.onPrimary)
                             .tint(Color.ui.scheme)
                             .pickerStyle(.menu)
 
                             Toggle("Do you want set default tax?", isOn: $vm.isDefaultTaxOn)
+                                .listRowBackground(Color.ui.onPrimary)
                                 .tint(Color.ui.scheme)
 
                             if vm.taxStatus == .taxUnsaved {
@@ -70,8 +73,11 @@ struct PreferencesView: View {
                                 )
                         ) {
                             Text("Help")
+                                .listRowBackground(Color.ui.onPrimary)
                             Text("Help")
+                                .listRowBackground(Color.ui.onPrimary)
                             Text("Help")
+                                .listRowBackground(Color.ui.onPrimary)
                         }
                     }
                     .scrollContentBackground(.hidden)

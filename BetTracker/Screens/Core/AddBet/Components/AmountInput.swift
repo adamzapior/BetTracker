@@ -16,6 +16,7 @@ struct AmountInput: View {
                     prompt: Text(hint)
                         .foregroundColor(Color.ui.onPrimaryContainer)
                 )
+                .frame(minHeight: 24)
                 .overlay {
                     Text(overlayText)
                         .frame(maxWidth: .infinity, alignment: .trailing)

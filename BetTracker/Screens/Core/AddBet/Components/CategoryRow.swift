@@ -16,9 +16,10 @@ struct CategoryRow: View {
                 Text("Select your sport category")
                     .font(.body)
                     .foregroundColor(Color.ui.onPrimaryContainer)
-                    .padding(.vertical, 12)
                 Spacer()
             }
+            .frame(minHeight: 24)
+            .padding(.vertical, 12)
             .padding(.horizontal, 12)
             .background {
                 RoundedRectangle(cornerRadius: 15)

@@ -14,18 +14,39 @@ struct BetDetailsScreen: View {
 
     var body: some View {
         VStack {
-            BetDetailHeader(title: "Your pick") {
-                dismiss()
-            } onDelete: {
-                vm.isShowingAlert = true
-            }
-            .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
-                Button("Yes") {
-                    vm.deleteBet(bet: vm.bet)
-                    vm.removeNotification()
-                    dismiss()
+            VStack {
+                if vm.isAlertSet {
+                    BetDetailHeader(title: "Your pick", isNotificationOn: true) {
+                        dismiss()
+                    } onDelete: {
+                        vm.isShowingAlert = true
+                    } onNotification: {
+                        vm.removeNotification()
+                        vm.isAlertSet = false
+                    }
+                    .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
+                        Button("Yes") {
+                            vm.deleteBet(bet: vm.bet)
+                            vm.removeNotification()
+                            dismiss()
+                        }
+                        Button("No", role: .cancel) { }
+                    }
+                } else {
+                    BetDetailHeader(title: "Your pick", isNotificationOn: false) {
+                        dismiss()
+                    } onDelete: {
+                        vm.isShowingAlert = true
+                    }
+                    .alert("Are you sure?", isPresented: $vm.isShowingAlert) {
+                        Button("Yes") {
+                            vm.deleteBet(bet: vm.bet)
+                            vm.removeNotification()
+                            dismiss()
+                        }
+                        Button("No", role: .cancel) { }
+                    }
                 }
-                Button("No", role: .cancel) { }
             }
 
             ScrollView(showsIndicators: false) {
@@ -36,6 +57,7 @@ struct BetDetailsScreen: View {
                             .font(.title3)
                             .bold()
                             .padding(.vertical, 8)
+                            .padding(.horizontal)
                             .foregroundColor(
                                 vm.bet.selectedTeam == .team1
                                     ? Color.ui.scheme
@@ -50,6 +72,7 @@ struct BetDetailsScreen: View {
                             .font(.title3)
                             .bold()
                             .padding(.vertical, 8)
+                            .padding(.horizontal)
                             .foregroundColor(
                                 vm.bet.selectedTeam == .team2
                                     ? Color.ui.scheme
@@ -99,19 +122,55 @@ struct BetDetailsScreen: View {
                         )
                         .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
 
-                        BetsDetailRow(
-                            icon: "calendar",
-                            labelText: "NET PROFIT",
-                            profitText: vm.bet.profit.stringValue
-                        )
-                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        if vm.bet.isWon == true {
+                            BetsDetailRow(
+                                icon: "arrow.up.forward",
+                                labelText: "NET PROFIT",
+                                profitText: vm.bet.score!.stringValue,
+                                currency: vm.currency
+                            )
+                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        } else if vm.bet.isWon == false {
+                            BetsDetailRow(
+                                icon: "arrow.down.forward",
+                                labelText: "YOUR LOSS",
+                                profitText: vm.bet.score!.stringValue,
+                                currency: vm.currency
+                            )
+                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        } else {
+                            BetsDetailRow(
+                                icon: "arrow.forward",
+                                labelText: "PREDICTED WIN",
+                                profitText: vm.bet.profit.stringValue,
+                                currency: vm.currency
+                            )
+                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        }
 
-                        BetsDetailRow(
-                            icon: "dice",
-                            labelText: "NOTE",
-                            profitText: vm.bet.odds.doubleValue.formattedWith2Digits()
-                        )
-                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        if !vm.bet.note!.isEmpty {
+                            VStack {
+                                BetsDetailRow(
+                                    icon: "note",
+                                    labelText: "NOTE",
+                                    profitText: ""
+                                )
+                                .padding(.bottom, -12)
+
+                                Text(vm.bet.note!)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding()
+                            }
+                            .background {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .foregroundColor(
+                                        Color.ui.onPrimary
+                                    )
+                            }
+                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
+                        } else {
+                            EmptyView()
+                        }
                     }
                 }
 

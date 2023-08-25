@@ -95,7 +95,8 @@ struct TabBar: View {
                 .foregroundColor(isSelected ? Color.ui.scheme : Color.ui.secondary.opacity(1))
                 .padding()
                 .background(Color.clear)
-                .clipShape(Circle())
+                .frame(width: 44, height: 44)
+                .contentShape(Circle())
         }
     }
 

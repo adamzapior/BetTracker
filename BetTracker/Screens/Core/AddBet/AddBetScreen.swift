@@ -18,36 +18,10 @@ struct AddBetScreen: View {
     var vm = AddBetVM()
 
     @State
-    var alertCheck: Bool = false
+    var alertCheck: Bool = false // TODO: do wyjebania?
 
     var body: some View {
         VStack(spacing: 2) {
-            ZStack {
-                HStack {
-                    Picker("Select an option", selection: $vm.betType) {
-                        ForEach(BetType.allCases, id: \.self) { currentState in
-                            Text(currentState.rawValue.uppercased())
-                        }
-                    }
-                }
-                .padding(.horizontal, 20)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .pickerStyle(.menu)
-                .tint(Color.ui.secondary)
-
-                HStack {
-                    Spacer()
-                    Image(systemName: "xmark")
-                        .foregroundColor(Color.red)
-                        .opacity(0.7)
-                        .font(.title2)
-                        .onTapGesture {
-                            dismiss()
-                        }
-                }
-                .padding(.trailing, 18)
-            }
-
             if vm.betType == .singlebet {
                 ScrollView { // Here was ScrollView
                     Group {
@@ -122,7 +96,6 @@ struct AddBetScreen: View {
                                     )
                                 }
                             }
-
                             AmountInput(
                                 hint: "Enter your bet amount*",
                                 text: $vm.amount,
@@ -137,7 +110,7 @@ struct AddBetScreen: View {
                         }
                         .padding(.horizontal, 12)
 
-                        VStack {
+                        VStack(spacing: 12) {
                             // state
                             ZStack {
                                 switch vm.dateState {
@@ -169,7 +142,7 @@ struct AddBetScreen: View {
                             ZStack {
                                 switch vm.reminderState {
                                 case .add:
-                                    ReminderIsActive(
+                                    IconTextActionButtonRow(
                                         icon: "bell",
                                         labelText: "Reminder is off",
                                         actionButtonIcon: "plus.app.fill",
@@ -194,7 +167,7 @@ struct AddBetScreen: View {
                                     }
 
                                 case .delete:
-                                    ReminderIsActive(
+                                    IconTextActionButtonRow(
                                         icon: "bell",
                                         labelText: "Reminder is on",
                                         actionButtonIcon: "xmark.app.fill",
@@ -208,6 +181,27 @@ struct AddBetScreen: View {
                             .animation(.easeInOut, value: vm.reminderState)
                             .padding(.horizontal, 12)
 
+                            ZStack {
+                                switch vm.noteState {
+                                case .closed:
+                                    IconTextActionButtonRow(
+                                        icon: "note",
+                                        labelText: "Add note",
+                                        actionButtonIcon: "plus.app.fill",
+                                        actionButtonColor: Color.ui.onBackground
+                                    ) {
+                                        vm.openNote()
+                                    }
+                                case .opened:
+                                    NoteRow(text: $vm.note) {
+                                        vm.closeNote()
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .animation(.easeInOut, value: vm.noteState)
+                            .padding(.horizontal, 12)
+
                             PredictedProfit(
                                 labelText: "Your predicted profit:",
                                 profitText: vm.profit.stringValue,
@@ -216,19 +210,6 @@ struct AddBetScreen: View {
                             .padding(.horizontal, 12)
                         }
                         .padding(.top, 12)
-                    }
-                    .safeAreaInset(edge: .bottom) {
-                        VStack {
-                            AddBetButton(text: "Add bet to pending") {
-                                if vm.saveBet() {
-                                    dismiss()
-                                    vm.clearTextField()
-                                } else {
-                                    alertCheck = true
-                                }
-                            }
-                        }
-                        .padding(.top, 36)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -311,7 +292,7 @@ struct AddBetScreen: View {
                         }
                         .padding(.horizontal, 12)
 
-                        VStack {
+                        VStack(spacing: 12) {
                             // state
                             ZStack {
                                 switch vm.dateState {
@@ -343,7 +324,7 @@ struct AddBetScreen: View {
                             ZStack {
                                 switch vm.reminderState {
                                 case .add:
-                                    ReminderIsActive(
+                                    IconTextActionButtonRow(
                                         icon: "bell",
                                         labelText: "Reminder is off",
                                         actionButtonIcon: "plus.app.fill",
@@ -368,7 +349,7 @@ struct AddBetScreen: View {
                                     }
 
                                 case .delete:
-                                    ReminderIsActive(
+                                    IconTextActionButtonRow(
                                         icon: "bell",
                                         labelText: "Reminder is on",
                                         actionButtonIcon: "xmark.app.fill",
@@ -382,6 +363,27 @@ struct AddBetScreen: View {
                             .animation(.easeInOut, value: vm.reminderState)
                             .padding(.horizontal, 12)
 
+                            ZStack {
+                                switch vm.noteState {
+                                case .closed:
+                                    IconTextActionButtonRow(
+                                        icon: "note",
+                                        labelText: "Add note",
+                                        actionButtonIcon: "plus.app.fill",
+                                        actionButtonColor: Color.ui.onBackground
+                                    ) {
+                                        vm.openNote()
+                                    }
+                                case .opened:
+                                    NoteRow(text: $vm.note) {
+                                        vm.closeNote()
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .animation(.easeInOut, value: vm.noteState)
+                            .padding(.horizontal, 12)
+
                             PredictedProfit(
                                 labelText: "Your predicted profit:",
                                 profitText: vm.betslipProfit.stringValue,
@@ -391,28 +393,84 @@ struct AddBetScreen: View {
                         }
                         .padding(.top, 12)
                     }
-                    .safeAreaInset(edge: .bottom) {
-                        VStack {
-                            AddBetButton(text: "Add bet to pending") {
-                                if vm.saveBetslip() {
-                                    dismiss()
-                                } else {
-                                    alertCheck = true
-                                }
-                            }
-                        }
-                        .padding(.top, 36)
-                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                
-                .onAppear { }
             }
-            
         }
         .padding(.top, 12)
         .navigationBarBackButtonHidden()
         .onTapGesture { hideKeyboard() }
+        .safeAreaInset(edge: .top, alignment: .center, content: {
+            ZStack {
+                HStack {
+                    Picker("Select an option", selection: $vm.betType) {
+                        ForEach(BetType.allCases, id: \.self) { currentState in
+                            Text(currentState.rawValue.uppercased())
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .pickerStyle(.menu)
+                .tint(Color.ui.secondary)
+
+                HStack {
+                    Spacer()
+                    Image(systemName: "xmark")
+                        .foregroundColor(Color.red)
+                        .opacity(0.7)
+                        .font(.title2)
+                        .onTapGesture {
+                            dismiss()
+                        }
+                }
+                .padding(.trailing, 18)
+            }
+        })
+        .safeAreaInset(
+            edge: .bottom,
+            alignment: .center,
+            content: {
+                VStack {
+                    if vm.betType == .singlebet {
+                        Button {
+                            if vm.saveBet() {
+                                dismiss()
+                            } else {
+                                alertCheck = true // TODO: do wyjebania?
+                            }
+                        } label: {
+                            AddBetButton(text: "Add bet to pending")
+                                .padding(.horizontal, 64)
+                                .padding(.vertical, 12)
+                        }
+                    }
+
+                    if vm.betType == .betslip {
+                        Button {
+                            if vm.saveBetslip() {
+                                dismiss()
+                            } else {
+                                alertCheck = true // TODO: do wyjebania?
+                            }
+                        } label: {
+                            AddBetButton(text: "Add bet to pending")
+                                .padding(.horizontal, 64)
+                                .padding(.vertical, 12)
+                        }
+                    }
+                }
+                .background {
+                    RoundedRectangle(cornerRadius: 0, style: .continuous)
+                        .foregroundColor(Color.clear)
+                        .background(Material.bar.opacity(0.7))
+                        .blur(radius: 12)
+                }
+                .padding(.top, 36)
+            }
+        )
+        .padding(.top, 24)
+        .navigationBarBackButtonHidden()
 
         .onDisappear {
             vm.saveTextfield()

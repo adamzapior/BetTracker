@@ -57,7 +57,6 @@ struct EventDateRow: View {
                     .onTapGesture {
                         action()
                     }
-//                    .padding(.leading, 100)
             }
             .padding(.horizontal)
             .background {

@@ -14,7 +14,7 @@ struct BetslipDetailsScreen: View {
 
     var body: some View {
         VStack {
-            BetDetailHeader(title: "Your betslip") {
+            BetDetailHeader(title: "Your betslip", isNotificationOn: true) {
                 dismiss()
             } onDelete: {
                 vm.isShowingAlert = true
@@ -81,7 +81,7 @@ struct BetslipDetailsScreen: View {
                         .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
 
                         BetsDetailRow(
-                            icon: "dice",
+                            icon: "note",
                             labelText: "NOTE",
                             profitText: vm.bet.odds.doubleValue.formattedWith2Digits()
                         )

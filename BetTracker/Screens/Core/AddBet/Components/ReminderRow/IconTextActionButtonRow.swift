@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ReminderIsActive: View {
+struct IconTextActionButtonRow: View {
 
     let icon: String
     let labelText: String
@@ -44,9 +44,7 @@ struct ReminderIsActive: View {
                     .onTapGesture {
                         action()
                     }
-//                    .padding(.leading, 100)
             }
-//            .padding(.leading, 3)
             .padding(.horizontal)
             .background {
                 RoundedRectangle(cornerRadius: 15)
@@ -62,13 +60,3 @@ struct ReminderIsActive: View {
 
 }
 
-//
-// struct ReminderIsActive_Previews: PreviewProvider {
-//
-//    static var previews: some View {
-//        ReminderIsActive(icon: "bell", labelText: "Reminder is off", actionButtonIcon: "plus.app.fill", actionButtonColor: Color.red) {
-//            //
-//        }
-//
-//    }
-// }

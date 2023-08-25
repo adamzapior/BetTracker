@@ -3,7 +3,26 @@ import Foundation
 import SwiftUI
 
 class AddBetVM: ObservableObject {
+    
+    // TODO: ustawić odpowiednio w kodzie
+    private var firstValue: String = "Pierwsza wartość"
+    private var secondValue: String = "Druga wartość"
 
+    private var useFirstValue: Bool = true
+
+    var dynamicBinding: Binding<String> {
+        Binding<String>(
+            get: {
+                return self.useFirstValue ? "" : self.note
+            },
+            set: { newValue in
+                if self.useFirstValue {
+                    self.note = newValue
+                }
+            }
+        )
+    }
+    
     let defaults = UserDefaultsManager.path
     let interactor = AddBetInteractor(BetDao: BetDao())
 
@@ -253,8 +272,22 @@ class AddBetVM: ObservableObject {
             }
         }
     }
+    
+    // MARK: Note
+    
+    enum NoteState {
+        case closed
+        case opened
+    }
+    
+    @Published
+    var noteState: NoteState = .closed
+    
+    @Published
+    var note: String = ""
+    
 
-    // MARK: Error handling
+    // MARK: - Error handling
 
     /// ** Define variables **
     @Published
@@ -334,6 +367,17 @@ class AddBetVM: ObservableObject {
     func saveIsClicked() {
         reminderState = .delete
     }
+    
+    // Note methods
+    
+    func openNote() {
+        noteState = .opened
+    }
+
+    func closeNote() {
+        noteState = .closed
+    }
+    
 
     // MARK: - Calculate methods
 
@@ -359,7 +403,7 @@ class AddBetVM: ObservableObject {
         return predictedWin
     }
 
-    /// TODO: Ta funkcja nie działa i nie liczy poprawnie np 90
+    // TODO: Ta funkcja nie działa i nie liczy poprawnie np 90
     func betProfitWithTax(
         amountString: String?,
         oddsString: String?,
@@ -663,7 +707,7 @@ class AddBetVM: ObservableObject {
             selectedDate: selectedDate,
             tax: NSDecimalNumber(string: newTax),
             profit: profit,
-            note: "",
+            note: note,
             isWon: nil,
             betNotificationID: betNotificationID,
             score: score
@@ -691,7 +735,7 @@ class AddBetVM: ObservableObject {
             category: selectedCategory,
             tax: NSDecimalNumber(string: betslipTax),
             profit: betslipProfit,
-            note: "",
+            note: note,
             isWon: true,
             betNotificationID: betNotificationID,
             score: score
@@ -758,6 +802,7 @@ class AddBetVM: ObservableObject {
     }
 
 }
+
 
 enum BetType: String, CaseIterable, Identifiable {
     var id: String { rawValue }

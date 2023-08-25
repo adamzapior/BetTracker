@@ -9,51 +9,39 @@ import SwiftUI
 
 struct AddBetButton: View {
     let text: String
-    var action: () -> Void
 
-    var body: some View {
-        Text(text)
-            .font(.title2)
-            .bold()
-            .foregroundColor(Color.ui.background)
-            .frame(minWidth: 200, minHeight: 56, alignment: .center)
-            .padding(.horizontal, 48)
-            .padding(.vertical, 3)
-            .clipShape(RoundedRectangle(cornerRadius: 150))
-            .background {
-                RoundedRectangle(cornerRadius: 15)
-                    .foregroundColor(Color.ui.onPrimaryContainer)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 25))
-        
-            .onTapGesture {
-                action()
-            }
+    init(text: String) {
+        self.text = text
     }
-}
-
-struct AddDeclineButton: View {
-    let text: String
-    var action: () -> Void
 
     var body: some View {
-        Text(text)
-            .font(.title2)
-            .bold()
-            .foregroundColor(Color.red)
-            .frame(minWidth: 75, minHeight: 40, alignment: .center)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 3)
-            .clipShape(RoundedRectangle(cornerRadius: 150))
-            .background {
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(style: StrokeStyle(lineWidth: 2))
-                    .foregroundColor(Color.ui.secondary)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 25))
-        
-            .onTapGesture {
-                action()
-            }
+        HStack {
+            Spacer()
+            Text(text)
+                .font(.headline)
+                .bold()
+                .foregroundColor(Color.ui.background)
+            Spacer()
+            Image(systemName: "plus.square.fill")
+                .foregroundColor(Color.ui.background)
+                .opacity(0.7)
+                .font(.title2)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 16)
+        .background {
+            RoundedRectangle(cornerRadius: 15)
+                .foregroundColor(
+                    Color.ui.onPrimaryContainer
+                )
+                .opacity(1)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.secondary, lineWidth: 0.2)
+                )
+        }
+
+        .frame(maxWidth: .infinity)
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
     }
 }
