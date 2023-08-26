@@ -106,7 +106,7 @@ struct BetDetailsScreen: View {
                             icon: "banknote",
                             labelText: "AMOUNT",
                             profitText: vm.bet.amount.stringValue,
-                            currency: vm.currency
+                            currency: vm.defaultCurrency.rawValue
                         )
                         .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         BetsDetailRow(
@@ -127,7 +127,7 @@ struct BetDetailsScreen: View {
                                 icon: "arrow.up.forward",
                                 labelText: "NET PROFIT",
                                 profitText: vm.bet.score!.stringValue,
-                                currency: vm.currency
+                                currency: vm.defaultCurrency.rawValue
                             )
                             .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         } else if vm.bet.isWon == false {
@@ -135,7 +135,7 @@ struct BetDetailsScreen: View {
                                 icon: "arrow.down.forward",
                                 labelText: "YOUR LOSS",
                                 profitText: vm.bet.score!.stringValue,
-                                currency: vm.currency
+                                currency: vm.defaultCurrency.rawValue
                             )
                             .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         } else {
@@ -143,7 +143,7 @@ struct BetDetailsScreen: View {
                                 icon: "arrow.forward",
                                 labelText: "PREDICTED WIN",
                                 profitText: vm.bet.profit.stringValue,
-                                currency: vm.currency
+                                currency: vm.defaultCurrency.rawValue
                             )
                             .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         }

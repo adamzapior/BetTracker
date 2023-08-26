@@ -3,90 +3,76 @@ import Foundation
 import GRDB
 import SwiftDate
 
-class MainViewVM: ObservableObject {
+final class MainViewVM: ObservableObject {
 
-    let defaults = UserDefaultsManager.path
-    let respository: MainInteractor
-    let dbBets = "bet"
-    let dbBetslip = "betslip"
+    private let defaults = UserDefaultsManager.path
+    private let respository: MainInteractor
 
-    @Published
-    var username: String = .init()
-
-    @Published
-    var showUsername: Bool = false
+    private enum TableName: String, CaseIterable {
+        case bet
+        case betslip
+    }
 
     @Published
-    var pendingBets: [BetModel]? = []
-
+    var username = String()
     @Published
-    var pendingBetslipBets: [BetslipModel]? = []
-
+    var showUsername = false
     @Published
-    var pendingMerged: [BetWrapper]? = []
-
+    var pendingBets: [BetModel]?
     @Published
-    var historyBets: [BetModel]? = []
-
+    var pendingBetslipBets: [BetslipModel]?
     @Published
-    var betslipHistory: [BetslipModel]? = []
-
+    var pendingMerged: [BetWrapper]?
     @Published
-    var historyMerged: [BetWrapper]? = []
-
+    var historyBets: [BetModel]?
     @Published
-    var mergedBets: [BetWrapper]? = []
-
+    var betslipHistory: [BetslipModel]?
     @Published
-    var savedBets: [BetModel]? = []
-
+    var historyMerged: [BetWrapper]?
     @Published
-    var isSearchClicked: Bool = false
-
+    var mergedBets: [BetWrapper]?
+    @Published
+    var isMergedCompleted = false
+    @Published
+    var isSearchClicked = false
     @Published
     private var cancellables = Set<AnyCancellable>()
 
-    let bet: [BetModel] = [
-        BetModel(
-            id: Int64(),
-            date: Date(),
-            team1: "test1",
-            team2: "test2",
-            selectedTeam: .team1,
-            league: "",
-            amount: 0.00,
-            odds: 1,
-            category: .football,
-            tax: 1,
-            profit: 24,
-            note: "",
-            isWon: nil,
-            betNotificationID: "",
-            score: 24
-        )
-    ]
+    var defaultCurrency: Currency = Currency.usd
 
-    var currency = UserDefaultsManager.defaultCurrencyValue
+    init(respository: MainInteractor) {
+        self.respository = respository
 
-    init(interactor: MainInteractor) {
-        respository = interactor
+        loadUserDefaultsData()
+        showUsername = !username.isEmpty
 
-        getUsername()
+        getPendingBets()
+        mergePendingBets()
+        getHistoryBets()
+        mergeHistoryBets()
+    }
 
-        if checkStatus() {
-            showUsername = true
-        }
-
-        getMerged()
-
-        interactor.getPendingBets(model: BetModel.self, tableName: dbBets)
+    private func getPendingBets() {
+        respository.getPendingBets(model: BetModel.self, tableName: TableName.bet.rawValue)
             .map { .some($0) }
             .assign(to: &$pendingBets)
 
-        interactor.getPendingBets(model: BetslipModel.self, tableName: dbBetslip)
+        respository.getPendingBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
             .map { .some($0) }
             .assign(to: &$pendingBetslipBets)
+    }
 
+    private func getHistoryBets() {
+        respository.getHistoryBets(model: BetModel.self, tableName: TableName.bet.rawValue)
+            .map { .some($0) }
+            .assign(to: &$historyBets)
+
+        respository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
+            .map { .some($0) }
+            .assign(to: &$betslipHistory)
+    }
+
+    private func mergePendingBets() {
         Publishers.CombineLatest($pendingBets, $pendingBetslipBets)
             .map { historyBets, betslipHistory -> [BetWrapper] in
                 let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
@@ -95,39 +81,25 @@ class MainViewVM: ObservableObject {
             }
             .assign(to: \.pendingMerged, on: self)
             .store(in: &cancellables)
-
-        interactor.getHistoryBets(model: BetModel.self, tableName: dbBets)
-            .map { .some($0) }
-            .assign(to: &$historyBets)
-
-        interactor.getHistoryBets(model: BetslipModel.self, tableName: dbBetslip)
-            .map { .some($0) }
-            .assign(to: &$betslipHistory)
     }
 
-    ///
-    func getMerged() {
+    private func mergeHistoryBets() {
         Publishers.CombineLatest($historyBets, $betslipHistory)
             .map { historyBets, betslipHistory -> [BetWrapper] in
                 let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
                     (betslipHistory?.map(BetWrapper.betslip) ?? [])
                 return combinedBets.sorted(by: { $0.date > $1.date })
             }
-            .assign(to: \.mergedBets, on: self)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] value in
+                self?.mergedBets = value
+                self?.isMergedCompleted = true
+            })
             .store(in: &cancellables)
     }
 
-    func getUsername() {
+    private func loadUserDefaultsData() {
         username = defaults.get(.username)
-        print("Username: \(username)")
-        print("\(username.count)")
-    }
-
-    func checkStatus() -> Bool {
-        if username.isEmpty {
-            return false
-        } else {
-            return true
-        }
+        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
 }

@@ -38,8 +38,8 @@ struct ProfileView: View {
             ScrollView(showsIndicators: false) {
                 EditableCircularProfileImage(vm: vmProfilePhoto)
 
-                if !vm.defaultUsername.isEmpty {
-                    Text(vm.defaultUsername)
+                if !vm.username.isEmpty {
+                    Text(vm.username)
                         .font(.body)
                         .bold()
                         .padding(.top, 6)

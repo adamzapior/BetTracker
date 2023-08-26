@@ -14,7 +14,7 @@ protocol SearchnteractorProtocol {
 class SearchInteractor: SearchnteractorProtocol {
 
     let db: BetDao
-    let detaults = UserDefaultsManager.path
+    let defaults = UserDefaultsManager.path
 
     init(db: BetDao) {
         self.db = db
@@ -42,7 +42,7 @@ class SearchInteractor: SearchnteractorProtocol {
     }
 
     func loadDefaultCurrency() -> String {
-        detaults.get(.defaultCurrency)
+        defaults.get(.defaultCurrency)
     }
 
 }

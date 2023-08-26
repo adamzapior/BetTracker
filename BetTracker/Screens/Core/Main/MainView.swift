@@ -13,8 +13,8 @@ struct MainView: View {
     let database = BetDao()
 
     init(database: BetDao) {
-        let interactor = MainInteractor(db: database)
-        _vm = StateObject(wrappedValue: MainViewVM(interactor: interactor))
+        let respository = MainInteractor(db: database)
+        _vm = StateObject(wrappedValue: MainViewVM(respository: respository))
     }
 
     var body: some View {
@@ -56,7 +56,7 @@ struct MainView: View {
                                             ) {
                                                 BetListElement(
                                                     bet: betModel,
-                                                    currency: vm.currency
+                                                    currency: vm.defaultCurrency.rawValue
                                                 )
                                             }
                                         case let .betslip(betslipModel):
@@ -67,7 +67,7 @@ struct MainView: View {
                                             ) {
                                                 BetslipListElement(
                                                     bet: betslipModel,
-                                                    currency: vm.currency
+                                                    currency: vm.defaultCurrency.rawValue
                                                 )
                                             }
                                         }
@@ -89,10 +89,12 @@ struct MainView: View {
                         .padding(.horizontal, 22)
                         .padding(.bottom, 1)
 
-                        if vm.mergedBets!.isEmpty {
+                        if vm.isMergedCompleted && ((vm.mergedBets?.isEmpty) != nil) {
                             NoContentElement(
                                 text: "History is empty"
                             )
+                        } else if vm.isMergedCompleted == false {
+                            ProgressView()
                         } else {
                             LazyVStack(spacing: 12) {
                                 ForEach(vm.mergedBets!, id: \.id) { betWrapper in
@@ -105,7 +107,7 @@ struct MainView: View {
                                         ) {
                                             BetListElement(
                                                 bet: betModel,
-                                                currency: vm.currency
+                                                currency: vm.defaultCurrency.rawValue
                                             )
                                         }
                                     case let .betslip(betslipModel):
@@ -116,7 +118,7 @@ struct MainView: View {
                                         ) {
                                             BetslipListElement(
                                                 bet: betslipModel,
-                                                currency: vm.currency
+                                                currency: vm.defaultCurrency.rawValue
                                             )
                                         }
                                     }

@@ -6,38 +6,26 @@ import SwiftUI
 @MainActor
 class ProfileVM: ObservableObject {
 
-    let defaults = UserDefaultsManager.path
+    private let defaults = UserDefaultsManager.path
+    private let respository: MainInteractor
 
-    let respository: MainInteractor
-
-    @Published
     var defaultCurrency: String = "USD"
-
-    @Published
-    var defaultUsername: String = ""
+    var username: String = ""
 
     @Published
     var currentStatsState: StatsState = .week
-
-    @Published
-    var cancellables = Set<AnyCancellable>()
-
     @Published
     var mergedBalanceValue: NSDecimalNumber = .zero
-
     @Published
     var mergedTotalSpent: NSDecimalNumber = .zero
-
     @Published
     var mergedWonBetsCount: NSDecimalNumber = .zero
-
     @Published
     var mergedLostBetsCount: NSDecimalNumber = .zero
-
     @Published
     var mergedPendingBetsCount: NSDecimalNumber = .zero
 
-    // TODO: 
+    /// TODO:
     var wonRate: Double {
         0 // to fix
 //        let score = 0
@@ -48,33 +36,25 @@ class ProfileVM: ObservableObject {
 
     @Published
     var mergedAvgWonBet: NSDecimalNumber = .zero
-
     @Published
     var mergedAvgLostBet: NSDecimalNumber = .zero
-
     @Published
     var mergedAvgAmountBet: NSDecimalNumber = .zero
-
     @Published
     var mergedLargestBetProfit: NSDecimalNumber = .zero
-
     @Published
     var mergedBiggestBetLoss: NSDecimalNumber = .zero
-
     @Published
     var mergedHiggestBetOddsWon: NSDecimalNumber = .zero
-
     @Published
     var mergedHiggestBetAmount: NSDecimalNumber = .zero
-
-    let currentDate = Date()
-    let calendar = Calendar.current
+    @Published
+    var cancellables = Set<AnyCancellable>()
 
     init(respository: MainInteractor) {
         self.respository = respository
 
-        getDefaultCurrency() // default preferences
-        getDefaultUsername()
+        loadUserDefaultsData()
 
         $currentStatsState
             .flatMap { state in
@@ -338,11 +318,7 @@ class ProfileVM: ObservableObject {
             .assign(to: &$mergedHiggestBetAmount)
     }
 
-//    deinit {
-//        vmProfilePhoto.saveImageIfNeeded()
-//    }
-
-    func startDate(state: StatsState) -> Date {
+    private func startDate(state: StatsState) -> Date {
         let startDate: Date
         switch state {
         case .week: startDate = StartDate.last7days.dateValue!
@@ -353,14 +329,12 @@ class ProfileVM: ObservableObject {
         return startDate
     }
 
-    // MARK: - fetchData methods.
-
-    enum TableName: String, CaseIterable {
+    private enum TableName: String, CaseIterable {
         case bet
         case betslip
     }
 
-    enum StartDate {
+    private enum StartDate {
         case last7days
         case lastMonth
         case lastYear
@@ -382,18 +356,10 @@ class ProfileVM: ObservableObject {
         }
     }
 
-    // MARK: - ??:
-
-    func getDefaultCurrency() {
-        let currency = UserDefaults.standard.string(forKey: "defaultCurrency")
-        defaultCurrency = currency ?? ""
+    private func loadUserDefaultsData() {
+        username = defaults.get(.username)
+        defaultCurrency = defaults.get(.defaultCurrency)
     }
-
-    func getDefaultUsername() {
-        let username = UserDefaults.standard.string(forKey: "username")
-        defaultUsername = username ?? ""
-    }
-
 }
 
 enum StatsState: String, CaseIterable, Identifiable {

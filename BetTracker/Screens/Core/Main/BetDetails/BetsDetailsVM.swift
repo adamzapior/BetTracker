@@ -2,18 +2,15 @@ import Foundation
 
 class BetsDetailsVM: ObservableObject {
 
-//    let respository: MainInteractor
     let bet: BetModel
-
-    var buttonState: BetButtonState = .uncleared
+    let defaults = UserDefaultsManager.path
 
     @Published
     var isAlertSet: Bool = false
-    
     @Published
     var isShowingAlert: Bool = false
 
-    var currency = UserDefaultsManager.defaultCurrencyValue
+    var buttonState: BetButtonState = .uncleared
 
     enum BetButtonState {
         case uncleared
@@ -21,41 +18,59 @@ class BetsDetailsVM: ObservableObject {
         case lost
     }
 
+    var defaultCurrency: Currency = .usd
+
     init(bet: BetModel) {
         self.bet = bet
-//        self.respository = respository
 
+        setup()
+    }
+    
+    // MARK: -  VM setup methods:
+
+    private func setup() {
         checkButtonState()
         isNotificationInFuture()
-        print(isAlertSet.description)
+        loadDefaultCurrency()
     }
+
+    private func checkButtonState() {
+        switch bet.isWon {
+        case nil:
+            buttonState = .uncleared
+        case true?:
+            buttonState = .won
+        case false?:
+            buttonState = .lost
+        }
+    }
+
+    private func isNotificationInFuture() {
+        if let notificationID = bet.betNotificationID, !notificationID.isEmpty {
+            UserNotificationsService()
+                .isNotificationDateInFuture(notificationId: notificationID) { isInFuture in
+                    DispatchQueue.main.async {
+                        self.isAlertSet = isInFuture
+                    }
+                }
+        }
+    }
+
+    private func loadDefaultCurrency() {
+        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
+    }
+
+    
+    // MARK: -  Bet edit/delete methods:
+
+    // TODO: !!!!
 
     func deleteBet(bet: BetModel) {
         BetDao.deleteBet(bet: bet)
     }
-    
-    func isNotificationInFuture() {
-        if let notificationID = bet.betNotificationID, !notificationID.isEmpty {
-            UserNotificationsService().isNotificationDateInFuture(notificationId: notificationID) { isInFuture in
-                DispatchQueue.main.async {
-                    self.isAlertSet = isInFuture
-                }
-                print("it is")
-            }
-        }
-    }
-    
+
     func removeNotification() {
         UserNotificationsService().removeNotification(notificationId: bet.betNotificationID ?? "")
     }
 
-    func checkButtonState() {
-        if bet.isWon == nil {
-            buttonState = .uncleared
-        } else if bet.isWon == true {
-            buttonState = .won
-        } else if bet.isWon == false {
-            buttonState = .lost
-        }
-    }
 }

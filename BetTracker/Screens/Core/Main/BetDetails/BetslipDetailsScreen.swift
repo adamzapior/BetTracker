@@ -56,7 +56,7 @@ struct BetslipDetailsScreen: View {
                             icon: "banknote",
                             labelText: "AMOUNT",
                             profitText: vm.bet.amount.stringValue,
-                            currency: vm.currency
+                            currency: vm.defaultCurrency.rawValue
                         )
                         .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         BetsDetailRow(

@@ -2,42 +2,29 @@ import Combine
 import Foundation
 import SwiftUI
 
-class AddBetVM: ObservableObject {
-    
-    // TODO: ustawić odpowiednio w kodzie
-    private var firstValue: String = "Pierwsza wartość"
-    private var secondValue: String = "Druga wartość"
+enum BetType: String, CaseIterable, Identifiable {
+    var id: String { rawValue }
 
-    private var useFirstValue: Bool = true
+    case singlebet = "Single Bet"
+    case betslip
+}
 
-    var dynamicBinding: Binding<String> {
-        Binding<String>(
-            get: {
-                return self.useFirstValue ? "" : self.note
-            },
-            set: { newValue in
-                if self.useFirstValue {
-                    self.note = newValue
-                }
-            }
-        )
-    }
+final class AddBetVM: ObservableObject {
     
     let defaults = UserDefaultsManager.path
     let interactor = AddBetInteractor(BetDao: BetDao())
 
     init() {
-        // Pass to publisher
 
-        // propably to delete?
-        savedDate = defaults.get(.savedNotificationDate)
-        isReminderSaved = defaults.get(.isNotificationSaved)
+        savedDate = defaults.get(.savedNotificationDate) // delete?
+        isReminderSaved = defaults.get(.isNotificationSaved) // delete?
 
         taxStatus = defaults.get(.isDefaultTaxOn) 
         configureTaxInput()
+        loadDefaultCurrency()
 
     }
-
+    
     @Published
     var betType: BetType = .singlebet
 
@@ -240,7 +227,7 @@ class AddBetVM: ObservableObject {
 
     var isReminderSaved: Bool
 
-    var savedDate: Date //    TODO: !!!!!
+    var savedDate: Date //    TODO: !!!!! delete???
 
     @Published
     var dateState: DateRowState = .closed
@@ -750,8 +737,11 @@ class AddBetVM: ObservableObject {
     }
 
     // MARK: - VM SETUP:
-
-    // ** Methods are used to run inside .onApper and .onDissapear view methods **
+    
+    private func loadDefaultCurrency() {
+        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
+    }
+    // ** Methods used to run inside .onApper and .onDissapear view methods **
 
     func saveTextfield() {
         interactor.saveTextfield(
@@ -781,10 +771,6 @@ class AddBetVM: ObservableObject {
         amount = defaults.get(.amount)
         odds = defaults.get(.odds)
         tax = defaults.get(.defaultTax) // load default Tax to field
-        defaultCurrency = Currency(
-            rawValue: UserDefaults.standard
-                .string(forKey: "defaultCurrency") ?? "usd"
-        )!
         category = defaults.get(.category)
         league = defaults.get(.league)
         selectedDate = defaults.get(.selectedDate)
@@ -804,9 +790,4 @@ class AddBetVM: ObservableObject {
 }
 
 
-enum BetType: String, CaseIterable, Identifiable {
-    var id: String { rawValue }
 
-    case singlebet = "Single Bet"
-    case betslip
-}

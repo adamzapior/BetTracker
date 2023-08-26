@@ -9,47 +9,44 @@ import Foundation
 
 class BetslipDetailsVM: ObservableObject {
     
+    let bet: BetslipModel
+    let defaults = UserDefaultsManager.path
+    
+    @Published
+    var isShowingAlert = false
+
+    
+    var buttonState: BetButtonState = .uncleared
+
     enum BetButtonState {
         case uncleared
         case won
         case lost
     }
     
-    
-    let bet: BetslipModel
-    
+    var defaultCurrency: Currency = .usd
     
     init(bet: BetslipModel) {
         self.bet = bet
         
-//        checkButtonState()
+        setup()
     }
     
-    var buttonState: BetButtonState = .uncleared
+    // MARK: -  VM setup methods:
+
+    private func setup() {
+//        checkButtonState()
+//        isNotificationInFuture()
+        loadDefaultCurrency()
+    }
+
+    private func loadDefaultCurrency() {
+        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
+    }
     
-    @Published
-    var isShowingAlert = false
+    // MARK: -  Bet edit/delete methods:
     
-    var currency = UserDefaultsManager.defaultCurrencyValue
+    // TODO: !!!!
 
     
-//    func deleteBet(bet: BetModel) {
-//        BetDao.deleteBet(bet: bet)
-//    }
-//
-//    func removeNotification() {
-//        UserNotificationsService().removeNotification(notificationId: bet.betNotificationID ?? "")
-//    }
-//
-//
-//
-//    func checkButtonState() {
-//        if bet.isWon == nil {
-//            buttonState = .uncleared
-//        } else if bet.isWon == true {
-//            buttonState = .won
-//        } else if bet.isWon == false {
-//            buttonState = .lost
-//        }
-//    }
 }

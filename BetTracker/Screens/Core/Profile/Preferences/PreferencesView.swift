@@ -97,7 +97,7 @@ struct PreferencesView: View {
             vm.savePreferences()
         }
         .onAppear {
-//            vm.loadPreferences()
+//            vm.loadSavedPreferences()
 //            vm.getDefaultCurrency()
         }
     }

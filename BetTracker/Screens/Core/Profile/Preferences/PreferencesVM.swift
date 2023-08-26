@@ -23,12 +23,11 @@ class PreferencesVM: ObservableObject {
 
     @Published
     var taxStatus = DefaultTax.taxUnsaved
-
     @Published
     var defaultCurrency: Currency = Currency.usd
 
     init() {
-        loadPreferences()
+        loadSavedPreferences()
     }
 
     @Published
@@ -81,7 +80,7 @@ class PreferencesVM: ObservableObject {
         defaults.set(.defaultCurrency, to: defaultCurrency.rawValue)
     }
 
-    func loadPreferences() {
+    func loadSavedPreferences() {
         username = defaults.get(.username)
         isDefaultTaxOn = defaults.get(.isDefaultTaxOn)
         defaultTax = defaults.get(.defaultTax)

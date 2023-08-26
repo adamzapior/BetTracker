@@ -13,7 +13,7 @@ struct BetListElement: View {
                     .foregroundColor(Color.ui.secondary)
 
                 Spacer()
-                Text("\(bet.amount) \(currency)")
+                Text("\(bet.amount) \(currency.uppercased())")
                     .bold()
                     .font(.body)
                     .foregroundColor(Color.ui.secondary)
