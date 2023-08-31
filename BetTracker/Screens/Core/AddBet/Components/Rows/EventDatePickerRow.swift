@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct EventDatePicker: View {
+struct EventDatePickerRow: View {
 
     @Binding
     var showDatePicker: Bool
-  
+
     @Binding
     var selectedDate: Date
 
-    let action:() -> Void
+    let action: () -> Void
 
     @StateObject
     var vm: AddBetVM
@@ -32,11 +32,7 @@ struct EventDatePicker: View {
                         .foregroundColor(Color.ui.secondary)
                         .padding(.vertical, 16)
                     Spacer()
-                    
-                    //actions:
-//                    showDatePicker = false
-//                    vm.saveIsClicked()
-                    
+
                     Spacer()
                     Image(systemName: "chevron.down")
                         .font(.title)
@@ -45,7 +41,6 @@ struct EventDatePicker: View {
                             showDatePicker = false
                             action()
                         }
-             
                 }
                 .padding(.top, -16)
                 .padding(.leading, 3)
@@ -55,7 +50,6 @@ struct EventDatePicker: View {
                     "",
                     selection: $selectedDate
                 )
-//                    .datePickerStyle(WheelDatePickerStyle())
                 .font(.callout)
                 .padding(.horizontal, 8)
                 .frame(maxHeight: 150)
@@ -74,10 +68,3 @@ struct EventDatePicker: View {
         .shadow(color: Color.black.opacity(0.1), radius: 1, x: 3, y: 2)
     }
 }
-
-//
-// struct EventDatePicker_Previews: PreviewProvider {
-//    static var previews: some View {
-//        EventDatePicker()
-//    }
-// }

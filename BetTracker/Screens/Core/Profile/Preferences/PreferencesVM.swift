@@ -23,6 +23,7 @@ class PreferencesVM: ObservableObject {
 
     @Published
     var taxStatus = DefaultTax.taxUnsaved
+    
     @Published
     var defaultCurrency: Currency = Currency.usd
 

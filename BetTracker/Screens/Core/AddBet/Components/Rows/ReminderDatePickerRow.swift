@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DatePickerWithButtons: View {
+struct ReminderDatePickerRow: View {
 
     @Binding
     var showDatePicker: Bool
@@ -61,11 +61,5 @@ struct DatePickerWithButtons: View {
                 .foregroundColor(Color.ui.onPrimary)
         }
         .shadow(color: Color.black.opacity(0.1), radius: 1, x: 3, y: 2)
-    }
-}
-
-struct DatePickerWithButtons_Previews: PreviewProvider {
-    static var previews: some View {
-        AddBetScreen()
     }
 }

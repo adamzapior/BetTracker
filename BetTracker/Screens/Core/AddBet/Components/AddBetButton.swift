@@ -1,10 +1,3 @@
-//
-//  AddBetButton.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 02/04/2023.
-//
-
 import SwiftUI
 
 struct AddBetButton: View {

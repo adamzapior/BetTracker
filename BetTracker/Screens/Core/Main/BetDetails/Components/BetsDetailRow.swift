@@ -92,6 +92,6 @@ struct DetailsRowWithCurrency: View {
 struct BetsDetailRow_Previews: PreviewProvider {
 
     static var previews: some View {
-        PredictedProfit(labelText: "Your predicted profit:", profitText: "214", currency: "PLN")
+        PredictedProfitRow(labelText: "Your predicted profit:", profitText: "214", currency: "PLN")
     }
 }

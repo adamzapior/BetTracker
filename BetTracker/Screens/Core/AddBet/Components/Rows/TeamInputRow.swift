@@ -1,13 +1,12 @@
 import SwiftUI
 
-struct TeamInput: View {
+struct TeamInputRow: View {
     let hint: String
     @Binding
     var text: String
     let isError: Bool
     @Binding
     var isOn: Bool
-
     var action: () -> Void
 
     var body: some View {

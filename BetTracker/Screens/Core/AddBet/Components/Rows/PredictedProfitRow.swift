@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PredictedProfit: View {
+struct PredictedProfitRow: View {
 
     let labelText: String
     var profitText: String
@@ -15,7 +15,7 @@ struct PredictedProfit: View {
                         .foregroundColor(Color.ui.scheme)
                         .padding(.trailing, 12)
                         .frame(width: 36, height: 36)
-                    
+
                     Text(labelText)
                         .font(.subheadline)
                         .bold()
@@ -42,14 +42,14 @@ struct PredictedProfit: View {
             }
         } else {
             ZStack {
-                VStack (spacing: 0) {
+                VStack(spacing: 0) {
                     HStack {
                         Image(systemName: "arrow.up.forward")
                             .font(.title2)
                             .foregroundColor(Color.ui.scheme)
                             .padding(.trailing, 12)
                             .frame(width: 36, height: 36)
-                        
+
                         Text(labelText)
                             .font(.subheadline)
                             .bold()
@@ -82,6 +82,6 @@ struct PredictedProfit: View {
 struct PredictedProfit_Previews: PreviewProvider {
 
     static var previews: some View {
-        PredictedProfit(labelText: "Your predicted profit:", profitText: "214", currency: "PLN")
+        PredictedProfitRow(labelText: "Your predicted profit:", profitText: "214", currency: "PLN")
     }
 }

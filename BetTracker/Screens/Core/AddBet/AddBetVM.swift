@@ -10,21 +10,19 @@ enum BetType: String, CaseIterable, Identifiable {
 }
 
 final class AddBetVM: ObservableObject {
-    
+
     let defaults = UserDefaultsManager.path
     let interactor = AddBetInteractor(BetDao: BetDao())
 
     init() {
-
         savedDate = defaults.get(.savedNotificationDate) // delete?
         isReminderSaved = defaults.get(.isNotificationSaved) // delete?
 
-        taxStatus = defaults.get(.isDefaultTaxOn) 
+        taxStatus = defaults.get(.isDefaultTaxOn)
         configureTaxInput()
         loadDefaultCurrency()
-
     }
-    
+
     @Published
     var betType: BetType = .singlebet
 
@@ -196,6 +194,9 @@ final class AddBetVM: ObservableObject {
     @Published
     var betslipScore: NSDecimalNumber = 0
 
+    @Published
+    var validationErrors: [ValidateError] = []
+
     // MARK: - MERGED varbiables for bets
 
     /// ReminderRowState methods:
@@ -259,20 +260,19 @@ final class AddBetVM: ObservableObject {
             }
         }
     }
-    
+
     // MARK: Note
-    
+
     enum NoteState {
         case closed
         case opened
     }
-    
+
     @Published
     var noteState: NoteState = .closed
-    
+
     @Published
     var note: String = ""
-    
 
     // MARK: - Error handling
 
@@ -354,9 +354,9 @@ final class AddBetVM: ObservableObject {
     func saveIsClicked() {
         reminderState = .delete
     }
-    
+
     // Note methods
-    
+
     func openNote() {
         noteState = .opened
     }
@@ -364,7 +364,6 @@ final class AddBetVM: ObservableObject {
     func closeNote() {
         noteState = .closed
     }
-    
 
     // MARK: - Calculate methods
 
@@ -390,7 +389,7 @@ final class AddBetVM: ObservableObject {
         return predictedWin
     }
 
-    // TODO: Ta funkcja nie działa i nie liczy poprawnie np 90
+    /// TODO: Ta funkcja nie działa i nie liczy poprawnie np 90
     func betProfitWithTax(
         amountString: String?,
         oddsString: String?,
@@ -625,6 +624,8 @@ final class AddBetVM: ObservableObject {
         }
     }
 
+    // TODO(azapior): zmiana
+    // STOPSHIP
     enum ValidateError: CustomStringConvertible {
         case team1
         case team2
@@ -656,6 +657,9 @@ final class AddBetVM: ObservableObject {
     // MARK: - Save bet/betslip to DB
 
     func saveBet() -> Bool {
+        
+        validationErrors = []
+        
         validateTeam1()
         validateTeam2()
         validateAmount()
@@ -663,14 +667,31 @@ final class AddBetVM: ObservableObject {
         validateTax()
         validateNotification()
 
-        if team1IsError || team2IsError || amountIsError || oddsIsError
-            || taxIsError
+//        if team1IsError || team2IsError || amountIsError || oddsIsError
+//            || taxIsError
 
-//            || notificationIsError
+        if team1IsError {
+            validationErrors.append(.team1)
+        }
 
-        {
+        if team2IsError {
+            validationErrors.append(.team2)
+        }
+
+        if amountIsError {
+            validationErrors.append(.odds)
+        }
+        if amountIsError {
+            validationErrors.append(.odds)
+        }
+        if amountIsError {
+            validationErrors.append(.tax)
+        }
+
+        if !validationErrors.isEmpty {
             return false
         }
+
         print("data saved")
 
         saveReminder()
@@ -737,10 +758,11 @@ final class AddBetVM: ObservableObject {
     }
 
     // MARK: - VM SETUP:
-    
+
     private func loadDefaultCurrency() {
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
+
     // ** Methods used to run inside .onApper and .onDissapear view methods **
 
     func saveTextfield() {
@@ -788,6 +810,3 @@ final class AddBetVM: ObservableObject {
     }
 
 }
-
-
-

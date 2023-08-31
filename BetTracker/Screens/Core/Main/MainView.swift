@@ -20,13 +20,21 @@ struct MainView: View {
     var body: some View {
         VStack(spacing: 0) {
             if vm.showUsername == true {
-                MainHeader(name: "Welcome \(vm.username)!")
-                    .padding(.top, 18)
-                    .padding(.bottom, 26)
+                MainHeader(
+                    name: "Welcome \(vm.username)!",
+                    destinationView: { AnyView(SearchView()) },
+                    icon: "magnifyingglass"
+                )
+                .padding(.top, 18)
+                .padding(.bottom, 26)
             } else {
-                MainHeader(name: "Welcome!")
-                    .padding(.top, 18)
-                    .padding(.bottom, 26)
+                MainHeader(
+                    name: "Welcome!",
+                    destinationView: { AnyView(SearchView()) },
+                    icon: "magnifyingglass"
+                )
+                .padding(.top, 18)
+                .padding(.bottom, 26)
             }
             ScrollView {
                 VStack {
@@ -39,7 +47,10 @@ struct MainView: View {
                         .padding(.horizontal, 22)
                         .padding(.bottom, 1)
                         if vm.pendingMerged!.isEmpty {
-                            NoContentElement(text: "Add bet to show pending")
+                            VStack {
+                                Text("Add bet to show pending")
+                            }
+                            .padding(.vertical, 48)
                         } else {
                             LazyVStack(spacing: 12) {
                                 LazyVStack(spacing: 12) {
@@ -54,7 +65,7 @@ struct MainView: View {
                                                     bet: betModel
                                                 )
                                             ) {
-                                                BetListElement(
+                                                BetListCell(
                                                     bet: betModel,
                                                     currency: vm.defaultCurrency.rawValue
                                                 )
@@ -65,7 +76,7 @@ struct MainView: View {
                                                     bet: betslipModel
                                                 )
                                             ) {
-                                                BetslipListElement(
+                                                BetslipCell(
                                                     bet: betslipModel,
                                                     currency: vm.defaultCurrency.rawValue
                                                 )
@@ -88,15 +99,22 @@ struct MainView: View {
                         }
                         .padding(.horizontal, 22)
                         .padding(.bottom, 1)
-
-                        if vm.isMergedCompleted && ((vm.mergedBets?.isEmpty) != nil) {
-                            NoContentElement(
-                                text: "History is empty"
-                            )
-                        } else if vm.isMergedCompleted == false {
-                            ProgressView()
-                        } else {
+                        
+                        Text("Debug: \(vm.mergedBets?.count ?? 0) items")
+                        
+                        if vm.isMergedCompleted == false && vm.mergedBets!.isEmpty  {
+                            VStack {
+                                Text("History is empty")
+                            }
+                            .padding(.vertical, 48)
+                        }
+//                        else if vm.isMergedCompleted == false {
+//                            ProgressView()
+//                        }
+                        else {
                             LazyVStack(spacing: 12) {
+                                
+                                
                                 ForEach(vm.mergedBets!, id: \.id) { betWrapper in
                                     switch betWrapper {
                                     case let .bet(betModel):
@@ -105,7 +123,7 @@ struct MainView: View {
                                                 bet: betModel
                                             )
                                         ) {
-                                            BetListElement(
+                                            BetListCell(
                                                 bet: betModel,
                                                 currency: vm.defaultCurrency.rawValue
                                             )
@@ -116,7 +134,7 @@ struct MainView: View {
                                                 bet: betslipModel
                                             )
                                         ) {
-                                            BetslipListElement(
+                                            BetslipCell(
                                                 bet: betslipModel,
                                                 currency: vm.defaultCurrency.rawValue
                                             )
@@ -132,5 +150,6 @@ struct MainView: View {
             }
             .background(Color.ui.background)
         }
+        .background(Color.ui.background) // to???
     }
 }

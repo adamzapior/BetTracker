@@ -5,12 +5,7 @@ class BetsDetailsVM: ObservableObject {
     let bet: BetModel
     let defaults = UserDefaultsManager.path
 
-    @Published
-    var isAlertSet: Bool = false
-    @Published
-    var isShowingAlert: Bool = false
-
-    var buttonState: BetButtonState = .uncleared
+    var defaultCurrency: Currency = .usd
 
     enum BetButtonState {
         case uncleared
@@ -18,7 +13,13 @@ class BetsDetailsVM: ObservableObject {
         case lost
     }
 
-    var defaultCurrency: Currency = .usd
+    var buttonState: BetButtonState = .uncleared
+
+    @Published
+    var isAlertSet: Bool = false
+
+    @Published
+    var isShowingAlert: Bool = false
 
     init(bet: BetModel) {
         self.bet = bet
@@ -26,6 +27,10 @@ class BetsDetailsVM: ObservableObject {
         setup()
     }
     
+    deinit {
+        print("VM is out")
+    }
+
     // MARK: -  VM setup methods:
 
     private func setup() {
@@ -60,7 +65,6 @@ class BetsDetailsVM: ObservableObject {
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
 
-    
     // MARK: -  Bet edit/delete methods:
 
     // TODO: !!!!

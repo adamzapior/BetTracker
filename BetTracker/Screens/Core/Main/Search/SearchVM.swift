@@ -6,6 +6,20 @@ class SearchVM: ObservableObject {
     let defaults = UserDefaultsManager.path
     let respository: SearchInteractor
 
+    var defaultCurrency: Currency = .usd
+
+    enum SortOption: String, CaseIterable, Identifiable {
+        case all
+        case oldest
+        case won
+        case lost
+        case amount
+
+        var id: String { rawValue }
+    }
+
+    let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
+
     @Published
     var bets: [BetModel]? = []
 
@@ -26,35 +40,15 @@ class SearchVM: ObservableObject {
 
     @Published
     var selectedSortOption: SortOption = .all
-    let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
-
-    var currency: Currency = .usd
 
     @Published
     private var cancellables = Set<AnyCancellable>()
 
     init(interactor: SearchInteractor) {
-        self.respository = interactor
+        respository = interactor
 
-        loadCurrency()
-        getSavedBets()
+        setup()
 
-        findBet()
-    }
-
-    // MARK: Sorting logic
-
-    enum SortOption: String, CaseIterable, Identifiable {
-        case all
-        case oldest
-        case won
-        case lost
-        case amount
-
-        var id: String { rawValue }
-    }
-
-    func findBet() {
         $searchText
             .combineLatest($savedBets)
             .map { searchText, bets in
@@ -73,7 +67,12 @@ class SearchVM: ObservableObject {
             .assign(to: &$searchResults)
     }
 
-    // MARK: Database GET methods:
+    private func setup() {
+        loadCurrency()
+        getSavedBets()
+    }
+
+    // Respository call:
 
     func getSavedBets() {
         respository.getSavedBets(model: BetModel.self)
@@ -93,6 +92,8 @@ class SearchVM: ObservableObject {
             .assign(to: \.savedBets, on: self)
             .store(in: &cancellables)
     }
+
+    // Sort methods:
 
     func allBets() {
         $savedBets
@@ -140,9 +141,8 @@ class SearchVM: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func loadCurrency() {
-        currency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
+    private func loadCurrency() {
+        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
 
 }
-

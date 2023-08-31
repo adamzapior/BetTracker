@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BetslipListElement: View {
+struct BetslipCell: View {
     let bet: BetslipModel
     let currency: String
 

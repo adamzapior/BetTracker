@@ -27,7 +27,6 @@ struct BalanceRow: View {
                 Text("\(valueText)")
                     .bold()
                     .font(font)
-                    .scaledToFit()
                     .foregroundColor(Color.ui.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .frame(maxHeight: .infinity, alignment: .bottom)
@@ -39,7 +38,6 @@ struct BalanceRow: View {
             HStack {
                 Text(" \(currency)")
                     .font(.subheadline)
-                    .scaledToFit()
                     .foregroundColor(Color.ui.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .frame(maxHeight: .infinity, alignment: .bottom)

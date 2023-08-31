@@ -5,11 +5,6 @@ struct NoteRow: View {
     @Binding
     var text: String
     let action: () -> Void
-    
-//    init(text: Binding<String>, action: @escaping () -> Void) {
-//        self._text = text
-//        self.action = action
-//    }
 
     var body: some View {
         VStack {
@@ -30,7 +25,7 @@ struct NoteRow: View {
                     .font(.title)
                     .foregroundColor(Color.ui.secondary)
                     .frame(width: 44, height: 44)
-                    .contentShape(Rectangle()) 
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         action()
                     }

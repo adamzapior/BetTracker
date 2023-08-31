@@ -3,6 +3,9 @@ import SwiftUI
 struct BetDetailsScreen: View {
     @Environment(\.dismiss)
     var dismiss
+    
+    @Environment(\.colorScheme)
+    var colorScheme
 
     /// to pozmnielem moze byc zle
     @StateObject
@@ -242,12 +245,23 @@ struct BetDetailsScreen: View {
                     }
                 }
                 .background {
-                    RoundedRectangle(cornerRadius: 0, style: .continuous)
-                        .foregroundColor(Color.clear)
-                        .background(Material.bar.opacity(0.7))
-                        .blur(radius: 12)
-                }
-                .padding(.top, 36)
+                            if colorScheme == .dark {
+                                // Dark mode-specific background
+                                RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                .foregroundColor(Color.black.opacity(0.7))
+                                .blur(radius: 12)
+                                .ignoresSafeArea()
+                                
+                            } else {
+                                // Light mode-specific background
+                                RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                    .foregroundColor(Color.clear)
+                                    .background(Material.bar.opacity(0.7))
+                                    .blur(radius: 12)
+                                    .ignoresSafeArea()
+                            }
+                        }
+//                    .padding(.top, 36)
             }
         )
         .padding(.top, 24)

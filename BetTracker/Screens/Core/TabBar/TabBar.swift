@@ -46,7 +46,21 @@ struct TabBar: View {
         NavigationView {
             VStack {
                 ZStack {
-                    AnyView(selectedTab.view()).environment(\.closeTab, closeTab)
+                    ForEach(TabBar.destinations, id: \.icon) { tab in
+                        if tab == selectedTab {
+                            AnyView(
+                                tab.view()
+                                    .environment(\.closeTab, closeTab)
+                            )
+                            .transition(
+                                .asymmetric(
+                                    insertion: .move(edge: .trailing),
+                                    removal: .move(edge: .trailing)
+                                )
+                            )
+                        }
+                    }
+                    .animation(.spring(), value: selectedTab)
                 }
                 .safeAreaInset(edge: .bottom) {
                     HStack(spacing: 64) {
@@ -66,7 +80,7 @@ struct TabBar: View {
                                 isSelected: tab == selectedTab
                             )
                             .onTapGesture {
-                                selectedTab = tab
+                                    selectedTab = tab
                             }
                         }
                     }

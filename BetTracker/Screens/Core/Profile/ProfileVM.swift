@@ -11,20 +11,7 @@ class ProfileVM: ObservableObject {
 
     var defaultCurrency: String = "USD"
     var username: String = ""
-
-    @Published
-    var currentStatsState: StatsState = .week
-    @Published
-    var mergedBalanceValue: NSDecimalNumber = .zero
-    @Published
-    var mergedTotalSpent: NSDecimalNumber = .zero
-    @Published
-    var mergedWonBetsCount: NSDecimalNumber = .zero
-    @Published
-    var mergedLostBetsCount: NSDecimalNumber = .zero
-    @Published
-    var mergedPendingBetsCount: NSDecimalNumber = .zero
-
+    
     /// TODO:
     var wonRate: Double {
         0 // to fix
@@ -34,6 +21,19 @@ class ProfileVM: ObservableObject {
 //        }
     }
 
+    @Published
+    var currentStatsState: StatsState = .week
+    
+    @Published
+    var mergedBalanceValue: NSDecimalNumber = .zero
+    @Published
+    var mergedTotalSpent: NSDecimalNumber? = nil
+    @Published
+    var mergedWonBetsCount: NSDecimalNumber = .zero
+    @Published
+    var mergedLostBetsCount: NSDecimalNumber = .zero
+    @Published
+    var mergedPendingBetsCount: NSDecimalNumber = .zero
     @Published
     var mergedAvgWonBet: NSDecimalNumber = .zero
     @Published
@@ -48,8 +48,16 @@ class ProfileVM: ObservableObject {
     var mergedHiggestBetOddsWon: NSDecimalNumber = .zero
     @Published
     var mergedHiggestBetAmount: NSDecimalNumber = .zero
+    
+    @Published
+    var isLoading: Bool = true
+    
     @Published
     var cancellables = Set<AnyCancellable>()
+    
+    deinit {
+        print("VM is out")
+    }
 
     init(respository: MainInteractor) {
         self.respository = respository
@@ -72,9 +80,14 @@ class ProfileVM: ObservableObject {
                     )
                 )
                 .map { $0.adding($1) }
+                
             }
-            .assign(to: &$mergedBalanceValue)
-
+            .sink { [weak self] newValue in
+                self?.mergedBalanceValue = newValue
+                self?.isLoading = false
+            }
+            .store(in: &cancellables)
+        
         $currentStatsState
             .flatMap { state in
                 let startDate = self.startDate(state: state)
@@ -90,7 +103,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedTotalSpent)
 
@@ -302,12 +315,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getHiggestBetAmount(
+                    respository.getHighestBetAmount(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getHiggestBetAmount(
+                    respository.getHighestBetAmount(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate

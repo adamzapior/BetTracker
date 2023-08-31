@@ -1,10 +1,3 @@
-//
-//  BetButton.swift
-//  BetTrackerUI
-//
-//  Created by Adam Zapiór on 22/02/2023.
-//
-
 import SwiftUI
 
 struct MainLabel: View {
@@ -30,11 +23,5 @@ struct MainLabel: View {
                     .foregroundColor(Color.ui.secondary)
             }
             .clipShape(RoundedRectangle(cornerRadius: 25))
-    }
-}
-
-struct BetButton_Previews: PreviewProvider {
-    static var previews: some View {
-        MainLabel(text: "Pending")
     }
 }

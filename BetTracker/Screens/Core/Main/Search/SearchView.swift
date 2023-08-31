@@ -48,15 +48,15 @@ struct SearchView: View {
                             NavigationLink(
                                 destination: BetDetailsScreen(bet: betModel)
                             ) {
-                                BetListElement(bet: betModel, currency: vm.currency.rawValue)
+                                BetListCell(bet: betModel, currency: vm.defaultCurrency.rawValue)
                             }
                         case let .betslip(betslipModel):
                             NavigationLink(
                                 destination: BetslipDetailsScreen(bet: betslipModel)
                             ) {
-                                BetslipListElement(
+                                BetslipCell(
                                     bet: betslipModel,
-                                    currency: vm.currency.rawValue
+                                    currency: vm.defaultCurrency.rawValue
                                 )
                             }
                         }
@@ -74,10 +74,4 @@ struct SearchView: View {
         }
     }
 
-}
-
-struct SearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView()
-    }
 }

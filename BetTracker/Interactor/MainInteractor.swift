@@ -3,10 +3,16 @@ import Foundation
 import GRDB
 
 protocol MainInteractorProtocol {
-    func getPendingBets<T: DatabaseModel>(model: T.Type, tableName: String)
-        -> AnyPublisher<[T], Never>
-    func getHistoryBets<T: DatabaseModel>(model: T.Type, tableName: String)
-        -> AnyPublisher<[T], Never>
+    func getPendingBets<T: DatabaseModel>(
+        model: T.Type,
+        tableName: String
+    ) -> AnyPublisher<[T], Never>
+
+    func getHistoryBets<T: DatabaseModel>(
+        model: T.Type,
+        tableName: String
+    ) -> AnyPublisher<[T], Never>
+
     func getSavedBets<T: DatabaseModel>(model: T.Type) -> AnyPublisher<[T], Never>
     func getBalanceValue<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date)
         -> AnyPublisher<NSDecimalNumber, Never>
@@ -29,7 +35,7 @@ protocol MainInteractorProtocol {
         -> AnyPublisher<NSDecimalNumber, Never>
     func getHiggestBetOddsWon<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date)
         -> AnyPublisher<NSDecimalNumber, Never>
-    func getHiggestBetAmount<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date)
+    func getHighestBetAmount<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date)
         -> AnyPublisher<NSDecimalNumber, Never>
 }
 
@@ -41,48 +47,29 @@ class MainInteractor: MainInteractorProtocol {
         self.db = db
     }
 
-    func getPendingBets<T>(model: T.Type, tableName: String) -> AnyPublisher<[T], Never>
-        where T: DatabaseModel {
-        db.getPendingBets(model: model, tableName: tableName)
+    func getPendingBets<T: DatabaseModel>(model: T.Type, tableName: String) -> AnyPublisher<[T], Never> {
+        return db.getPendingBets(model: model, tableName: tableName)
     }
 
-    func getHistoryBets<T>(model: T.Type, tableName: String) -> AnyPublisher<[T], Never>
-        where T: DatabaseModel {
-        db.getHistoryBets(model: model, tableName: tableName)
+    func getHistoryBets<T: DatabaseModel>(model: T.Type, tableName: String) -> AnyPublisher<[T], Never> {
+        return db.getHistoryBets(model: model, tableName: tableName)
     }
 
-    func getSavedBets<T>(model: T.Type) -> AnyPublisher<[T], Never> where T: DatabaseModel {
-        db.getSavedBets(model: model)
+    func getSavedBets<T: DatabaseModel>(model: T.Type) -> AnyPublisher<[T], Never> {
+        return db.getSavedBets(model: model)
     }
 
-    func getBalanceValue(
-        model: (some DatabaseModel).Type,
-        tableName: String,
-        startDate: Date
-    ) -> AnyPublisher<NSDecimalNumber, Never> {
-        db.getBalanceValue(model: model, tableName: tableName, startDate: startDate)
+    func getBalanceValue<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
+        return db.getBalanceValue(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getTotalSpent(
-        model: (some DatabaseModel).Type,
-        tableName: String,
-        startDate: Date
-    ) -> AnyPublisher<NSDecimalNumber, Never> {
-        db.getTotalSpent(model: model, tableName: tableName, startDate: startDate)
+    func getTotalSpent<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
+        return db.getTotalSpent(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getBetsCount(
-        model: (some DatabaseModel).Type,
-        tableName: String,
-        startDate: Date,
-        isWon: Bool?
-    ) -> AnyPublisher<NSDecimalNumber, Never> {
-        db.getBetsCount(
-            model: model,
-            tableName: tableName,
-            startDate: startDate,
-            isWon: (isWon ?? true)!
-        )
+    func getBetsCount<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date, isWon: Bool?) -> AnyPublisher<NSDecimalNumber, Never> {
+        let isWonValue = isWon ?? true
+        return db.getBetsCount(model: model, tableName: tableName, startDate: startDate, isWon: isWonValue)
     }
 
     func getAvgWonBet(
@@ -126,7 +113,7 @@ class MainInteractor: MainInteractorProtocol {
         db.getHiggestBetOddsWon(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getHiggestBetAmount(
+    func getHighestBetAmount(
         model: (some DatabaseModel).Type,
         tableName: String,
         startDate: Date
