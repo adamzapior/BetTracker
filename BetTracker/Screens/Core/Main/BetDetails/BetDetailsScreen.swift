@@ -97,58 +97,50 @@ struct BetDetailsScreen: View {
                             labelText: "DATE",
                             profitText: vm.bet.dateString
                         )
-                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         BetsDetailRow(
                             icon: "sportscourt",
                             labelText: "CATEGORY",
                             profitText: vm.bet.category.rawValue.uppercased()
                         )
-                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
 
                         BetsDetailRow(
                             icon: "banknote",
                             labelText: "AMOUNT",
                             profitText: vm.bet.amount.stringValue,
-                            currency: vm.defaultCurrency.rawValue
+                            currency: vm.defaultCurrency.rawValue.uppercased()
                         )
-                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         BetsDetailRow(
                             icon: "dice",
                             labelText: "ODDS",
                             profitText: vm.bet.odds.doubleValue.formattedWith2Digits()
                         )
-                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         BetsDetailRow(
                             icon: "dollarsign.circle",
                             labelText: "TAX",
                             profitText: "\(vm.bet.tax.doubleValue.formattedWith2Digits()) %"
                         )
-                        .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
 
                         if vm.bet.isWon == true {
                             BetsDetailRow(
                                 icon: "arrow.up.forward",
                                 labelText: "NET PROFIT",
                                 profitText: vm.bet.score!.stringValue,
-                                currency: vm.defaultCurrency.rawValue
+                                currency: vm.defaultCurrency.rawValue.uppercased()
                             )
-                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         } else if vm.bet.isWon == false {
                             BetsDetailRow(
                                 icon: "arrow.down.forward",
                                 labelText: "YOUR LOSS",
                                 profitText: vm.bet.score!.stringValue,
-                                currency: vm.defaultCurrency.rawValue
+                                currency: vm.defaultCurrency.rawValue.uppercased()
                             )
-                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         } else {
                             BetsDetailRow(
                                 icon: "arrow.forward",
                                 labelText: "PREDICTED WIN",
                                 profitText: vm.bet.profit.stringValue,
-                                currency: vm.defaultCurrency.rawValue
+                                currency: vm.defaultCurrency.rawValue.uppercased()
                             )
-                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         }
 
                         if !vm.bet.note!.isEmpty {
@@ -170,7 +162,6 @@ struct BetDetailsScreen: View {
                                         Color.ui.onPrimary
                                     )
                             }
-                            .shadow(color: Color.black.opacity(0.14), radius: 5, x: 5, y: 5)
                         } else {
                             EmptyView()
                         }

@@ -47,29 +47,53 @@ class MainInteractor: MainInteractorProtocol {
         self.db = db
     }
 
-    func getPendingBets<T: DatabaseModel>(model: T.Type, tableName: String) -> AnyPublisher<[T], Never> {
-        return db.getPendingBets(model: model, tableName: tableName)
+    func getPendingBets<T: DatabaseModel>(
+        model: T.Type,
+        tableName: String
+    ) -> AnyPublisher<[T], Never> {
+        db.getPendingBets(model: model, tableName: tableName)
     }
 
-    func getHistoryBets<T: DatabaseModel>(model: T.Type, tableName: String) -> AnyPublisher<[T], Never> {
-        return db.getHistoryBets(model: model, tableName: tableName)
+    func getHistoryBets<T: DatabaseModel>(
+        model: T.Type,
+        tableName: String
+    ) -> AnyPublisher<[T], Never> {
+        db.getHistoryBets(model: model, tableName: tableName)
     }
 
     func getSavedBets<T: DatabaseModel>(model: T.Type) -> AnyPublisher<[T], Never> {
-        return db.getSavedBets(model: model)
+        db.getSavedBets(model: model)
     }
 
-    func getBalanceValue<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        return db.getBalanceValue(model: model, tableName: tableName, startDate: startDate)
+    func getBalanceValue(
+        model: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
+        db.getBalanceValue(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getTotalSpent<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date) -> AnyPublisher<NSDecimalNumber, Never> {
-        return db.getTotalSpent(model: model, tableName: tableName, startDate: startDate)
+    func getTotalSpent(
+        model: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
+        db.getTotalSpent(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getBetsCount<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date, isWon: Bool?) -> AnyPublisher<NSDecimalNumber, Never> {
+    func getBetsCount(
+        model: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date,
+        isWon: Bool?
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
         let isWonValue = isWon ?? true
-        return db.getBetsCount(model: model, tableName: tableName, startDate: startDate, isWon: isWonValue)
+        return db.getBetsCount(
+            model: model,
+            tableName: tableName,
+            startDate: startDate,
+            isWon: isWonValue
+        )
     }
 
     func getAvgWonBet(

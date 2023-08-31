@@ -27,7 +27,8 @@ struct TeamInputRow: View {
                         RoundedRectangle(cornerRadius: 15)
                             .foregroundColor(isError ? Color.ui.onError : Color.ui.onPrimary)
                     }
-                    .shadow(color: Color.black.opacity(0.1), radius: 1, x: 3, y: 2)
+                    .standardShadow()
+                    
                     Image(
                         systemName: isOn
                             ? "checkmark.square.fill"

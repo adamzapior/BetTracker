@@ -62,6 +62,7 @@
 		58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715A2A082AEA00439B98 /* OnboardingView.swift */; };
 		58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */; };
 		58B3B2F92A9CFFBC00F83554 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B3B2F82A9CFFBC00F83554 /* SwiftUIView.swift */; };
+		58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B3B3142AA13DE400F83554 /* StandardShadowExt.swift */; };
 		58B55B032A8C2DC70088A72B /* BetsDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B55B022A8C2DC70088A72B /* BetsDetailRow.swift */; };
 		58B80F752A8E1DB50011407E /* BetslipDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B80F742A8E1DB50011407E /* BetslipDetailsVM.swift */; };
 		58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4102A0A706500C8CCCC /* SessionManager.swift */; };
@@ -148,6 +149,7 @@
 		58B0715A2A082AEA00439B98 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupView.swift; sourceTree = "<group>"; };
 		58B3B2F82A9CFFBC00F83554 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		58B3B3142AA13DE400F83554 /* StandardShadowExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardShadowExt.swift; sourceTree = "<group>"; };
 		58B55B022A8C2DC70088A72B /* BetsDetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetsDetailRow.swift; sourceTree = "<group>"; };
 		58B80F742A8E1DB50011407E /* BetslipDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipDetailsVM.swift; sourceTree = "<group>"; };
 		58BEC4102A0A706500C8CCCC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 				586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */,
 				58EC47782A11417F0088E6DC /* NumbersExt.swift */,
 				58A005422A476F870012B9CF /* DateExt.swift */,
+				58B3B3142AA13DE400F83554 /* StandardShadowExt.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 				58076A4929C906FC00A0762B /* ContentView.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */,
 				58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */,
+				58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */,
 				58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */,
 				588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */,
 				58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */,

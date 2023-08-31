@@ -55,5 +55,6 @@ struct NoteRow: View {
                     Color.ui.onPrimary
                 )
         }
+        .standardShadow()
     }
 }

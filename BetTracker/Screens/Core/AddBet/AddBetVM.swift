@@ -2,17 +2,16 @@ import Combine
 import Foundation
 import SwiftUI
 
-enum BetType: String, CaseIterable, Identifiable {
-    var id: String { rawValue }
-
-    case singlebet = "Single Bet"
-    case betslip
-}
-
 final class AddBetVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
     let interactor = AddBetInteractor(BetDao: BetDao())
+
+    var taxStatus: Bool
+
+    var isReminderSaved: Bool
+
+    var savedDate: Date //    TODO: !!!!! delete???
 
     init() {
         savedDate = defaults.get(.savedNotificationDate) // delete?
@@ -115,7 +114,7 @@ final class AddBetVM: ObservableObject {
     var league: String = String()
 
     @Published
-    var category = ""
+    var category = "" // TODO: DELETE
 
     @Published
     var selectedCategory = Category.football
@@ -199,11 +198,7 @@ final class AddBetVM: ObservableObject {
 
     // MARK: - MERGED varbiables for bets
 
-    /// ReminderRowState methods:
-    enum DateRowState {
-        case closed
-        case opened
-    }
+    // ReminderRowState methods:
 
     @Published
     var selectedDate = Date()
@@ -213,22 +208,13 @@ final class AddBetVM: ObservableObject {
 
     // MARK: Reminders
 
-    /// ReminderRowState methods:
-    enum ReminderRowState {
-        case add
-        case editing
-        case delete
-    }
+    // ReminderRowState methods:
 
     @Published
     var selectedNotificationDate = Date.now
 
     @Published
     var betNotificationID = UUID().uuidString
-
-    var isReminderSaved: Bool
-
-    var savedDate: Date //    TODO: !!!!! delete???
 
     @Published
     var dateState: DateRowState = .closed
@@ -238,16 +224,9 @@ final class AddBetVM: ObservableObject {
 
     // MARK: Tax State
 
-    enum taxRowState {
-        case active
-        case disable
-    }
-
     /// #1 Current Row State && taxStatus var
     @Published
     var taxRowStateValue = taxRowState.disable
-
-    var taxStatus: Bool
 
     /// #2 Variable to observe changes in taxStatus Variable (base
     @Published
@@ -262,11 +241,6 @@ final class AddBetVM: ObservableObject {
     }
 
     // MARK: Note
-
-    enum NoteState {
-        case closed
-        case opened
-    }
 
     @Published
     var noteState: NoteState = .closed
@@ -503,14 +477,6 @@ final class AddBetVM: ObservableObject {
 
     // MARK: - Validate & Error handling methods
 
-    enum filterType: CaseIterable {
-
-        case amount
-        case tax
-        case standard
-        case name
-    }
-
     private func filterDecimalInput(
         input: String,
         oldValue: String,
@@ -626,40 +592,12 @@ final class AddBetVM: ObservableObject {
 
     // TODO(azapior): zmiana
     // STOPSHIP
-    enum ValidateError: CustomStringConvertible {
-        case team1
-        case team2
-        case name
-        case odds
-        case tax
-        case notification
-
-        var description: String {
-            switch self {
-            case .team1:
-                return "Błąd zespołu 1"
-            case .team2:
-                return "Błąd zespołu 2"
-            case .name:
-                return "Błąd nazwy"
-            case .odds:
-                return "Błąd kursu"
-            case .tax:
-                return "Błąd podatku"
-            case .notification:
-                return "Błąd powiadomienia"
-            }
-        }
-    }
-
-    func pass() { }
 
     // MARK: - Save bet/betslip to DB
 
     func saveBet() -> Bool {
-        
         validationErrors = []
-        
+
         validateTeam1()
         validateTeam2()
         validateAmount()
@@ -809,4 +747,66 @@ final class AddBetVM: ObservableObject {
         selectedDate = Date.now
     }
 
+    enum DateRowState {
+        case closed
+        case opened
+    }
+
+    enum ReminderRowState {
+        case add
+        case editing
+        case delete
+    }
+
+    enum taxRowState {
+        case active
+        case disable
+    }
+
+    enum NoteState {
+        case closed
+        case opened
+    }
+
+    enum filterType: CaseIterable {
+
+        case amount
+        case tax
+        case standard
+        case name
+    }
+
+    enum ValidateError: CustomStringConvertible {
+        case team1
+        case team2
+        case name
+        case odds
+        case tax
+        case notification
+
+        var description: String {
+            switch self {
+            case .team1:
+                return "Błąd zespołu 1"
+            case .team2:
+                return "Błąd zespołu 2"
+            case .name:
+                return "Błąd nazwy"
+            case .odds:
+                return "Błąd kursu"
+            case .tax:
+                return "Błąd podatku"
+            case .notification:
+                return "Błąd powiadomienia"
+            }
+        }
+    }
+
+}
+
+enum BetType: String, CaseIterable, Identifiable {
+    var id: String { rawValue }
+
+    case singlebet = "Single Bet"
+    case betslip
 }

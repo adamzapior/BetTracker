@@ -330,6 +330,11 @@ class ProfileVM: ObservableObject {
             }
             .assign(to: &$mergedHiggestBetAmount)
     }
+    
+    private func loadUserDefaultsData() {
+        username = defaults.get(.username)
+        defaultCurrency = defaults.get(.defaultCurrency)
+    }
 
     private func startDate(state: StatsState) -> Date {
         let startDate: Date
@@ -369,10 +374,7 @@ class ProfileVM: ObservableObject {
         }
     }
 
-    private func loadUserDefaultsData() {
-        username = defaults.get(.username)
-        defaultCurrency = defaults.get(.defaultCurrency)
-    }
+
 }
 
 enum StatsState: String, CaseIterable, Identifiable {

@@ -40,6 +40,8 @@ struct PredictedProfitRow: View {
                 .frame(maxWidth: .infinity)
                 .edgesIgnoringSafeArea(.all)
             }
+            .standardShadow()
+
         } else {
             ZStack {
                 VStack(spacing: 0) {
@@ -75,6 +77,8 @@ struct PredictedProfitRow: View {
                         )
                 }
             }
+            .standardShadow()
+
         }
     }
 }

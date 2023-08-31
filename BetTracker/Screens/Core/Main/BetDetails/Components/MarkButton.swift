@@ -33,7 +33,7 @@ struct MarkWonButton: View {
         }
 
         .frame(maxWidth: .infinity)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+        .standardShadow()
     }
 }
 
@@ -70,6 +70,6 @@ struct MarkLostButton: View {
         }
 
         .frame(maxWidth: .infinity)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+        .standardShadow()
     }
 }

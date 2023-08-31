@@ -38,6 +38,7 @@ struct CategoryRow: View {
             .frame(maxWidth: .infinity)
             .edgesIgnoringSafeArea(.all)
         }
+        .standardShadow()
     }
 
 }

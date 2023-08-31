@@ -36,7 +36,7 @@ struct MainView: View {
                 .padding(.top, 18)
                 .padding(.bottom, 26)
             }
-            ScrollView {
+            ScrollView (showsIndicators: false) {
                 VStack {
                     VStack {
                         HStack {

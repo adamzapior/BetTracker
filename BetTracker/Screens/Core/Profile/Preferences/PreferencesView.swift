@@ -82,7 +82,7 @@ struct PreferencesView: View {
                     }
                     .scrollContentBackground(.hidden)
                     .frame(height: 500, alignment: .topLeading)
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
+                    .standardShadow()
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.bottom, 48)

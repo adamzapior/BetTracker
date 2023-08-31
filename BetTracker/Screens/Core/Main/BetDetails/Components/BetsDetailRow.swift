@@ -42,6 +42,7 @@ struct BetsDetailRow: View {
             .frame(maxWidth: .infinity)
             .edgesIgnoringSafeArea(.all)
         }
+        .standardShadow()
     }
 }
 

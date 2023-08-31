@@ -8,6 +8,7 @@ struct AmountInputRow: View {
     let overlayText: String
 
     var body: some View {
+        ZStack {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 TextField(
@@ -29,12 +30,10 @@ struct AmountInputRow: View {
                         .foregroundColor(isError ? Color.ui.onError : Color.ui.onPrimary)
                 }
             }
-            .background {
-                RoundedRectangle(cornerRadius: 15)
-                    .foregroundColor(Color.ui.onPrimary)
-            }
-            .shadow(color: Color.black.opacity(0.1), radius: 1, x: 3, y: 2)
         }
+    }
         .keyboardType(.decimalPad)
+        .standardShadow()
+
     }
 }

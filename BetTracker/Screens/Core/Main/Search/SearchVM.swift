@@ -8,16 +8,6 @@ class SearchVM: ObservableObject {
 
     var defaultCurrency: Currency = .usd
 
-    enum SortOption: String, CaseIterable, Identifiable {
-        case all
-        case oldest
-        case won
-        case lost
-        case amount
-
-        var id: String { rawValue }
-    }
-
     let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
 
     @Published
@@ -47,7 +37,25 @@ class SearchVM: ObservableObject {
     init(interactor: SearchInteractor) {
         respository = interactor
 
-        setup()
+        loadCurrency()
+        
+        respository.getSavedBets(model: BetModel.self)
+            .map { .some($0) }
+            .assign(to: &$bets)
+
+        respository.getSavedBets(model: BetslipModel.self)
+            .map { .some($0) }
+            .assign(to: &$betslips)
+
+        Publishers.CombineLatest($bets, $betslips)
+            .map { historyBets, betslipHistory -> [BetWrapper] in
+                let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
+                    (betslipHistory?.map(BetWrapper.betslip) ?? [])
+                return combinedBets.sorted(by: { $0.date > $1.date })
+            }
+            .assign(to: \.savedBets, on: self)
+            .store(in: &cancellables)
+        
 
         $searchText
             .combineLatest($savedBets)
@@ -67,31 +75,10 @@ class SearchVM: ObservableObject {
             .assign(to: &$searchResults)
     }
 
-    private func setup() {
-        loadCurrency()
-        getSavedBets()
-    }
+
 
     // Respository call:
 
-    func getSavedBets() {
-        respository.getSavedBets(model: BetModel.self)
-            .map { .some($0) }
-            .assign(to: &$bets)
-
-        respository.getSavedBets(model: BetslipModel.self)
-            .map { .some($0) }
-            .assign(to: &$betslips)
-
-        Publishers.CombineLatest($bets, $betslips)
-            .map { historyBets, betslipHistory -> [BetWrapper] in
-                let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
-                    (betslipHistory?.map(BetWrapper.betslip) ?? [])
-                return combinedBets.sorted(by: { $0.date > $1.date })
-            }
-            .assign(to: \.savedBets, on: self)
-            .store(in: &cancellables)
-    }
 
     // Sort methods:
 
@@ -143,6 +130,16 @@ class SearchVM: ObservableObject {
 
     private func loadCurrency() {
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
+    }
+    
+    enum SortOption: String, CaseIterable, Identifiable {
+        case all
+        case oldest
+        case won
+        case lost
+        case amount
+
+        var id: String { rawValue }
     }
 
 }

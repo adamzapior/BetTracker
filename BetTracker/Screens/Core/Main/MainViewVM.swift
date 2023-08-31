@@ -57,11 +57,6 @@ final class MainViewVM: ObservableObject {
 
         loadUserDefaultsData()
         showUsername = !username.isEmpty
-
-//        getPendingBets()
-//        mergePendingBets()
-//        getHistoryBets()
-//        mergeHistoryBets()
         
         respository.getPendingBets(model: BetModel.self, tableName: TableName.bet.rawValue)
             .map { .some($0) }
@@ -88,17 +83,6 @@ final class MainViewVM: ObservableObject {
             .assign(to: \.pendingMerged, on: self)
             .store(in: &cancellables)
 
-//        Publishers.CombineLatest($historyBets, $betslipHistory)
-//            .map { historyBets, betslipHistory -> [BetWrapper] in
-//                let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
-//                    (betslipHistory?.map(BetWrapper.betslip) ?? [])
-//                return combinedBets.sorted(by: { $0.date > $1.date })
-//            }
-////            .receive(on: DispatchQueue.main)
-//            .assign(to: \.mergedBets, on: self)
-//            .store(in: &cancellables)
-
-
 
         Publishers.CombineLatest($historyBets, $betslipHistory)
             .map { historyBets, betslipHistory -> [BetWrapper] in
@@ -116,53 +100,6 @@ final class MainViewVM: ObservableObject {
         
 
     }
-
-//    private func getPendingBets() {
-//        respository.getPendingBets(model: BetModel.self, tableName: TableName.bet.rawValue)
-//            .map { .some($0) }
-//            .assign(to: &$pendingBets)
-//
-//        respository.getPendingBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
-//            .map { .some($0) }
-//            .assign(to: &$pendingBetslipBets)
-//    }
-//
-//    private func getHistoryBets() {
-//        respository.getHistoryBets(model: BetModel.self, tableName: TableName.bet.rawValue)
-//            .map { .some($0) }
-//            .assign(to: &$historyBets)
-//
-//        respository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
-//            .map { .some($0) }
-//            .assign(to: &$betslipHistory)
-//    }
-//
-//    private func mergePendingBets() {
-//        Publishers.CombineLatest($pendingBets, $pendingBetslipBets)
-//            .map { historyBets, betslipHistory -> [BetWrapper] in
-//                let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
-//                    (betslipHistory?.map(BetWrapper.betslip) ?? [])
-//                return combinedBets.sorted(by: { $0.date > $1.date })
-//            }
-//            .assign(to: \.pendingMerged, on: self)
-//            .store(in: &cancellables)
-//    }
-//
-//    private func mergeHistoryBets() {
-//        Publishers.CombineLatest($historyBets, $betslipHistory)
-//            .map { historyBets, betslipHistory -> [BetWrapper] in
-//                let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
-//                    (betslipHistory?.map(BetWrapper.betslip) ?? [])
-//                return combinedBets.sorted(by: { $0.date > $1.date })
-//            }
-//            .receive(on: DispatchQueue.main)
-//            .sink(receiveValue: { [weak self] value in
-//                guard let vm = self else { return }
-//                vm.mergedBets = value
-//                vm.isMergedCompleted = true
-//            })
-//            .store(in: &cancellables)
-//    }
 
     private func loadUserDefaultsData() {
         username = defaults.get(.username)

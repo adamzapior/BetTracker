@@ -56,6 +56,7 @@ struct IconTextActionButtonRow: View {
             .frame(maxWidth: .infinity)
             .edgesIgnoringSafeArea(.all)
         }
+        .standardShadow()
     }
 
 }
