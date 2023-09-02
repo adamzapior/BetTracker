@@ -37,7 +37,6 @@ extension DefaultsKeys {
     static let amount = DefaultsKey<String>("amount")
     static let odds = DefaultsKey<String>("odds")
     static let tax = DefaultsKey<String>("tax")
-    static let category = DefaultsKey<String>("category")
     static let league = DefaultsKey<String>("league")
     static let selectedDate = DefaultsKey<Date>("selectedDate")
     static let savedNotificationDate = DefaultsKey<Date>("savedNotificationDate")

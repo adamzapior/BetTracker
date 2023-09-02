@@ -6,14 +6,9 @@ import SwiftDate
 final class MainViewVM: ObservableObject {
 
     private let defaults = UserDefaultsManager.path
-    private let respository: MainInteractor
+    let respository: Respository
     
     var defaultCurrency: Currency = Currency.usd
-
-    private enum TableName: String, CaseIterable {
-        case bet
-        case betslip
-    }
 
     @Published
     var username = String()
@@ -52,7 +47,7 @@ final class MainViewVM: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
 
-    init(respository: MainInteractor) {
+    init(respository: Respository) {
         self.respository = respository
 
         loadUserDefaultsData()

@@ -1,6 +1,11 @@
 import Foundation
 import GRDB
 
+enum TableName: String, CaseIterable {
+    case bet
+    case betslip
+}
+
 class BetDb {
     private init() { }
 

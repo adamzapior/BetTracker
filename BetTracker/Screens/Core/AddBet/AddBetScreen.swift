@@ -17,28 +17,23 @@ struct AddBetScreen: View {
     @StateObject
     var vm = AddBetVM()
 
-   
     @State
     private var showAlert = false
 
     var body: some View {
         ZStack {
-            
             if showAlert == true {
-                
                 CustomAlertView(
                     title: "Błąd",
-                    messages: vm.validationErrors.map { $0.description },
+                    messages: vm.validationErrors.map(\.description),
                     primaryButtonLabel: "OK",
                     primaryButtonAction: { showAlert = false }
                 )
-                
             }
-     
-            
+
             VStack(spacing: 2) {
                 if vm.betType == .singlebet {
-                    ScrollView { // Here was ScrollView
+                    ScrollView (showsIndicators: false) { // Here was ScrollView
                         Group {
                             VStack(alignment: .leading, spacing: 8) {
                                 VStack {
@@ -50,7 +45,6 @@ struct AddBetScreen: View {
                                     .padding(.bottom, 4)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 }
-                                .padding(.horizontal, 12)
 
                                 VStack(spacing: 12) {
                                     HStack {
@@ -76,7 +70,6 @@ struct AddBetScreen: View {
                                         action: vm.onTeam2Selected
                                     )
                                 }
-                                .padding(.horizontal, 12)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -123,7 +116,6 @@ struct AddBetScreen: View {
                                     vm: vm
                                 )
                             }
-                            .padding(.horizontal, 12)
 
                             VStack(spacing: 12) {
                                 // state
@@ -151,7 +143,6 @@ struct AddBetScreen: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }
-                                .padding(.horizontal, 12)
                                 .animation(.easeInOut, value: vm.dateState)
 
                                 ZStack {
@@ -160,41 +151,35 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is off",
-                                            actionButtonIcon: "plus.app.fill",
-                                            actionButtonColor: Color.ui.onBackground
+                                            actionButtonIcon: "plus.app.fill"
                                         ) {
-                                            vm.isAddClicked()
+                                            vm.addReminder()
                                         }
 
                                     case .editing:
-                                        VStack {
-                                            HStack {
-                                                HStack {
-                                                    ReminderDatePickerRow(
-                                                        showDatePicker: $vm.showDatePicker,
-                                                        selectedDate: $vm.selectedNotificationDate,
-                                                        vm: vm
-                                                    )
-                                                    .transition(.opacity)
-                                                }
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                            }
+
+                                        HStack {
+                                            ReminderDatePickerRow(
+                                                showDatePicker: $vm.showDatePicker,
+                                                selectedDate: $vm.selectedNotificationDate,
+                                                vm: vm
+                                            )
+                                            .transition(.opacity)
                                         }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
 
                                     case .delete:
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is on",
-                                            actionButtonIcon: "xmark.app.fill",
-                                            actionButtonColor: Color.red
+                                            actionButtonIcon: "xmark.app.fill"
                                         ) {
-                                            vm.deleteRemind()
+                                            vm.deleteReminder()
                                         }
                                     }
                                 }
                                 .frame(maxWidth: .infinity)
                                 .animation(.easeInOut, value: vm.reminderState)
-                                .padding(.horizontal, 12)
 
                                 ZStack {
                                     switch vm.noteState {
@@ -202,8 +187,7 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "note",
                                             labelText: "Add note",
-                                            actionButtonIcon: "plus.app.fill",
-                                            actionButtonColor: Color.ui.onBackground
+                                            actionButtonIcon: "plus.app.fill"
                                         ) {
                                             vm.openNote()
                                         }
@@ -215,25 +199,24 @@ struct AddBetScreen: View {
                                 }
                                 .frame(maxWidth: .infinity)
                                 .animation(.easeInOut, value: vm.noteState)
-                                .padding(.horizontal, 12)
 
                                 PredictedProfitRow(
                                     labelText: "Your predicted profit:",
                                     profitText: vm.profit.stringValue,
                                     currency: "PLN"
                                 )
-                                .padding(.horizontal, 12)
                             }
                             .padding(.top, 12)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
+                    .padding(.horizontal, 12)
                     .transition(.slide) // Apply slide transition
                     .animation(.easeInOut(duration: 0.5), value: vm.betType)
                 }
 
                 if vm.betType == .betslip {
-                    ScrollView {
+                    ScrollView (showsIndicators: false) {
                         Group {
                             VStack(alignment: .leading, spacing: 8) {
                                 VStack {
@@ -245,7 +228,6 @@ struct AddBetScreen: View {
                                     .padding(.bottom, 4)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 }
-                                .padding(.horizontal, 12)
 
                                 VStack(spacing: 12) {
                                     HStack {
@@ -257,7 +239,6 @@ struct AddBetScreen: View {
                                         )
                                     }
                                 }
-                                .padding(.horizontal, 12)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -286,8 +267,8 @@ struct AddBetScreen: View {
                                     if vm.taxRowStateValue == .active {
                                         AmountInputRow(
                                             hint: "Insert your tax",
-                                            text: $vm.betslipTax,
-                                            isError: vm.betslipTaxsIsError,
+                                            text: $vm.tax,
+                                            isError: vm.taxIsError,
                                             overlayText: "%"
                                         )
                                     }
@@ -305,7 +286,6 @@ struct AddBetScreen: View {
                                     vm: vm
                                 )
                             }
-                            .padding(.horizontal, 12)
 
                             VStack(spacing: 12) {
                                 // state
@@ -333,7 +313,6 @@ struct AddBetScreen: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }
-                                .padding(.horizontal, 12)
                                 .animation(.easeInOut, value: vm.dateState)
 
                                 ZStack {
@@ -342,10 +321,9 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is off",
-                                            actionButtonIcon: "plus.app.fill",
-                                            actionButtonColor: Color.ui.onBackground
+                                            actionButtonIcon: "plus.app.fill"
                                         ) {
-                                            vm.isAddClicked()
+                                            vm.addReminder()
                                         }
 
                                     case .editing:
@@ -367,16 +345,14 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is on",
-                                            actionButtonIcon: "xmark.app.fill",
-                                            actionButtonColor: Color.red
+                                            actionButtonIcon: "xmark.app.fill"
                                         ) {
-                                            vm.deleteRemind()
+                                            vm.deleteReminder()
                                         }
                                     }
                                 }
                                 .frame(maxWidth: .infinity)
                                 .animation(.easeInOut, value: vm.reminderState)
-                                .padding(.horizontal, 12)
 
                                 ZStack {
                                     switch vm.noteState {
@@ -384,8 +360,7 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "note",
                                             labelText: "Add note",
-                                            actionButtonIcon: "plus.app.fill",
-                                            actionButtonColor: Color.ui.onBackground
+                                            actionButtonIcon: "plus.app.fill"
                                         ) {
                                             vm.openNote()
                                         }
@@ -397,19 +372,19 @@ struct AddBetScreen: View {
                                 }
                                 .frame(maxWidth: .infinity)
                                 .animation(.easeInOut, value: vm.noteState)
-                                .padding(.horizontal, 12)
 
                                 PredictedProfitRow(
                                     labelText: "Your predicted profit:",
-                                    profitText: vm.betslipProfit.stringValue,
+                                    profitText: vm.profit.stringValue,
                                     currency: "PLN"
                                 )
-                                .padding(.horizontal, 12)
                             }
                             .padding(.top, 12)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
+                    .padding(.horizontal, 12)
+
                 }
             }
             .padding(.top, 12)
@@ -450,6 +425,7 @@ struct AddBetScreen: View {
                         if vm.betType == .singlebet {
                             Button {
                                 if vm.saveBet() {
+                                    vm.clearTextField()
                                     dismiss()
                                 } else {
                                     showAlert = true
@@ -476,30 +452,28 @@ struct AddBetScreen: View {
                         }
                     }
                     .background {
-                                if colorScheme == .dark {
-                                    // Dark mode-specific background
-                                    RoundedRectangle(cornerRadius: 0, style: .continuous)
-                                    .foregroundColor(Color.black.opacity(0.7))
-                                    .blur(radius: 12)
-                                    .ignoresSafeArea()
-                                    
-                                } else {
-                                    // Light mode-specific background
-                                    RoundedRectangle(cornerRadius: 0, style: .continuous)
-                                        .foregroundColor(Color.clear)
-                                        .background(Material.bar.opacity(0.7))
-                                        .blur(radius: 12)
-                                        .ignoresSafeArea()
-                                }
-                            }
+                        if colorScheme == .dark {
+                            // Dark mode-specific background
+                            RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                .foregroundColor(Color.black.opacity(0.7))
+                                .blur(radius: 12)
+                                .ignoresSafeArea()
+
+                        } else {
+                            // Light mode-specific background
+                            RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                .foregroundColor(Color.clear)
+                                .background(Material.bar.opacity(0.7))
+                                .blur(radius: 12)
+                                .ignoresSafeArea()
+                        }
+                    }
 //                    .padding(.top, 36)
                 }
             )
-            .padding(.top, 24)
-            .navigationBarBackButtonHidden()
         }
         .onDisappear {
-            vm.saveTextfield()
+            vm.saveTextInTexfield()
         }
         .onAppear {
             vm.loadTextInTextfield()

@@ -5,20 +5,16 @@ struct IconTextActionButtonRow: View {
     let icon: String
     let labelText: String
     let actionButtonIcon: String
-    let actionButtonColor: Color
-
     let action: () -> Void
 
     init(
         icon: String,
         labelText: String,
         actionButtonIcon: String,
-        actionButtonColor: Color,
         action: @escaping () -> Void
     ) {
         self.icon = icon
         self.labelText = labelText
-        self.actionButtonColor = actionButtonColor
         self.actionButtonIcon = actionButtonIcon
         self.action = action
     }
@@ -40,7 +36,7 @@ struct IconTextActionButtonRow: View {
                 Spacer()
                 Image(systemName: "\(actionButtonIcon)")
                     .font(.title)
-                    .foregroundColor(Color.ui.secondary)
+                    .foregroundColor(Color.ui.onPrimaryContainer)
                     .onTapGesture {
                         action()
                     }

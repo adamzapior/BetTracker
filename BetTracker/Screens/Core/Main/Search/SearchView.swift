@@ -3,7 +3,7 @@ import SwiftUI
 struct SearchView: View {
 
     @StateObject
-    var vm = SearchVM(interactor: SearchInteractor(db: BetDao()))
+    var vm = SearchVM(respository: Respository())
 
     @State
     private var selectedSortOption: String = "All"

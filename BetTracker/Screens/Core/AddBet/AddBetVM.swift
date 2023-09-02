@@ -5,21 +5,19 @@ import SwiftUI
 final class AddBetVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
-    let interactor = AddBetInteractor(BetDao: BetDao())
+    let respository = Respository()
 
-    var taxStatus: Bool
+    var isDefaultTaxSet: Bool
 
-    var isReminderSaved: Bool
+    @Published
+    var isReminderSaved: Bool = false
 
     var savedDate: Date //    TODO: !!!!! delete???
 
-    init() {
-        savedDate = defaults.get(.savedNotificationDate) // delete?
-        isReminderSaved = defaults.get(.isNotificationSaved) // delete?
-
-        taxStatus = defaults.get(.isDefaultTaxOn)
-        configureTaxInput()
-        loadDefaultCurrency()
+    var reminderDateClosedRange: ClosedRange<Date> {
+        let min = Calendar.current.date(byAdding: .minute, value: 1, to: Date())!
+        let max = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
+        return min ... max
     }
 
     @Published
@@ -28,7 +26,10 @@ final class AddBetVM: ObservableObject {
     // MARK: - SINGLE BET
 
     @Published
-    var team1: String = String() {
+    var selectedTeam = SelectedTeam.team1
+
+    @Published
+    var team1: String = "" {
         didSet {
             team1IsError = false
             let cleanedName = filterDecimalInput(
@@ -43,14 +44,19 @@ final class AddBetVM: ObservableObject {
     }
 
     @Published
-    var team2: String = String() {
+    var team2: String = "" {
         didSet {
             team2IsError = false
+            let cleanedName = filterDecimalInput(
+                input: team2,
+                oldValue: oldValue,
+                filterType: .name
+            )
+            if cleanedName != team2 {
+                team2 = cleanedName
+            }
         }
     }
-
-    @Published
-    var selectedTeam = SelectedTeam.team1
 
     @Published
     var amount: String = "" {
@@ -73,7 +79,11 @@ final class AddBetVM: ObservableObject {
         didSet {
             updateProfit()
             oddsIsError = false
-            let cleanedOdds = filterDecimalInput(input: odds, oldValue: oldValue, filterType: .tax)
+            let cleanedOdds = filterDecimalInput(
+                input: odds,
+                oldValue: oldValue,
+                filterType: .tax
+            )
             if cleanedOdds != odds {
                 odds = cleanedOdds
             }
@@ -81,13 +91,13 @@ final class AddBetVM: ObservableObject {
     }
 
     @Published
-    var tax = "0.0" {
+    var tax = "" {
         didSet {
             updateProfit()
             let cleanedTax = filterDecimalInput(
                 input: tax,
                 oldValue: oldValue,
-                filterType: .amount
+                filterType: .tax
             )
             if cleanedTax != tax {
                 tax = cleanedTax
@@ -95,26 +105,8 @@ final class AddBetVM: ObservableObject {
         }
     }
 
-//    @Published
-//    var betslipTax = "0.0" {
-//        didSet {
-//            updateProfit()
-//            let cleanedTax = filterDecimalInput(
-//                input: betslipTax,
-//                oldValue: oldValue,
-//                filterType: .amount
-//            )
-//            if cleanedTax != betslipTax {
-//                betslipTax = cleanedTax
-//            }
-//        }
-//    }
-
     @Published
     var league: String = String()
-
-    @Published
-    var category = "" // TODO: DELETE
 
     @Published
     var selectedCategory = Category.football
@@ -132,7 +124,19 @@ final class AddBetVM: ObservableObject {
     // MARK: - BETSLIP
 
     @Published
-    var betslipName = ""
+    var betslipName = "" {
+        didSet {
+            betslipNameIsError = false
+            let cleanedName = filterDecimalInput(
+                input: betslipName,
+                oldValue: oldValue,
+                filterType: .name
+            )
+            if cleanedName != betslipName {
+                betslipName = cleanedName
+            }
+        }
+    }
 
     @Published
     var betslipAmount = "" {
@@ -165,33 +169,6 @@ final class AddBetVM: ObservableObject {
             }
         }
     }
-
-    @Published
-    var betslipCategory = ""
-
-    @Published
-    var betslipTax = "0.0" {
-        didSet {
-            updateProfit()
-            let cleanedTax = filterDecimalInput(
-                input: betslipTax,
-                oldValue: oldValue,
-                filterType: .amount
-            )
-            if cleanedTax != betslipTax {
-                betslipTax = cleanedTax
-            }
-        }
-    }
-
-    @Published
-    var betslipProfit: NSDecimalNumber = 0
-
-    @Published
-    var betslipNotificationID = UUID().uuidString
-
-    @Published
-    var betslipScore: NSDecimalNumber = 0
 
     @Published
     var validationErrors: [ValidateError] = []
@@ -230,9 +207,9 @@ final class AddBetVM: ObservableObject {
 
     /// #2 Variable to observe changes in taxStatus Variable (base
     @Published
-    var isTaxInputDisabled: Bool = false {
+    var isTaxInputOn: Bool = false {
         didSet {
-            if isTaxInputDisabled {
+            if isTaxInputOn {
                 taxRowStateValue = .active
             } else {
                 taxRowStateValue = .disable
@@ -268,9 +245,16 @@ final class AddBetVM: ObservableObject {
     @Published
     var taxIsError = false
     @Published
-    var betslipTaxsIsError = false
-    @Published
     var notificationIsError = false
+
+    init() {
+        savedDate = defaults.get(.savedNotificationDate) // delete?
+        isReminderSaved = defaults.get(.isNotificationSaved) // delete?
+
+        isDefaultTaxSet = defaults.get(.isDefaultTaxOn)
+        configureTaxInput()
+        loadDefaultCurrency()
+    }
 
     // MARK: - State Navigation
 
@@ -298,11 +282,11 @@ final class AddBetVM: ObservableObject {
     /// taxStatus is boolean value of default tax user settings.
     ///     1. taxStatus = true - the user has a default tax value set
     ///     2. taxStatus = false - user has no default tax value set
-    func configureTaxInput() {
-        if taxStatus {
-            isTaxInputDisabled = true
+    private func configureTaxInput() {
+        if isDefaultTaxSet {
+            isTaxInputOn = true
         } else {
-            isTaxInputDisabled = false
+            isTaxInputOn = false
         }
     }
 
@@ -316,17 +300,19 @@ final class AddBetVM: ObservableObject {
         dateState = .closed
     }
 
-    func isAddClicked() {
+    func addReminder() {
         reminderState = .editing
     }
 
-    func deleteRemind() {
+    func deleteReminder() {
         reminderState = .add
         selectedNotificationDate = Date()
+        isReminderSaved = false
     }
 
-    func saveIsClicked() {
+    func saveReminder() {
         reminderState = .delete
+        isReminderSaved = true
     }
 
     // Note methods
@@ -345,7 +331,7 @@ final class AddBetVM: ObservableObject {
     // Methods used to calculate data with Combine in Init
 
     /// TODO: FIX THIS SHIT
-    func betProfitWithoutTex(
+    private func betProfitWithoutTex(
         amountString: String?,
         oddsString: String?
     ) -> Decimal? {
@@ -364,35 +350,35 @@ final class AddBetVM: ObservableObject {
     }
 
     /// TODO: Ta funkcja nie działa i nie liczy poprawnie np 90
-    func betProfitWithTax(
+    private func betProfitWithTax(
         amountString: String?,
         oddsString: String?,
         taxString: String?
     ) -> Decimal? {
         guard let amountString, !amountString.isEmpty,
+              let amount = Decimal(string: amountString),
               let oddsString, !oddsString.isEmpty,
-              let taxString, !taxString.isEmpty, !taxString.contains("0")
+              let odds = Decimal(string: oddsString),
+              let taxString, !taxString.isEmpty,
+              let tax = Decimal(string: taxString)
         else {
-            print("One or more input values is null or empty")
+            print("One or more input values is null, empty, or cannot be converted to Decimal")
             return nil
         }
 
-        let amount = Decimal(string: amountString) ?? Decimal()
-        let odds = Decimal(string: oddsString) ?? Decimal()
-        let tax = Decimal(string: taxString) ?? Decimal()
-
         let taxCorrected = 1.0 - tax / 100
-        print(taxCorrected)
+        print("Tax corrected: \(taxCorrected)")
 
         let predictedWin = amount * odds * taxCorrected
-        print(predictedWin)
+        print("Predicted win: \(predictedWin)")
+
         return predictedWin
     }
 
-    func updateProfit() {
+    private func updateProfit() {
         switch betType {
         case .singlebet:
-            if taxStatus {
+            if isDefaultTaxSet {
                 Publishers.CombineLatest3($amount, $odds, $tax)
                     .map { [weak self] amount, odds, tax in
                         guard let self else {
@@ -421,8 +407,8 @@ final class AddBetVM: ObservableObject {
                     .assign(to: &$profit)
             }
         case .betslip:
-            if taxStatus {
-                Publishers.CombineLatest3($betslipAmount, $betslipOdds, $betslipTax)
+            if isDefaultTaxSet {
+                Publishers.CombineLatest3($betslipAmount, $betslipOdds, $tax)
                     .map { [weak self] betslipAmount, betslipOdds, betslipTax in
                         guard let self else {
                             return 0
@@ -434,7 +420,7 @@ final class AddBetVM: ObservableObject {
                         ) ?? Decimal()
                         return profit as NSDecimalNumber
                     }
-                    .assign(to: &$betslipProfit)
+                    .assign(to: &$profit)
             } else {
                 Publishers.CombineLatest($betslipAmount, $betslipOdds)
                     .map { [weak self] betslipAmount, betslipOdds in
@@ -447,32 +433,25 @@ final class AddBetVM: ObservableObject {
                         ) ?? Decimal()
                         return profit as NSDecimalNumber
                     }
-                    .assign(to: &$betslipProfit)
+                    .assign(to: &$profit)
             }
         }
     }
 
     // MARK: -  METHODS FOR ADD BET VIEWMODEL VARIABLES:
-
     /**
      The function saves the user's notification if the date is different from ' Date.now '
      - Parameter withID: Uniqe ID based on UUID.string variable
      - Parameter titleName: Name used for Reminder Title
      - Parameter notificationTriggerDate:Selected date to trigger notification
      */
-    private func saveReminder() {
+    private func saveSelectedReminder() {
         UserNotificationsService().scheduleNotification(
             withID: betNotificationID,
             titleName: "\(team1 + team2)",
             // Corrected the concatenation as previously suggested
             notificationTriggerDate: selectedNotificationDate
         )
-    }
-
-    var reminderDateClosedRange: ClosedRange<Date> {
-        let min = Date.now
-        let max = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
-        return min ... max
     }
 
     // MARK: - Validate & Error handling methods
@@ -503,8 +482,11 @@ final class AddBetVM: ObservableObject {
                 myinput = oldValue
             }
         case .tax:
+            if myinput.first == "0" {
+                return "0"
+            }
             if cleanedInput
-                .wholeMatch(of: /[1-9][0-9]{0,4}?((\.|,)[0-9]{,2})?/) ==
+                .wholeMatch(of: /[0-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
                 nil { // 5.55, 1.22, 1.22, 10.<22>
                 myinput = oldValue
             }
@@ -577,17 +559,29 @@ final class AddBetVM: ObservableObject {
     }
 
     private func validateTax() {
-        if amount.isEmpty {
-            amountIsError = true
+        if isDefaultTaxSet {
+            if tax.isEmpty {
+                taxIsError = true
+            }
         }
     }
 
-    private func validateBetslipTax() { }
-
     private func validateNotification() {
-        if selectedNotificationDate < Date.now {
+        if selectedNotificationDate <= Date(), isReminderSaved == true {
             notificationIsError = true
         }
+    }
+
+    private func resetValidationFlags() {
+        team1IsError = false
+        team2IsError = false
+        betslipNameIsError = false
+        amountIsError = false
+        betslipAmountIsError = false
+        oddsIsError = false
+        betslipOddsIsError = false
+        taxIsError = false
+        notificationIsError = false
     }
 
     // TODO(azapior): zmiana
@@ -597,6 +591,7 @@ final class AddBetVM: ObservableObject {
 
     func saveBet() -> Bool {
         validationErrors = []
+        resetValidationFlags()
 
         validateTeam1()
         validateTeam2()
@@ -604,9 +599,6 @@ final class AddBetVM: ObservableObject {
         validateOdds()
         validateTax()
         validateNotification()
-
-//        if team1IsError || team2IsError || amountIsError || oddsIsError
-//            || taxIsError
 
         if team1IsError {
             validationErrors.append(.team1)
@@ -617,13 +609,17 @@ final class AddBetVM: ObservableObject {
         }
 
         if amountIsError {
+            validationErrors.append(.amount)
+        }
+        if oddsIsError {
             validationErrors.append(.odds)
         }
-        if amountIsError {
-            validationErrors.append(.odds)
-        }
-        if amountIsError {
+        if taxIsError {
             validationErrors.append(.tax)
+        }
+
+        if notificationIsError {
+            validationErrors.append(.notification)
         }
 
         if !validationErrors.isEmpty {
@@ -632,25 +628,22 @@ final class AddBetVM: ObservableObject {
 
         print("data saved")
 
-        saveReminder()
-
         var newTax = tax
 
-        if !taxStatus {
+        if !isDefaultTaxSet {
             newTax = NSDecimalNumber.zero.stringValue
         }
 
-        interactor.savebetTest(
+        let bet = BetModel(
             id: nil,
             date: selectedDate,
             team1: team1,
             team2: team2,
             selectedTeam: selectedTeam,
+            league: league,
             amount: NSDecimalNumber(string: amount),
             odds: NSDecimalNumber(string: odds),
             category: selectedCategory,
-            league: league,
-            selectedDate: selectedDate,
             tax: NSDecimalNumber(string: newTax),
             profit: profit,
             note: note,
@@ -658,40 +651,70 @@ final class AddBetVM: ObservableObject {
             betNotificationID: betNotificationID,
             score: score
         )
+
+        saveSelectedReminder()
+        respository.saveBet(model: bet)
+
         return true
     }
 
     func saveBetslip() -> Bool {
+        validationErrors = []
+        resetValidationFlags()
+
         validateBetslipName()
         validateBetslipAmount()
         validateBetslipOdds()
-        validateBetslipTax()
+        validateTax()
+        validateNotification()
 
-        if betslipNameIsError || betslipAmountIsError || betslipOddsIsError || betslipTaxsIsError {
+        if betslipNameIsError {
+            validationErrors.append(.name)
+        }
+
+        if betslipAmountIsError {
+            validationErrors.append(.amount)
+        }
+
+        if betslipOddsIsError {
+            validationErrors.append(.odds)
+        }
+        if taxIsError {
+            validationErrors.append(.tax)
+        }
+
+        if notificationIsError {
+            validationErrors.append(.notification)
+        }
+
+        if !validationErrors.isEmpty {
             return false
         }
-        print("data saved")
 
-        var betslip = BetslipModel(
+        var newTax = tax
+
+        if !isDefaultTaxSet {
+            newTax = NSDecimalNumber.zero.stringValue
+        }
+
+        let betslip = BetslipModel(
             id: nil,
             date: selectedDate,
             name: betslipName,
             amount: NSDecimalNumber(string: betslipAmount),
             odds: NSDecimalNumber(string: betslipOdds),
             category: selectedCategory,
-            tax: NSDecimalNumber(string: betslipTax),
-            profit: betslipProfit,
+            tax: NSDecimalNumber(string: newTax),
+            profit: profit,
             note: note,
-            isWon: true,
+            isWon: nil,
             betNotificationID: betNotificationID,
             score: score
         )
 
-        if !taxStatus {
-            betslip.tax = NSDecimalNumber.zero
-        }
+        saveSelectedReminder()
+        respository.saveBet(model: betslip)
 
-        interactor.saveBet(model: betslip)
         return true
     }
 
@@ -703,24 +726,11 @@ final class AddBetVM: ObservableObject {
 
     // ** Methods used to run inside .onApper and .onDissapear view methods **
 
-    func saveTextfield() {
-        interactor.saveTextfield(
-            team1: team1,
-            team2: team2,
-            amount: amount,
-            odds: odds,
-            category: category,
-            league: league,
-            selectedDate: selectedDate
-        )
-    }
-
     func saveTextInTexfield() {
         defaults.set(.team1, to: team1)
         defaults.set(.team2, to: team2)
         defaults.set(.amount, to: amount)
         defaults.set(.odds, to: odds)
-        defaults.set(.category, to: category)
         defaults.set(.league, to: league)
         defaults.set(.selectedDate, to: selectedDate)
     }
@@ -731,7 +741,6 @@ final class AddBetVM: ObservableObject {
         amount = defaults.get(.amount)
         odds = defaults.get(.odds)
         tax = defaults.get(.defaultTax) // load default Tax to field
-        category = defaults.get(.category)
         league = defaults.get(.league)
         selectedDate = defaults.get(.selectedDate)
     }
@@ -742,7 +751,6 @@ final class AddBetVM: ObservableObject {
         amount = ""
         odds = ""
         tax = ""
-        category = ""
         league = ""
         selectedDate = Date.now
     }
@@ -780,6 +788,7 @@ final class AddBetVM: ObservableObject {
         case team1
         case team2
         case name
+        case amount
         case odds
         case tax
         case notification
@@ -792,6 +801,8 @@ final class AddBetVM: ObservableObject {
                 return "Błąd zespołu 2"
             case .name:
                 return "Błąd nazwy"
+            case .amount:
+                return "Błąd amount"
             case .odds:
                 return "Błąd kursu"
             case .tax:

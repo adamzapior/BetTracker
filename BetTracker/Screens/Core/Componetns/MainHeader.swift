@@ -26,6 +26,7 @@ struct MainHeader: View {
                     }
                 )
             }
+            .padding(.vertical, 6)
             .padding(.trailing, 18)
         }
     }

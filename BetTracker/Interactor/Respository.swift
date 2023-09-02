@@ -2,7 +2,16 @@ import Combine
 import Foundation
 import GRDB
 
-protocol MainInteractorProtocol {
+protocol RespositoryProtocol {
+    
+    func saveBet<T: DatabaseModel>(model: T)
+    
+    func deleteBet<T: DatabaseModel>(model: T)
+    
+    func markBetStatus<T: DatabaseModel>(model: T, isWon: Bool, tableName: String)
+    
+    func updateProfit<T: DatabaseModel>(model: T, score: NSDecimalNumber, tableName: String)
+
     func getPendingBets<T: DatabaseModel>(
         model: T.Type,
         tableName: String
@@ -23,8 +32,13 @@ protocol MainInteractorProtocol {
         tableName: String,
         startDate: Date,
         isWon: Bool?
-    )
-        -> AnyPublisher<NSDecimalNumber, Never>
+    ) -> AnyPublisher<NSDecimalNumber, Never>
+    
+    func getPendingBetsCount<T: DatabaseModel>(
+        model: T.Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never>
 
     func getAvgAmountBet<T: DatabaseModel>(model: T.Type, tableName: String, startDate: Date)
         -> AnyPublisher<NSDecimalNumber, Never>
@@ -39,14 +53,26 @@ protocol MainInteractorProtocol {
         -> AnyPublisher<NSDecimalNumber, Never>
 }
 
-class MainInteractor: MainInteractorProtocol {
+class Respository: RespositoryProtocol {
 
-    let db: BetDao
-
-    init(db: BetDao) {
-        self.db = db
+    let db = BetDao()
+    
+    func saveBet<T: DatabaseModel>(model: T) {
+        db.saveBet(model: model)
     }
-
+    
+    func deleteBet<T: DatabaseModel>(model: T) {
+        db.deleteBet(model: model)
+    }
+    
+    func markBetStatus<T: DatabaseModel>(model: T, isWon: Bool, tableName: String) {
+        db.markFinished(model: model, isWon: isWon, tableName: tableName)
+    }
+    
+    func updateProfit<T: DatabaseModel>(model: T, score: NSDecimalNumber, tableName: String) {
+        db.updateProfit(model: model, score: score, tableName: tableName)
+    }
+    
     func getPendingBets<T: DatabaseModel>(
         model: T.Type,
         tableName: String
@@ -65,24 +91,24 @@ class MainInteractor: MainInteractorProtocol {
         db.getSavedBets(model: model)
     }
 
-    func getBalanceValue(
-        model: (some DatabaseModel).Type,
+    func getBalanceValue<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {
         db.getBalanceValue(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getTotalSpent(
-        model: (some DatabaseModel).Type,
+    func getTotalSpent<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {
         db.getTotalSpent(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getBetsCount(
-        model: (some DatabaseModel).Type,
+    func getBetsCount<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date,
         isWon: Bool?
@@ -95,9 +121,21 @@ class MainInteractor: MainInteractorProtocol {
             isWon: isWonValue
         )
     }
+    
+    func getPendingBetsCount<T: DatabaseModel>(
+        model: T.Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
+        return db.getPendingBetsCount(
+            model: model,
+            tableName: tableName,
+            startDate: startDate
+        )
+    }
 
-    func getAvgWonBet(
-        model: (some DatabaseModel).Type,
+    func getAvgWonBet<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date,
         isWon: Bool
@@ -105,40 +143,40 @@ class MainInteractor: MainInteractorProtocol {
         db.getAvgWonBet(model: model, tableName: tableName, isWon: isWon, startDate: startDate)
     }
 
-    func getAvgAmountBet(
-        model: (some DatabaseModel).Type,
+    func getAvgAmountBet<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {
         db.getAvgAmountBet(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getLargestBetProfit(
-        model: (some DatabaseModel).Type,
+    func getLargestBetProfit<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {
         db.getLargestBetProfit(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getBiggestBetLoss(
-        model: (some DatabaseModel).Type,
+    func getBiggestBetLoss<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {
         db.getBiggestBetLoss(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getHiggestBetOddsWon(
-        model: (some DatabaseModel).Type,
+    func getHiggestBetOddsWon<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {
         db.getHiggestBetOddsWon(model: model, tableName: tableName, startDate: startDate)
     }
 
-    func getHighestBetAmount(
-        model: (some DatabaseModel).Type,
+    func getHighestBetAmount<T: DatabaseModel>(
+        model: T.Type,
         tableName: String,
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {

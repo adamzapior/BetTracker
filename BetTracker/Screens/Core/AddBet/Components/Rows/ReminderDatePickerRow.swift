@@ -29,7 +29,7 @@ struct ReminderDatePickerRow: View {
                 HStack {
                     Button(action: {
                         showDatePicker = false
-                        vm.deleteRemind()
+                        vm.deleteReminder()
 
                     }, label: {
                         Text("Cancel")
@@ -40,7 +40,7 @@ struct ReminderDatePickerRow: View {
 
                     Button(action: {
                         showDatePicker = false
-                        vm.saveIsClicked()
+                        vm.saveReminder()
 
                     }, label: {
                         Text("Save".uppercased())
@@ -51,10 +51,6 @@ struct ReminderDatePickerRow: View {
             }
             .tint(Color.ui.scheme)
             .padding()
-            .background(
-                Color.ui.onPrimary
-                    .cornerRadius(15)
-            )
         }
         .background {
             RoundedRectangle(cornerRadius: 15)

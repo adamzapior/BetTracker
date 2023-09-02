@@ -7,7 +7,7 @@ import SwiftUI
 class ProfileVM: ObservableObject {
 
     private let defaults = UserDefaultsManager.path
-    private let respository: MainInteractor
+    private let respository: Respository
 
     var defaultCurrency: String = "USD"
     var username: String = ""
@@ -59,7 +59,7 @@ class ProfileVM: ObservableObject {
         print("VM is out")
     }
 
-    init(respository: MainInteractor) {
+    init(respository: Respository) {
         self.respository = respository
 
         loadUserDefaultsData()
@@ -153,17 +153,15 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getBetsCount(
+                    respository.getPendingBetsCount(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
-                        startDate: startDate,
-                        isWon: nil
+                        startDate: startDate
                     ),
-                    respository.getBetsCount(
+                    respository.getPendingBetsCount(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
-                        startDate: startDate,
-                        isWon: nil
+                        startDate: startDate
                     )
                 )
                 .map { $0.adding($1) }

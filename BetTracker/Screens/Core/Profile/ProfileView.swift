@@ -7,20 +7,13 @@ struct ProfileView: View {
     var colorScheme
 
     @StateObject
-    var vm = ProfileVM(respository: MainInteractor(db: BetDao()))
+    var vm = ProfileVM(respository: Respository())
 
     @StateObject
     var vmProfilePhoto = ProfilePhotoVM()
 
     var body: some View {
         VStack {
-            MainHeader(
-                name: "Your stats",
-                destinationView: { AnyView(PreferencesView()) },
-                icon: "gear"
-            )
-            .padding(.top, 18)
-            .padding(.bottom, 26)
 
             ScrollView(showsIndicators: false) {
                 EditableCircularProfileImage(vm: vmProfilePhoto)
@@ -139,9 +132,19 @@ struct ProfileView: View {
                     .animation(.easeInOut, value: vm.currentStatsState)
                 }
             }
+            .padding(
+                .top,
+                1
+            )
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.horizontal, -8)
         }
+        .safeAreaInset(edge: .top, content: {
+            MainHeader(
+                name: "Your stats",
+                destinationView: { AnyView(PreferencesView()) },
+                icon: "gear"
+            )        })
         .background(Color.ui.background)
         .onDisappear {
             vmProfilePhoto.saveImageIfNeeded()

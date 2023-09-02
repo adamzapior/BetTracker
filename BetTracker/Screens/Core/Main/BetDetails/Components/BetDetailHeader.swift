@@ -56,6 +56,7 @@ struct BetDetailHeader: View {
                         onDelete()
                     }
             }
+            .padding(.vertical, 6)
             .padding(.horizontal, 18)
         }
     }

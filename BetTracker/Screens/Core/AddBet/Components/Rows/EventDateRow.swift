@@ -46,7 +46,7 @@ struct EventDateRow: View {
                 Spacer()
                 Image(systemName: "\(actionButtonIcon)")
                     .font(.title)
-                    .foregroundColor(Color.ui.secondary)
+                    .foregroundColor(Color.ui.onPrimaryContainer)
                     .onTapGesture {
                         action()
                     }

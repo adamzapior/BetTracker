@@ -23,8 +23,8 @@ struct NoteRow: View {
                 Spacer()
                 Image(systemName: "minus")
                     .font(.title)
-                    .foregroundColor(Color.ui.secondary)
-                    .frame(width: 44, height: 44)
+                    .foregroundColor(Color.ui.onPrimaryContainer)
+//                    .frame(width: 44, height: 44)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         action()

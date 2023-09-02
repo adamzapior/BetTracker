@@ -4,7 +4,7 @@ import Foundation
 class SearchVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
-    let respository: SearchInteractor
+    var respository: Respository
 
     var defaultCurrency: Currency = .usd
 
@@ -33,9 +33,9 @@ class SearchVM: ObservableObject {
 
     @Published
     private var cancellables = Set<AnyCancellable>()
-
-    init(interactor: SearchInteractor) {
-        respository = interactor
+  
+    init(respository: Respository) {
+        self.respository = respository
 
         loadCurrency()
         

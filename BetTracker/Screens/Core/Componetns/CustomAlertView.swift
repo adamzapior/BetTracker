@@ -15,53 +15,57 @@ struct CustomAlertView: View {
             Color.black
                 .opacity(0.3)
             
-            VStack {
-                Text(title)
-                    .font(.headline)
-                    .multilineTextAlignment(.center)
-                
-                ForEach(messages.compactMap { $0 }, id: \.self) { message in
-                    Text(message)
-                        .font(.subheadline)
+            ZStack {
+                VStack {
+                    Text(title)
+                        .font(.headline)
                         .multilineTextAlignment(.center)
-                        .padding(1)
-                }
-                
-                HStack(spacing: 16) {
-                    Button(action: {
-                        primaryButtonAction()
-                    }, label: {
-                        Text(primaryButtonLabel)
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.ui.scheme)
-                            .cornerRadius(12)
-                    })
-                    if let secondaryButtonLabel {
+                    
+                    ForEach(messages.compactMap { $0 }, id: \.self) { message in
+                        Text(message)
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                            .padding(1)
+                    }
+                    .padding(.bottom,4)
+                    
+                    HStack(spacing: 16) {
                         Button(action: {
-                            secondaryButtonAction?()
+                            primaryButtonAction()
                         }, label: {
-                            Text(secondaryButtonLabel)
+                            Text(primaryButtonLabel)
                                 .font(.headline)
-                                .foregroundColor(Color.ui.secondary)
+                                .foregroundColor(.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(Color.ui.background)
+                                .background(Color.ui.scheme)
                                 .cornerRadius(12)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.ui.scheme, lineWidth: 2)
-                                )
                         })
+                        if let secondaryButtonLabel {
+                            Button(action: {
+                                secondaryButtonAction?()
+                            }, label: {
+                                Text(secondaryButtonLabel)
+                                    .font(.headline)
+                                    .foregroundColor(Color.ui.secondary)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.ui.background)
+                                    .cornerRadius(12)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.ui.scheme, lineWidth: 2)
+                                    )
+                            })
+                        }
                     }
                 }
+                .padding()
+                .background(Color.ui.onPrimary)
+                .cornerRadius(20)
+                .shadow(radius: 20)
             }
-            .padding()
-            .background(Color.ui.onPrimary)
-            .cornerRadius(20)
-            .shadow(radius: 20)
+            .padding(.horizontal, 12)
         }
         .zIndex(100)
         .edgesIgnoringSafeArea(.all)

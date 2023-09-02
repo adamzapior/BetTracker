@@ -2,32 +2,40 @@ import Combine
 import Foundation
 import GRDB
 
-protocol DatabaseModel: FetchableRecord, PersistableRecord { }
+protocol DatabaseModel: FetchableRecord, PersistableRecord {
+    var id: Int64? { get }
+}
 
 class BetDao {
     init() { }
 
-    func saveBet(bet: some DatabaseModel) {
+    func saveBet<T: DatabaseModel>(model: T) {
         try? BetDb.db.write { db in
-            try bet.insert(db, onConflict: .ignore)
+            try model.insert(db, onConflict: .ignore)
         }
     }
 
-    static func saveBetslip(bet: BetslipModel) {
+    func deleteBet<T: DatabaseModel>(model: T) {
+        _ = try? BetDb.db.write { db in
+            try model.delete(db)
+        }
+    }
+    
+    func markFinished<T: DatabaseModel>(model: T, isWon: Bool, tableName: String) {
         try? BetDb.db.write { db in
-            try bet.insert(db, onConflict: .ignore)
+            try db.execute(
+                sql: "UPDATE \(tableName) SET isWon = ? WHERE id = ?",
+                arguments: [isWon, model.id]
+            )
         }
     }
 
-    static func deleteBet(bet: BetModel) {
-        _ = try? BetDb.db.write { db in
-            try bet.delete(db)
-        }
-    }
-
-    static func deleteBetslip(bet: BetslipModel) {
-        _ = try? BetDb.db.write { db in
-            try bet.delete(db)
+    func updateProfit<T: DatabaseModel>(model: T, score: NSDecimalNumber, tableName: String) {
+        try? BetDb.db.write { db in
+            try db.execute(
+                sql: "UPDATE \(tableName) SET score = ? WHERE id = ?",
+                arguments: [score, model.id]
+            )
         }
     }
 
@@ -196,27 +204,6 @@ class BetDao {
             .mapError { _ in Never.transferRepresentation }
             .eraseToAnyPublisher()
     }
-
-//    func getBetsCount(
-//        model _: (some DatabaseModel).Type,
-//        tableName: String,
-//        startDate: Date,
-//        isWon: Bool
-//    ) -> AnyPublisher<NSDecimalNumber, Never> {
-//        ValueObservation
-//            .tracking { db in
-//                try NSDecimalNumber
-//                    .fetchOne(
-//                        db,
-//                        sql: "SELECT COUNT (id) FROM \(tableName) WHERE isWon IS \(isWon.description)) AND date >= ?",
-//                        arguments: [startDate]
-//                    ) ?? .zero
-//            }
-//            .publisher(in: BetDb.db)
-//            .mapError { _ in Never.transferRepresentation }
-//            .eraseToAnyPublisher()
-//    }
-
     func getBetsCount(
         model _: (some DatabaseModel).Type,
         tableName: String,
@@ -231,6 +218,25 @@ class BetDao {
                         db,
                         sql: "SELECT COUNT(id) FROM \(tableName) WHERE isWon = ? AND date >= ?",
                         arguments: [isWonInt, startDate]
+                    ) ?? .zero
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
+    
+    func getPendingBetsCount(
+        model _: (some DatabaseModel).Type,
+        tableName: String,
+        startDate: Date
+    ) -> AnyPublisher<NSDecimalNumber, Never> {
+        return ValueObservation
+            .tracking { db in
+                try NSDecimalNumber
+                    .fetchOne(
+                        db,
+                        sql: "SELECT COUNT(id) FROM \(tableName) WHERE isWon IS NULL AND date >= ?",
+                        arguments: [startDate]
                     ) ?? .zero
             }
             .publisher(in: BetDb.db)
