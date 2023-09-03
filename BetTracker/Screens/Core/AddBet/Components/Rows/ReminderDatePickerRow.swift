@@ -13,9 +13,6 @@ struct ReminderDatePickerRow: View {
 
     var body: some View {
         ZStack {
-            Color.ui.background.opacity(0.3)
-                .edgesIgnoringSafeArea(.all)
-
             VStack {
                 DatePicker(
                     "Your remind will be set to:",

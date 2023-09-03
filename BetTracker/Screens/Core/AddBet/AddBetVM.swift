@@ -31,14 +31,16 @@ final class AddBetVM: ObservableObject {
     @Published
     var team1: String = "" {
         didSet {
-            team1IsError = false
-            let cleanedName = filterDecimalInput(
-                input: team1,
-                oldValue: oldValue,
-                filterType: .name
-            )
-            if cleanedName != team1 {
-                team1 = cleanedName
+            if team1 != oldValue {
+                team1IsError = false
+                let cleanedName = filterDecimalInput(
+                    input: team1,
+                    oldValue: oldValue,
+                    filterType: .name
+                )
+                if cleanedName != team1 {
+                    team1 = cleanedName
+                }
             }
         }
     }
@@ -341,6 +343,7 @@ final class AddBetVM: ObservableObject {
             print("One or more input values is null or empty222")
             return nil
         }
+    
 
         let amount = Decimal(string: amountString) ?? Decimal()
         let odds = Decimal(string: oddsString) ?? Decimal()
@@ -461,47 +464,43 @@ final class AddBetVM: ObservableObject {
         oldValue: String,
         filterType: filterType
     ) -> String {
-        var myinput = input
 
-        if myinput.isEmpty {
-            return myinput
+        if input.isEmpty {
+            return input
         }
-        let cleanedInput = myinput
+        var cleanedInput = input
             .replacingOccurrences(of: ",", with: ".")
 
-        if cleanedInput != myinput {
-            myinput = cleanedInput
-            return myinput
-        }
+//        return cleanedInput
 
         switch filterType {
         case .amount:
             if cleanedInput
                 .wholeMatch(of: /[1-9][0-9]{0,6}?((\.|,)[0-9]{,2})?/) ==
                 nil { // 5.55, 1.22, 1.22, 10.<22>
-                myinput = oldValue
+                cleanedInput = oldValue
             }
         case .tax:
-            if myinput.first == "0" {
+            if input.first == "0" {
                 return "0"
             }
             if cleanedInput
                 .wholeMatch(of: /[0-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
                 nil { // 5.55, 1.22, 1.22, 10.<22>
-                myinput = oldValue
+                cleanedInput = oldValue
             }
         case .standard:
             if cleanedInput
                 .wholeMatch(of: /[1-9][0-9]{0,2}?((\.|,)[0-9]{,2})?/) ==
                 nil { // 5.55, 1.22, 1.22, 10.<22>
-                myinput = oldValue
+                cleanedInput = oldValue
             }
         case .name:
-            if cleanedInput.wholeMatch(of: /^[\p{L}0-9 ]{1,24}$/) == nil {
-                myinput = oldValue
+            if cleanedInput.wholeMatch(of: /^[\p{L}0-9]{1,24}$/) == nil {
+                cleanedInput = oldValue
             }
         }
-        return myinput
+        return cleanedInput
     }
 
     private func validateTeam1() {

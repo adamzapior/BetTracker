@@ -25,29 +25,29 @@ class ProfileVM: ObservableObject {
     var currentStatsState: StatsState = .week
     
     @Published
-    var mergedBalanceValue: NSDecimalNumber = .zero
+    var mergedBalanceValue: NSDecimalNumber? = nil
     @Published
     var mergedTotalSpent: NSDecimalNumber? = nil
     @Published
-    var mergedWonBetsCount: NSDecimalNumber = .zero
+    var mergedWonBetsCount: NSDecimalNumber? = nil
     @Published
-    var mergedLostBetsCount: NSDecimalNumber = .zero
+    var mergedLostBetsCount: NSDecimalNumber? = nil
     @Published
-    var mergedPendingBetsCount: NSDecimalNumber = .zero
+    var mergedPendingBetsCount: NSDecimalNumber? = nil
     @Published
-    var mergedAvgWonBet: NSDecimalNumber = .zero
+    var mergedAvgWonBet: NSDecimalNumber? = nil
     @Published
-    var mergedAvgLostBet: NSDecimalNumber = .zero
+    var mergedAvgLostBet: NSDecimalNumber? = nil
     @Published
-    var mergedAvgAmountBet: NSDecimalNumber = .zero
+    var mergedAvgAmountBet: NSDecimalNumber? = nil
     @Published
-    var mergedLargestBetProfit: NSDecimalNumber = .zero
+    var mergedLargestBetProfit: NSDecimalNumber? = nil
     @Published
-    var mergedBiggestBetLoss: NSDecimalNumber = .zero
+    var mergedBiggestBetLoss: NSDecimalNumber? = nil
     @Published
-    var mergedHiggestBetOddsWon: NSDecimalNumber = .zero
+    var mergedHiggestBetOddsWon: NSDecimalNumber? = nil
     @Published
-    var mergedHiggestBetAmount: NSDecimalNumber = .zero
+    var mergedHiggestBetAmount: NSDecimalNumber? = nil
     
     @Published
     var isLoading: Bool = true
@@ -79,8 +79,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { $0.adding($1) }
-                
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .sink { [weak self] newValue in
                 self?.mergedBalanceValue = newValue
@@ -124,7 +123,7 @@ class ProfileVM: ObservableObject {
                         isWon: true
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedWonBetsCount)
 
@@ -145,7 +144,7 @@ class ProfileVM: ObservableObject {
                         isWon: false
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedLostBetsCount)
 
@@ -164,7 +163,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedPendingBetsCount)
 
@@ -185,7 +184,7 @@ class ProfileVM: ObservableObject {
                         isWon: true
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedAvgWonBet)
 
@@ -206,7 +205,7 @@ class ProfileVM: ObservableObject {
                         isWon: false
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedAvgLostBet)
 
@@ -227,7 +226,7 @@ class ProfileVM: ObservableObject {
                         isWon: false
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedAvgLostBet)
 
@@ -246,9 +245,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { betValue, betslipValue -> NSDecimalNumber in
-                    betValue.adding(betslipValue)
-                }
+                .map { ($0).adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedAvgAmountBet)
 
@@ -267,7 +264,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedLargestBetProfit)
 
@@ -286,7 +283,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedBiggestBetLoss)
 
@@ -305,7 +302,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedHiggestBetOddsWon)
 
@@ -324,7 +321,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { $0.adding($1) }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedHiggestBetAmount)
     }

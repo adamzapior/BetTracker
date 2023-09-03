@@ -123,6 +123,7 @@ struct MainView: View {
                 1
             )
         }
+        .background(Color.ui.background)
         .safeAreaInset(edge: .top, content: {
             if vm.showUsername == true {
                 MainHeader(

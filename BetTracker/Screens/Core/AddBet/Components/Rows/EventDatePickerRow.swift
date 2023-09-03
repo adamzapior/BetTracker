@@ -13,9 +13,6 @@ struct EventDatePickerRow: View {
 
     var body: some View {
         ZStack {
-            Color.ui.background.opacity(0.3)
-                .edgesIgnoringSafeArea(.all)
-
             VStack {
                 HStack {
                     Image(systemName: "calendar")
