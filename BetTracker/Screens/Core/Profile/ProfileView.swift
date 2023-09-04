@@ -124,7 +124,7 @@ struct ProfileView: View {
                                     )
                                     BalanceRow(
                                         cellTitle: "HIGGEST AMOUNT",
-                                        valueText: vm.mergedHiggestBetAmount!.stringValue,
+                                        valueText: vm.mergedHiggestBetAmount!.doubleValue.formattedWith2Digits(),
                                         currency: vm.defaultCurrency.uppercased()
                                     )
                                 }

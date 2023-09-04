@@ -48,7 +48,7 @@ struct SearchView: View {
                             NavigationLink(
                                 destination: BetDetailsScreen(bet: betModel)
                             ) {
-                                BetListCell(bet: betModel, currency: vm.defaultCurrency.rawValue)
+                                BetCell(bet: betModel, currency: vm.defaultCurrency.rawValue)
                             }
                         case let .betslip(betslipModel):
                             NavigationLink(

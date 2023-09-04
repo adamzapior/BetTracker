@@ -343,7 +343,6 @@ final class AddBetVM: ObservableObject {
             print("One or more input values is null or empty222")
             return nil
         }
-    
 
         let amount = Decimal(string: amountString) ?? Decimal()
         let odds = Decimal(string: oddsString) ?? Decimal()
@@ -442,6 +441,7 @@ final class AddBetVM: ObservableObject {
     }
 
     // MARK: -  METHODS FOR ADD BET VIEWMODEL VARIABLES:
+
     /**
      The function saves the user's notification if the date is different from ' Date.now '
      - Parameter withID: Uniqe ID based on UUID.string variable
@@ -464,14 +464,11 @@ final class AddBetVM: ObservableObject {
         oldValue: String,
         filterType: filterType
     ) -> String {
-
         if input.isEmpty {
             return input
         }
         var cleanedInput = input
             .replacingOccurrences(of: ",", with: ".")
-
-//        return cleanedInput
 
         switch filterType {
         case .amount:
@@ -485,7 +482,7 @@ final class AddBetVM: ObservableObject {
                 return "0"
             }
             if cleanedInput
-                .wholeMatch(of: /[0-9][0-9]{0,1}?((\.|,)[0-9]{,2})?/) ==
+                .wholeMatch(of: /[0-9][0-9]{0,3}?((\.|,)[0-9]{,2})?/) ==
                 nil { // 5.55, 1.22, 1.22, 10.<22>
                 cleanedInput = oldValue
             }
@@ -496,10 +493,22 @@ final class AddBetVM: ObservableObject {
                 cleanedInput = oldValue
             }
         case .name:
-            if cleanedInput.wholeMatch(of: /^[\p{L}0-9]{1,24}$/) == nil {
+            let regex = try? NSRegularExpression(pattern: "[ ]+", options: .caseInsensitive)
+            cleanedInput = regex?.stringByReplacingMatches(
+                in: cleanedInput,
+                options: [],
+                range: NSRange(
+                    location: 0,
+                    length: cleanedInput.count
+                ),
+                withTemplate: " "
+            ) ?? cleanedInput
+
+            if cleanedInput.wholeMatch(of: /^[\p{L}0-9 ]{1,24}$/) == nil {
                 cleanedInput = oldValue
             }
         }
+
         return cleanedInput
     }
 

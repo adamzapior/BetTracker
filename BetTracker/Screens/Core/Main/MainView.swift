@@ -46,7 +46,7 @@ struct MainView: View {
                                                 bet: betModel
                                             )
                                         ) {
-                                            BetListCell(
+                                            BetCell(
                                                 bet: betModel,
                                                 currency: vm.defaultCurrency.rawValue
                                             )
@@ -95,7 +95,7 @@ struct MainView: View {
                                                 bet: betModel
                                             )
                                         ) {
-                                            BetListCell(
+                                            BetCell(
                                                 bet: betModel,
                                                 currency: vm.defaultCurrency.rawValue
                                             )

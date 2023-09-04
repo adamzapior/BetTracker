@@ -1,17 +1,47 @@
 import SwiftUI
 
-struct BetslipCell: View {
-    let bet: BetslipModel
+
+extension Bool? {
+    func fold<T>(
+        ifTrue: () -> T,
+        ifFalse: () -> T,
+        ifNil: () -> T
+    ) -> T {
+        if self == true {
+            return ifTrue()
+        } else if self == false {
+            return ifFalse()
+        } else {
+            return ifNil()
+        }
+    }
+}
+
+struct BetCell: View {
+    let bet: BetModel
     let currency: String
 
     var body: some View {
         VStack {
+
             VStack(spacing: 4) {
-                Text(bet.name)
+                Text(bet.team1)
                     .font(.body)
                     .bold()
                     .foregroundColor(
-                        Color.ui.scheme
+                        bet.selectedTeam == .team1
+                            ? Color.ui.scheme
+                            : Color.ui.secondary
+                    )
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text(bet.team2)
+                    .font(.body)
+                    .bold()
+                    .foregroundColor(
+                        bet.selectedTeam == .team2
+                            ? Color.ui.scheme
+                            : Color.ui.secondary
                     )
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -25,6 +55,7 @@ struct BetslipCell: View {
                     .font(.subheadline)
                     .foregroundColor(Color.ui.secondary)
                     .frame(maxWidth: 100, alignment: .leading)
+
 
                 Text(
                     "\(bet.amount.doubleValue.formattedWith2Digits()) \(currency.uppercased())"
