@@ -46,13 +46,13 @@ struct SearchView: View {
                         switch betWrapper {
                         case let .bet(betModel):
                             NavigationLink(
-                                destination: BetDetailsScreen(bet: betModel)
+                                destination: BetDetailsView(bet: betModel)
                             ) {
                                 BetCell(bet: betModel, currency: vm.defaultCurrency.rawValue)
                             }
                         case let .betslip(betslipModel):
                             NavigationLink(
-                                destination: BetslipDetailsScreen(bet: betslipModel)
+                                destination: BetslipDetailsView(bet: betslipModel)
                             ) {
                                 BetslipCell(
                                     bet: betslipModel,

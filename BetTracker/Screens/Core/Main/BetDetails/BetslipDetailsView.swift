@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BetslipDetailsScreen: View {
+struct BetslipDetailsView: View {
     @Environment(\.dismiss)
     var dismiss
 

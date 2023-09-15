@@ -56,6 +56,14 @@ class BetDb {
                 t.column("score", .integer)
             }
         }
+        
+        try? db.write { db in
+            try db.create(table: "category", body: { t in
+                t.autoIncrementedPrimaryKey("id")
+                t.column("name", .text)
+                t.column("order", .integer)
+            })
+        }
 
         return db
     }()

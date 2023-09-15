@@ -42,7 +42,7 @@ struct MainView: View {
                                     switch betWrapper {
                                     case let .bet(betModel):
                                         NavigationLink(
-                                            destination: BetDetailsScreen(
+                                            destination: BetDetailsView(
                                                 bet: betModel
                                             )
                                         ) {
@@ -53,7 +53,7 @@ struct MainView: View {
                                         }
                                     case let .betslip(betslipModel):
                                         NavigationLink(
-                                            destination: BetslipDetailsScreen(
+                                            destination: BetslipDetailsView(
                                                 bet: betslipModel
                                             )
                                         ) {
@@ -91,7 +91,7 @@ struct MainView: View {
                                     switch betWrapper {
                                     case let .bet(betModel):
                                         NavigationLink(
-                                            destination: BetDetailsScreen(
+                                            destination: BetDetailsView(
                                                 bet: betModel
                                             )
                                         ) {
@@ -102,7 +102,7 @@ struct MainView: View {
                                         }
                                     case let .betslip(betslipModel):
                                         NavigationLink(
-                                            destination: BetslipDetailsScreen(
+                                            destination: BetslipDetailsView(
                                                 bet: betslipModel
                                             )
                                         ) {

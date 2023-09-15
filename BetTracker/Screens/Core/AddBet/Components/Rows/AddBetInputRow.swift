@@ -1,11 +1,13 @@
 import SwiftUI
 
-struct AmountInputRow: View {
+struct AddBetInputRow: View {
     let hint: String
     @Binding
     var text: String
     let isError: Bool
     let overlayText: String
+    
+    @FocusState.Binding var isFocused: Bool
 
     var body: some View {
         ZStack {
@@ -17,6 +19,7 @@ struct AmountInputRow: View {
                     prompt: Text(hint)
                         .foregroundColor(Color.ui.onPrimaryContainer)
                 )
+                .focused($isFocused)
                 .frame(minHeight: 24)
                 .overlay {
                     Text(overlayText)

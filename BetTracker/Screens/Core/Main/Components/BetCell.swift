@@ -23,9 +23,9 @@ struct BetCell: View {
 
     var body: some View {
         VStack {
-
-            VStack(spacing: 4) {
+            VStack(spacing: 8) {
                 Text(bet.team1)
+                    .lineLimit(1)
                     .font(.body)
                     .bold()
                     .foregroundColor(
@@ -36,6 +36,7 @@ struct BetCell: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(bet.team2)
+                    .lineLimit(1)
                     .font(.body)
                     .bold()
                     .foregroundColor(
@@ -49,38 +50,63 @@ struct BetCell: View {
             .padding(.vertical, 3)
             .padding(.horizontal, 24)
 
-            HStack {
+            HStack (alignment: .center) {
                 Text("\(bet.odds.doubleValue.formattedWith2Digits())")
                     .bold()
-                    .font(.subheadline)
+                    .font(.footnote)
+                    .lineLimit(1)
                     .foregroundColor(Color.ui.secondary)
-                    .frame(maxWidth: 100, alignment: .leading)
+                    .frame(maxWidth: 70, alignment: .leading)
 
-
-                Text(
-                    "\(bet.amount.doubleValue.formattedWith2Digits()) \(currency.uppercased())"
-                )
-                .bold()
-                .font(.body)
-                .foregroundColor(Color.ui.secondary)
-                .padding(.horizontal, 4)
-                .padding(.vertical, 1)
-                .background {
-                    RoundedRectangle(cornerRadius: 25)
-                        .foregroundColor(
-                            bet.isWon.fold(
-                                ifTrue: { Color.green },
-                                ifFalse: { Color.red },
-                                ifNil: { Color.orange }
-                            ).opacity(0.15)
-                        )
-                        .padding(.horizontal, -8)
+                if bet.isWon == true || bet.isWon == false {
+                    Text(
+                        "\(bet.score!.doubleValue.formattedWith2Digits()) \(currency.uppercased())"
+                    )
+                    .bold()
+                    .font(.callout)
+                    .foregroundColor(Color.ui.secondary)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 1)
+                    .background {
+                        RoundedRectangle(cornerRadius: 25)
+                            .foregroundColor(
+                                bet.isWon.fold(
+                                    ifTrue: { Color.green },
+                                    ifFalse: { Color.red },
+                                    ifNil: { Color.orange }
+                                ).opacity(0.15)
+                            )
+                            .padding(.horizontal, -8)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                } else if bet.isWon == nil {
+                    Text(
+                        "\(bet.amount.doubleValue.formattedWith2Digits()) \(currency.uppercased())"
+                    )
+                    .bold()
+                    .font(.callout)
+                    .foregroundColor(Color.ui.secondary)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 1)
+                    .background {
+                        RoundedRectangle(cornerRadius: 25)
+                            .foregroundColor(
+                                bet.isWon.fold(
+                                    ifTrue: { Color.green },
+                                    ifFalse: { Color.red },
+                                    ifNil: { Color.orange }
+                                ).opacity(0.15)
+                            )
+                            .padding(.horizontal, -8)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-                .frame(maxWidth: .infinity, alignment: .trailing)
+
             }
             .padding(.vertical, 1)
             .padding(.horizontal, 24)
         }
+        .frame(minHeight: 80)
         .padding(.top, 12)
         .padding(.bottom, 12)
         .padding(.horizontal, 6)

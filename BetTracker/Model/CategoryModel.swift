@@ -14,6 +14,7 @@ enum Category: String, CaseIterable {
     case f1
     case tenis
     case volleyball
+    
 }
 
 extension Category: DatabaseValueConvertible { }

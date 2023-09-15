@@ -34,8 +34,6 @@ struct CategoryRow: View {
             }
             .tint(Color.ui.secondary)
             .frame(maxWidth: .infinity, alignment: .trailing)
-
-            .frame(maxWidth: .infinity)
             .edgesIgnoringSafeArea(.all)
         }
         .standardShadow()

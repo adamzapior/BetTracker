@@ -4,6 +4,14 @@
 //
 //  Created by Adam Zapiór on 21/02/2023.
 //
+
+enum AddBetFieldsFocus: Hashable {
+    case team1
+    case team2
+    case odds
+    case amount
+}
+
 import GRDB
 import SwiftUI
 
@@ -19,8 +27,16 @@ struct AddBetScreen: View {
 
     @State
     private var showAlert = false
+    
+    @FocusState
+    private var betFieldInFocus: AddBetFieldsFocus?
+    
+    @FocusState var isFocused: Bool
+    
 
     var body: some View {
+
+        
         ZStack {
             if showAlert == true {
                 CustomAlertView(
@@ -33,7 +49,7 @@ struct AddBetScreen: View {
 
             VStack(spacing: 2) {
                 if vm.betType == .singlebet {
-                    ScrollView (showsIndicators: false) { // Here was ScrollView
+                    ScrollView(showsIndicators: false) { // Here was ScrollView
                         Group {
                             VStack(alignment: .leading, spacing: 8) {
                                 VStack {
@@ -56,7 +72,7 @@ struct AddBetScreen: View {
                                                 get: { vm.selectedTeam == .team1 },
                                                 set: { _ in vm.onTeam1Selected() }
                                             ),
-                                            action: vm.onTeam1Selected
+                                            action: vm.onTeam1Selected, isFocused: $isFocused
                                         )
                                     }
                                     TeamInputRow(
@@ -67,7 +83,8 @@ struct AddBetScreen: View {
                                             get: { vm.selectedTeam == .team2 },
                                             set: { _ in vm.onTeam2Selected() }
                                         ),
-                                        action: vm.onTeam2Selected
+                                        action: vm.onTeam2Selected,
+                                        isFocused: $isFocused
                                     )
                                 }
                             }
@@ -86,29 +103,33 @@ struct AddBetScreen: View {
 
                                 HStack {
                                     // ** Odds input **
-                                    AmountInputRow(
+                                    AddBetInputRow(
                                         hint: "Bet odds*",
                                         text: $vm.odds,
                                         isError: vm.oddsIsError, // TODO:
-                                        overlayText: "" // to funkcja stworzona, żeby zablokować
+                                        overlayText: "",
+                                        isFocused: $isFocused
+                                        // to funkcja stworzona, żeby zablokować
                                         // mozliwosc edytowania textfielda, musze wyciagnac kolejny
                                         // obiet tylko dla tego parametru
                                     )
 
                                     if vm.taxRowStateValue == .active {
-                                        AmountInputRow(
+                                        AddBetInputRow(
                                             hint: "Insert your tax",
                                             text: $vm.tax,
                                             isError: vm.taxIsError,
-                                            overlayText: "%"
+                                            overlayText: "%",
+                                            isFocused: $isFocused
                                         )
                                     }
                                 }
-                                AmountInputRow(
+                                AddBetInputRow(
                                     hint: "Enter your bet amount*",
                                     text: $vm.amount,
                                     isError: vm.amountIsError,
-                                    overlayText: vm.defaultCurrency.rawValue.uppercased()
+                                    overlayText: vm.defaultCurrency.rawValue.uppercased(),
+                                    isFocused: $isFocused
                                 )
                                 CategoryRow(
                                     icon: "mark",
@@ -203,7 +224,7 @@ struct AddBetScreen: View {
                                 PredictedProfitRow(
                                     labelText: "Your predicted profit:",
                                     profitText: vm.profit.stringValue,
-                                    currency: "PLN"
+                                    currency: vm.defaultCurrency.rawValue.uppercased()
                                 )
                             }
                             .padding(.top, 12)
@@ -212,11 +233,10 @@ struct AddBetScreen: View {
                     }
                     .padding(.horizontal, 12)
                     .transition(.slide) // Apply slide transition
-                    .animation(.easeInOut(duration: 0.5), value: vm.betType)
                 }
 
                 if vm.betType == .betslip {
-                    ScrollView (showsIndicators: false) {
+                    ScrollView(showsIndicators: false) {
                         Group {
                             VStack(alignment: .leading, spacing: 8) {
                                 VStack {
@@ -231,11 +251,12 @@ struct AddBetScreen: View {
 
                                 VStack(spacing: 12) {
                                     HStack {
-                                        AmountInputRow(
+                                        AddBetInputRow(
                                             hint: "Enter your bet name*",
                                             text: $vm.betslipName,
                                             isError: vm.betslipNameIsError,
-                                            overlayText: ""
+                                            overlayText: "",
+                                            isFocused: $isFocused
                                         )
                                     }
                                 }
@@ -255,30 +276,35 @@ struct AddBetScreen: View {
 
                                 HStack {
                                     // ** Odds input **
-                                    AmountInputRow(
+                                    AddBetInputRow(
                                         hint: "Bet odds*",
                                         text: $vm.betslipOdds,
                                         isError: vm.betslipOddsIsError, // TODO:
-                                        overlayText: "" // to funkcja stworzona, żeby zablokować
+                                        overlayText: "",
+                                        isFocused: $isFocused
+                                        
+                                        // to funkcja stworzona, żeby zablokować
                                         // mozliwosc edytowania textfielda, musze wyciagnac kolejny
                                         // obiet tylko dla tego parametru
                                     )
 
                                     if vm.taxRowStateValue == .active {
-                                        AmountInputRow(
+                                        AddBetInputRow(
                                             hint: "Insert your tax",
                                             text: $vm.tax,
                                             isError: vm.taxIsError,
-                                            overlayText: "%"
+                                            overlayText: "%",
+                                            isFocused: $isFocused
                                         )
                                     }
                                 }
 
-                                AmountInputRow(
+                                AddBetInputRow(
                                     hint: "Enter your bet amount*",
                                     text: $vm.betslipAmount,
                                     isError: vm.betslipAmountIsError,
-                                    overlayText: vm.defaultCurrency.rawValue.uppercased()
+                                    overlayText: vm.defaultCurrency.rawValue.uppercased(),
+                                    isFocused: $isFocused
                                 )
                                 CategoryRow(
                                     icon: "mark",
@@ -327,19 +353,16 @@ struct AddBetScreen: View {
                                         }
 
                                     case .editing:
-                                        VStack {
-                                            HStack {
-                                                HStack {
-                                                    ReminderDatePickerRow(
-                                                        showDatePicker: $vm.showDatePicker,
-                                                        selectedDate: $vm.selectedNotificationDate,
-                                                        vm: vm
-                                                    )
-                                                    .transition(.opacity)
-                                                }
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                            }
+
+                                        HStack {
+                                            ReminderDatePickerRow(
+                                                showDatePicker: $vm.showDatePicker,
+                                                selectedDate: $vm.selectedNotificationDate,
+                                                vm: vm
+                                            )
+                                            .transition(.opacity)
                                         }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
 
                                     case .delete:
                                         IconTextActionButtonRow(
@@ -376,7 +399,7 @@ struct AddBetScreen: View {
                                 PredictedProfitRow(
                                     labelText: "Your predicted profit:",
                                     profitText: vm.profit.stringValue,
-                                    currency: "PLN"
+                                    currency: vm.defaultCurrency.rawValue.uppercased()
                                 )
                             }
                             .padding(.top, 12)
@@ -384,7 +407,6 @@ struct AddBetScreen: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .padding(.horizontal, 12)
-
                 }
             }
             .padding(.top, 12)
@@ -421,6 +443,8 @@ struct AddBetScreen: View {
                 edge: .bottom,
                 alignment: .center,
                 content: {
+                    if isFocused == true {
+                        EmptyView() } else {
                     VStack {
                         if vm.betType == .singlebet {
                             Button {
@@ -436,7 +460,7 @@ struct AddBetScreen: View {
                                     .padding(.vertical, 12)
                             }
                         }
-
+                        
                         if vm.betType == .betslip {
                             Button {
                                 if vm.saveBetslip() {
@@ -458,7 +482,7 @@ struct AddBetScreen: View {
                                 .foregroundColor(Color.black.opacity(0.7))
                                 .blur(radius: 12)
                                 .ignoresSafeArea()
-
+                            
                         } else {
                             // Light mode-specific background
                             RoundedRectangle(cornerRadius: 0, style: .continuous)
@@ -468,10 +492,11 @@ struct AddBetScreen: View {
                                 .ignoresSafeArea()
                         }
                     }
-//                    .padding(.top, 36)
+                }
                 }
             )
         }
+        .animation(.easeInOut, value: vm.betType)
         .onDisappear {
             vm.saveTextInTexfield()
         }
