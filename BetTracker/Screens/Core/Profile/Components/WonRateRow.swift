@@ -3,6 +3,7 @@ import SwiftUI
 struct WonRateRow: View {
 
     let cellTitle: String
+    
     let valueText: String
 
     var body: some View {

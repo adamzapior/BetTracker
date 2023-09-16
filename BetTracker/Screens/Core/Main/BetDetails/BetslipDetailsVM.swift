@@ -9,7 +9,7 @@ class BetslipDetailsVM: ObservableObject {
     var defaultCurrency: Currency = .usd
 
     var buttonState: BetButtonState = .uncleared
-    
+
     @Published
     var isAlertSet: Bool = false
 
@@ -24,14 +24,14 @@ class BetslipDetailsVM: ObservableObject {
 
     func markBetWon() {
         let newScore = (bet.profit).subtracting(bet.amount)
-        
+
         respository.markBetStatus(model: bet, isWon: true, tableName: TableName.betslip.rawValue)
         respository.updateProfit(model: bet, score: newScore, tableName: TableName.betslip.rawValue)
     }
-    
+
     func markBetLost() {
         let newScore = (bet.amount).multiplying(by: -1)
-        
+
         respository.markBetStatus(model: bet, isWon: false, tableName: TableName.betslip.rawValue)
         respository.updateProfit(model: bet, score: newScore, tableName: TableName.betslip.rawValue)
     }
@@ -43,9 +43,9 @@ class BetslipDetailsVM: ObservableObject {
     func removeNotification() {
         UserNotificationsService().removeNotification(notificationId: bet.betNotificationID ?? "")
     }
-    
+
     // MARK: -  VM setup methods:
-    
+
     private func setup() {
         checkButtonState()
         isNotificationInFuture()

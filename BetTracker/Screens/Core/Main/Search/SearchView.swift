@@ -40,7 +40,8 @@ struct SearchView: View {
                 radius: 25, x: 0, y: 0
             )
             .padding(.vertical, 4)
-            ScrollView {
+            
+            ScrollView (showsIndicators: false) {
                 LazyVStack(spacing: 12) {
                     ForEach(vm.searchResults!, id: \.id) { betWrapper in
                         switch betWrapper {
@@ -62,6 +63,7 @@ struct SearchView: View {
                         }
                     }
                 }
+                .padding(.bottom, 64)
             }
         }
         .frame(maxHeight: .infinity, alignment: .topLeading)

@@ -4,7 +4,7 @@ class BetsDetailsVM: ObservableObject {
 
     let bet: BetModel
     let respository: Respository
-    
+
     let defaults = UserDefaultsManager.path
     var defaultCurrency: Currency = .usd
 
@@ -26,27 +26,25 @@ class BetsDetailsVM: ObservableObject {
         self.bet = bet
         self.respository = respository
 
-
         setup()
     }
-    
+
     deinit {
         print("VM is out")
     }
-    
+
     // MARK: -  Bet edit/delete methods:
-    
-    
+
     func markBetWon() {
         let newScore = (bet.profit).subtracting(bet.amount)
-        
+
         respository.markBetStatus(model: bet, isWon: true, tableName: TableName.bet.rawValue)
         respository.updateProfit(model: bet, score: newScore, tableName: TableName.bet.rawValue)
     }
-    
+
     func markBetLost() {
         let newScore = (bet.amount).multiplying(by: -1)
-        
+
         respository.markBetStatus(model: bet, isWon: false, tableName: TableName.bet.rawValue)
         respository.updateProfit(model: bet, score: newScore, tableName: TableName.bet.rawValue)
     }
@@ -58,7 +56,6 @@ class BetsDetailsVM: ObservableObject {
     func removeNotification() {
         UserNotificationsService().removeNotification(notificationId: bet.betNotificationID ?? "")
     }
-
 
     // MARK: -  VM setup methods:
 
@@ -93,6 +90,5 @@ class BetsDetailsVM: ObservableObject {
     private func loadDefaultCurrency() {
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
-
 
 }

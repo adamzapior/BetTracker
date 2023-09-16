@@ -3,9 +3,13 @@ import SwiftUI
 struct EventDateRow: View {
 
     let icon: String
+    
     let labelText: String
+    
     let dateText: String
+    
     let actionButtonIcon: String
+    
     let actionButtonColor: Color
 
     let action: () -> Void

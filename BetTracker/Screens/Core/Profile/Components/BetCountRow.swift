@@ -5,15 +5,21 @@ struct BetCountRow: View {
     let labelText: String
 
     let icon: String
+    
     let icon2: String
+    
     let icon3: String
 
     let text: String
+    
     let text2: String
+    
     let text3: String
 
     let betsPendingText: String
+    
     let betsPendingText2: String
+    
     let betsPendingText3: String
 
     var body: some View {

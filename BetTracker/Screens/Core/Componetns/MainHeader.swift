@@ -4,7 +4,7 @@ struct MainHeader: View {
     let name: String
     let destinationView: () -> AnyView
     let icon: String
-    
+
     init(name: String, destinationView: @escaping () -> AnyView, icon: String) {
         self.name = name
         self.destinationView = destinationView

@@ -73,65 +73,96 @@ struct ProfileView: View {
                                     )
                                 }
 
-                                BetCountRow(
-                                    labelText: "YOUR BETS IN NUMBERS",
-                                    icon: "flag.and.flag.filled.crossed",
-                                    icon2: "flag.checkered.2.crossed",
-                                    icon3: "flag.checkered.2.crossed",
-                                    text: "PENDING",
-                                    text2: "WON",
-                                    text3: "LOST",
-                                    betsPendingText: vm.mergedPendingBetsCount!.stringValue,
-                                    betsPendingText2: vm.mergedWonBetsCount!.stringValue,
-                                    betsPendingText3: vm.mergedLostBetsCount!.stringValue
-                                )
-
-                                BetAverageRow(
-                                    labelText: "AVERAGE VALUES",
-                                    icon: "arrow.up.forward",
-                                    icon2: "arrow.down.forward",
-                                    icon3: "arrow.forward",
-                                    text1: "AVG WON",
-                                    text2: "AVG LOSE",
-                                    text3: "AVG AMOUNT",
-                                    betsPendingText: vm.mergedAvgWonBet!.doubleValue
-                                        .formattedWith2Digits(),
-                                    betsPendingText2: vm.mergedAvgLostBet!.doubleValue
-                                        .formattedWith2Digits(),
-                                    betsPendingText3: vm.mergedAvgAmountBet!.doubleValue
-                                        .formattedWith2Digits(),
-                                    currency: vm.defaultCurrency.uppercased()
-                                )
-
-                                HStack {
-                                    BalanceRow(
-                                        cellTitle: "BIGGEST PROFIT",
-                                        valueText: vm.mergedLargestBetProfit!.stringValue,
-                                        currency: vm.defaultCurrency.uppercased()
+                                if let mpc = vm.mergedPendingBetsCount,
+                                   let mwc = vm.mergedWonBetsCount,
+                                   let mlc = vm.mergedLostBetsCount {
+                                    BetCountRow(
+                                        labelText: "YOUR BETS IN NUMBERS",
+                                        icon: "flag.and.flag.filled.crossed",
+                                        icon2: "flag.checkered.2.crossed",
+                                        icon3: "flag.checkered.2.crossed",
+                                        text: "PENDING",
+                                        text2: "WON",
+                                        text3: "LOST",
+                                        betsPendingText: mpc.stringValue,
+                                        betsPendingText2: mwc.stringValue,
+                                        betsPendingText3: mlc.stringValue
                                     )
-                                    BalanceRow(
-                                        cellTitle: "BIGGEST LOSS",
-                                        valueText: vm.mergedBiggestBetLoss!.stringValue,
-                                        currency: vm.defaultCurrency.uppercased()
-                                    )
+                                } else {
+                                    ProgressView()
                                 }
-                                HStack {
-                                    BalanceRow(
-                                        cellTitle: "HIGHEST ODDS WON",
-                                        valueText: vm.mergedHiggestBetOddsWon!.doubleValue
+
+                                if let mvwb = vm.mergedAvgWonBet,
+                                   let mvlb = vm.mergedAvgLostBet,
+                                   let maab = vm.mergedAvgAmountBet {
+                                    BetAverageRow(
+                                        labelText: "AVERAGE VALUES",
+                                        icon: "arrow.up.forward",
+                                        icon2: "arrow.down.forward",
+                                        icon3: "arrow.forward",
+                                        text1: "AVG WON",
+                                        text2: "AVG LOSE",
+                                        text3: "AVG AMOUNT",
+                                        betsPendingText: mvwb.doubleValue
+                                            .formattedWith2Digits(),
+                                        betsPendingText2: mvlb.doubleValue
+                                            .formattedWith2Digits(),
+                                        betsPendingText3: maab.doubleValue
                                             .formattedWith2Digits(),
                                         currency: vm.defaultCurrency.uppercased()
                                     )
-                                    BalanceRow(
-                                        cellTitle: "HIGGEST AMOUNT",
-                                        valueText: vm.mergedHiggestBetAmount!.doubleValue.formattedWith2Digits(),
-                                        currency: vm.defaultCurrency.uppercased()
-                                    )
+                                } else {
+                                    ProgressView()
+                                }
+
+                                HStack {
+                                    if let mlbp = vm.mergedLargestBetProfit {
+                                        BalanceRow(
+                                            cellTitle: "BIGGEST PROFIT",
+                                            valueText: mlbp.stringValue,
+                                            currency: vm.defaultCurrency.uppercased()
+                                        )
+                                    } else {
+                                        ProgressView()
+                                    }
+                                    if let mbbl = vm.mergedBiggestBetLoss {
+                                        BalanceRow(
+                                            cellTitle: "BIGGEST LOSS",
+                                            valueText: mbbl.stringValue,
+                                            currency: vm.defaultCurrency.uppercased()
+                                        )
+                                    } else {
+                                        ProgressView()
+                                    }
+                                }
+                                HStack {
+                                    if let mhbo = vm.mergedHiggestBetOddsWon {
+                                        BalanceRow(
+                                            cellTitle: "HIGHEST ODDS WON",
+                                            valueText: mhbo.doubleValue
+                                                .formattedWith2Digits(),
+                                            currency: vm.defaultCurrency.uppercased()
+                                        )
+                                    } else {
+                                        ProgressView()
+                                    }
+
+                                    if let mhba = vm.mergedHiggestBetAmount {
+                                        BalanceRow(
+                                            cellTitle: "HIGGEST AMOUNT",
+                                            valueText: mhba.doubleValue
+                                                .formattedWith2Digits(),
+                                            currency: vm.defaultCurrency.uppercased()
+                                        )
+                                    } else {
+                                        ProgressView()
+                                    }
                                 }
                             }
                             .padding(.horizontal, 20)
                         }
                     }
+                    .padding(.bottom, 64)
                     .animation(.easeInOut, value: vm.currentStatsState)
                 }
             }

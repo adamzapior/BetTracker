@@ -3,7 +3,9 @@ import SwiftUI
 struct PredictedProfitRow: View {
 
     let labelText: String
+    
     var profitText: String
+    
     var currency: String
 
     var body: some View {

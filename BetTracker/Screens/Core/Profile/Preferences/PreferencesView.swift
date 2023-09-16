@@ -23,28 +23,13 @@ struct PreferencesView: View {
 
     @State
     private var isTaxOn: Bool = false
-    
+
+    @FocusState
+    private var isFocused: Bool
 
     var body: some View {
         NavigationView {
             VStack(spacing: 2) {
-                HStack {
-                    NavigationLink(destination: CategoryEditView()) {
-                        Text("Go")
-                    }
-                }
-                .padding(.horizontal, 12)
-                .frame(maxWidth: .infinity)
-                .background {
-                    RoundedRectangle(cornerRadius: 15)
-                        .foregroundColor(Color.ui.onPrimary)
-                }
-                .standardShadow()
-
-                Label("Test", systemImage: "link")
-
-                //                CustomFormCell(title: "", value: "")
-
                 ScrollView {
                     VStack(spacing: 24) {
                         VStack {
@@ -65,6 +50,7 @@ struct PreferencesView: View {
                                     prompt: Text("Enter your name")
                                         .foregroundColor(Color.ui.onPrimaryContainer)
                                 )
+                                .focused($isFocused)
                                 .frame(height: 36)
                             }
                             .padding(.horizontal)
@@ -230,7 +216,6 @@ struct PreferencesView: View {
                                         .foregroundColor(Color.ui.scheme)
 //                                        .padding(.trailing, 12)
                                         .frame(maxWidth: .infinity, alignment: .trailing)
-                                    
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
@@ -271,140 +256,6 @@ struct PreferencesView: View {
                                 .standardShadow()
                             }
                         }
-
-                        //                Form {
-                        //                    Section(
-                        //                        header: Text("Your name")
-                        //                            .foregroundColor(Color.ui.onPrimaryContainer)
-                        //                            .frame(
-                        //                                maxWidth: .infinity,
-                        //                                alignment: .leading
-                        //                            )
-                        //                    ) {
-                        //                        TextField("Enter your name", text: $vm.username)
-                        //                            .textFieldStyle(.plain)
-                        //                            .listRowBackground(Color.ui.onPrimary)
-                        //                    }
-                        //                    .standardShadow()
-                        //
-                        //
-                        //
-                        //
-                        //                    Section(
-                        //                        header: Text("App settings")
-                        //                            .foregroundColor(Color.ui.onPrimaryContainer)
-                        //                            .frame(
-                        //                                maxWidth: .infinity,
-                        //                                alignment: .leading
-                        //                            )
-                        //                    ) {
-                        //                        Picker("Choose your currency", selection:
-                        //                        $vm.defaultCurrency) {
-                        //                            ForEach(Currency.allCases, id: \.self) {
-                        //                            currency in
-                        //                                Text("\(currency.rawValue.uppercased())")
-                        //                            }
-                        //                        }
-                        //                        .listRowBackground(Color.ui.onPrimary)
-                        //                        .tint(Color.ui.scheme)
-                        //                        .pickerStyle(.menu)
-                        //
-                        //                        Toggle("Do you want use tax rate?", isOn:
-                        //                        $vm.isDefaultTaxOn)
-                        //                            .listRowBackground(Color.ui.onPrimary)
-                        //                            .tint(Color.ui.scheme)
-                        //
-                        //                        if vm.taxStatus == .taxUnsaved {
-                        //                            TextField("Input your default tax", text:
-                        //                            $vm.defaultTax)
-                        //                                .disabled(!vm.isDefaultTaxOn)
-                        //                                .keyboardType(.decimalPad)
-                        //                                .overlay {
-                        //                                    Text("%")
-                        //                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        //                                        .opacity(0.5)
-                        //                                }
-                        //                                .textFieldStyle(.plain)
-                        //                                .animation(.easeInOut, value: 1)
-                        //                        }
-                        //
-                        //
-                        //
-                        //                        Button {
-                        //                            vm.exportToCSV()
-                        //                        } label: {
-                        //                            Label("Export to CSV", systemImage:
-                        //                            "square.and.arrow.up")
-                        //                                .foregroundColor(Color.ui.scheme)
-                        //                        }
-                        //                        .listRowBackground(Color.ui.onPrimary)
-                        //                        .buttonStyle(BorderlessButtonStyle())
-                        //
-                        //                        Button("Sheet", action: {
-                        //                            showSheet.toggle()
-                        //                        })
-                        //                        .sheet(isPresented: $showSheet, content: {CategoryEditView()})
-                        //
-                        //                        Button {
-                        //                            showSheet.toggle()
-                        //                        } label: {
-                        //                            Label("Export to CSV", systemImage:
-                        //                            "square.and.arrow.up")
-                        //                                .foregroundColor(Color.ui.scheme)
-                        //                        }
-                        //                        .sheet(isPresented: $showSheet, content: {CategoryEditView()})
-                        //                        .listRowBackground(Color.ui.onPrimary)
-                        //                        //
-                        //                        /.buttonStyle(BorderlessButtonStyle())
-                        //
-                        //                        VStack {
-                        //                        NavigationLink(destination: CategoryEditView()) {
-                        //                            Text("Go to Setting Details")
-                        //                        }
-                        //                    }
-                        //                    }
-                        //
-                        //                    Section(
-                        //                        header: Text("App info")
-                        //                            .foregroundColor(Color.ui.onPrimaryContainer)
-                        //                            .frame(
-                        //                                maxWidth: .infinity,
-                        //                                alignment: .leading
-                        //                            )
-                        //                    ) {
-                        //                        Button {
-                        //                            openURL(
-                        //                                URL(string: "https://adamzapior.github.io/bettracker.html")!
-                        //                            )
-                        //
-                        //                        } label: {
-                        //                            Label("Privacy Policy", systemImage: "link")
-                        //                                .foregroundColor(Color.ui.secondary)
-                        //                        }
-                        //                        .listRowBackground(Color.ui.onPrimary)
-                        //                        .buttonStyle(BorderlessButtonStyle())
-                        //
-                        //                                            Button {
-                        //                                                openURL(
-                        //                                                    URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
-                        //                                                )
-                        //
-                        //                        } label: {
-                        //                            Label("Terms of use", systemImage: "link")
-                        //                                .foregroundColor(Color.ui.secondary)
-                        //                        }
-                        //                        .listRowBackground(Color.ui.onPrimary)
-                        //                        .buttonStyle(BorderlessButtonStyle())
-                        //
-                        //
-                        //    //                    .padding(.top, 24)
-                        //
-                        //                    }
-                        //
-                        //                }
-                        //                .scrollContentBackground(.hidden)
-                        ////                    .frame(height: 800, alignment: .topLeading)
-                        //                .standardShadow()
                     }
                 }
             }
@@ -431,15 +282,16 @@ struct PreferencesView: View {
                 }
             )
             .safeAreaInset(edge: .bottom, content: {
-                VStack(spacing: 2) {
-//                    Text("BetTracker")
-//                        .font(.callout)
-//                        .foregroundColor(Color.ui.onPrimaryContainer)
-                    Text("Developed by Adam Zapiór")
-                        .font(.footnote)
-                        .foregroundColor(Color.ui.onPrimaryContainer)
+                if isFocused == true {
+                    EmptyView()
+                } else {
+                    VStack(spacing: 2) {
+                        Text("Developed by Adam Zapiór")
+                            .font(.footnote)
+                            .foregroundColor(Color.ui.onPrimaryContainer)
+                    }
+                    .padding(.bottom, 12)
                 }
-                .padding(.bottom, 12)
             })
             .padding(.horizontal, 12)
             .frame(maxHeight: .infinity, alignment: .top)

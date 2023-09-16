@@ -3,8 +3,11 @@ import SwiftUI
 struct BalanceRow: View {
 
     let cellTitle: String
+    
     let valueText: String
+    
     let font: Font
+    
     let currency: String
 
     init(cellTitle: String, valueText: String, font: Font = .headline, currency: String) {
@@ -34,7 +37,7 @@ struct BalanceRow: View {
             }
 //            .padding(.vertical, 3)
             .padding(.horizontal, 12)
-            
+
             HStack {
                 Text(" \(currency)")
                     .font(.subheadline)
@@ -43,7 +46,7 @@ struct BalanceRow: View {
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .padding(.bottom, 6)
             }
-            
+
             Spacer()
         }
         .frame(maxWidth: .infinity)

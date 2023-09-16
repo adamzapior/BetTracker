@@ -45,7 +45,7 @@ class BetDb {
                 t.autoIncrementedPrimaryKey("id")
                 t.column("name", .text)
                 t.column("date", .datetime).notNull()
-                t.column("amount",.integer).notNull()
+                t.column("amount", .integer).notNull()
                 t.column("odds", .integer).notNull()
                 t.column("category", .text)
                 t.column("tax", .integer)
@@ -56,15 +56,6 @@ class BetDb {
                 t.column("score", .integer)
             }
         }
-        
-        try? db.write { db in
-            try db.create(table: "category", body: { t in
-                t.autoIncrementedPrimaryKey("id")
-                t.column("name", .text)
-                t.column("order", .integer)
-            })
-        }
-
         return db
     }()
 }

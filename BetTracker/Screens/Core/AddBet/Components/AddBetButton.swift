@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AddBetButton: View {
+
     let text: String
 
     init(text: String) {

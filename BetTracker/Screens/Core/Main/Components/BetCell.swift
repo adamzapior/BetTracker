@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 extension Bool? {
     func fold<T>(
         ifTrue: () -> T,
@@ -50,7 +49,7 @@ struct BetCell: View {
             .padding(.vertical, 3)
             .padding(.horizontal, 24)
 
-            HStack (alignment: .center) {
+            HStack(alignment: .center) {
                 Text("\(bet.odds.doubleValue.formattedWith2Digits())")
                     .bold()
                     .font(.footnote)
@@ -101,7 +100,6 @@ struct BetCell: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-
             }
             .padding(.vertical, 1)
             .padding(.horizontal, 24)

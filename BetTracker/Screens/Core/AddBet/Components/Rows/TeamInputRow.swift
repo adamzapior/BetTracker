@@ -1,16 +1,22 @@
 import SwiftUI
 
 struct TeamInputRow: View {
+    
     let hint: String
+    
     @Binding
     var text: String
+    
     let isError: Bool
+    
     @Binding
     var isOn: Bool
+    
     var action: () -> Void
-    
-    @FocusState.Binding var isFocused: Bool
-    
+
+    @FocusState.Binding
+    var isFocused: Bool
+
     var body: some View {
         HStack {
             HStack {
@@ -21,7 +27,6 @@ struct TeamInputRow: View {
                         .foregroundColor(Color.ui.onPrimaryContainer)
                 )
                 .focused($isFocused)
-                
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 12)

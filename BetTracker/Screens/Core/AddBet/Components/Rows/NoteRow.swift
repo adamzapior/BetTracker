@@ -4,6 +4,7 @@ struct NoteRow: View {
 
     @Binding
     var text: String
+    
     let action: () -> Void
 
     var body: some View {

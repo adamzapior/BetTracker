@@ -14,9 +14,8 @@ struct BetslipCell: View {
                         Color.ui.scheme
                     )
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Spacer()
 
+                Spacer()
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 3)

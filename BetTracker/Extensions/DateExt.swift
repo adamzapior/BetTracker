@@ -1,10 +1,3 @@
-//
-//  DateExt.swift
-//  BetTracker
-//
-//  Created by Adam Zapiór on 24/06/2023.
-//
-
 import Foundation
 
 extension Date {
@@ -14,3 +7,4 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 }
+

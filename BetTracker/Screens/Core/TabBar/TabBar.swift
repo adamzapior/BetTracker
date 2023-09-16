@@ -80,7 +80,7 @@ struct TabBar: View {
                                 isSelected: tab == selectedTab
                             )
                             .onTapGesture {
-                                    selectedTab = tab
+                                selectedTab = tab
                             }
                         }
                     }

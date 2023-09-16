@@ -14,21 +14,21 @@ struct CustomAlertView: View {
         ZStack {
             Color.black
                 .opacity(0.3)
-            
+
             ZStack {
                 VStack {
                     Text(title)
                         .font(.headline)
                         .multilineTextAlignment(.center)
-                    
+
                     ForEach(messages.compactMap { $0 }, id: \.self) { message in
                         Text(message)
                             .font(.subheadline)
                             .multilineTextAlignment(.center)
                             .padding(1)
                     }
-                    .padding(.bottom,4)
-                    
+                    .padding(.bottom, 4)
+
                     HStack(spacing: 16) {
                         Button(action: {
                             primaryButtonAction()
@@ -119,14 +119,3 @@ struct CustomAlertView_Previews: PreviewProvider {
         }
     }
 }
-
-//struct CustomAlertView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        CustomAlertView(
-//            title: "huj",
-//            messages: ["XD", "XD"],
-//            primaryButtonLabel: "ok",
-//            primaryButtonAction: { }
-//        )
-//    }
-//}

@@ -1,13 +1,19 @@
 import SwiftUI
 
 struct AddBetInputRow: View {
+    
     let hint: String
+    
     @Binding
     var text: String
+    
     let isError: Bool
+    
     let overlayText: String
     
     @FocusState.Binding var isFocused: Bool
+    
+    let keyboardType: UIKeyboardType
 
     var body: some View {
         ZStack {
@@ -35,7 +41,7 @@ struct AddBetInputRow: View {
             }
         }
     }
-        .keyboardType(.decimalPad)
+        .keyboardType(keyboardType)
         .standardShadow()
 
     }

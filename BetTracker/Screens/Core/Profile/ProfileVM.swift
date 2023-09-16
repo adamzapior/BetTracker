@@ -11,7 +11,7 @@ class ProfileVM: ObservableObject {
 
     var defaultCurrency: String = "USD"
     var username: String = ""
-    
+
     /// TODO:
     var wonRate: Double {
         0 // to fix
@@ -23,7 +23,7 @@ class ProfileVM: ObservableObject {
 
     @Published
     var currentStatsState: StatsState = .week
-    
+
     @Published
     var mergedBalanceValue: NSDecimalNumber? = nil
     @Published
@@ -48,13 +48,13 @@ class ProfileVM: ObservableObject {
     var mergedHiggestBetOddsWon: NSDecimalNumber? = nil
     @Published
     var mergedHiggestBetAmount: NSDecimalNumber? = nil
-    
+
     @Published
     var isLoading: Bool = true
-    
+
     @Published
     var cancellables = Set<AnyCancellable>()
-    
+
     deinit {
         print("VM is out")
     }
@@ -86,7 +86,7 @@ class ProfileVM: ObservableObject {
                 self?.isLoading = false
             }
             .store(in: &cancellables)
-        
+
         $currentStatsState
             .flatMap { state in
                 let startDate = self.startDate(state: state)
@@ -245,7 +245,7 @@ class ProfileVM: ObservableObject {
                         startDate: startDate
                     )
                 )
-                .map { ($0).adding($1) as NSDecimalNumber? }
+                .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedAvgAmountBet)
 
@@ -325,7 +325,7 @@ class ProfileVM: ObservableObject {
             }
             .assign(to: &$mergedHiggestBetAmount)
     }
-    
+
     private func loadUserDefaultsData() {
         username = defaults.get(.username)
         defaultCurrency = defaults.get(.defaultCurrency)
@@ -368,7 +368,6 @@ class ProfileVM: ObservableObject {
             }
         }
     }
-
 
 }
 

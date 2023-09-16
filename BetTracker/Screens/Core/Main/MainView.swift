@@ -4,7 +4,7 @@ import SwiftDate
 import SwiftUI
 
 struct MainView: View {
-    
+
     let database = BetDao()
 
     @StateObject
@@ -27,12 +27,15 @@ struct MainView: View {
                         }
                         .padding(.horizontal, 22)
                         .padding(.bottom, 1)
-                        
+
                         if vm.pendingMerged!.isEmpty {
                             VStack {
                                 Text("Add bet to show pending")
                             }
                             .padding(.vertical, 48)
+                            
+                        } else if vm.isPendingMergedCompleted == false {
+                            ProgressView()
                         } else {
                             LazyVStack(spacing: 12) {
                                 ForEach(
@@ -83,7 +86,7 @@ struct MainView: View {
                                 Text("History is empty")
                             }
                             .padding(.vertical, 48)
-                        } else if vm.isMergedCompleted == false {
+                        } else if vm.isHistoryMergedCompleted == false {
                             ProgressView()
                         } else {
                             LazyVStack(spacing: 12) {
@@ -116,6 +119,7 @@ struct MainView: View {
                             }
                         }
                     }
+                    .padding(.bottom, 64)
                 }
             }
             .padding(

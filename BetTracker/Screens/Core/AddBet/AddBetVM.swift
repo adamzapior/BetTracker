@@ -804,19 +804,19 @@ final class AddBetVM: ObservableObject {
         var description: String {
             switch self {
             case .team1:
-                return "Błąd zespołu 1"
+                return "Team 1 error: you need to enter three characters."
             case .team2:
-                return "Błąd zespołu 2"
+                return "Team 2 error: you need to enter three characters."
             case .name:
-                return "Błąd nazwy"
+                return "Name error: you need to enter three characters."
             case .amount:
-                return "Błąd amount"
+                return "Amount error: the amount input can't be empty."
             case .odds:
-                return "Błąd kursu"
+                return "Odds error: the odds input can't be empty."
             case .tax:
-                return "Błąd podatku"
+                return "Tax error: the tax input can't be empty."
             case .notification:
-                return "Błąd powiadomienia"
+                return "Reminder error: the reminder date must be in the future."
             }
         }
     }

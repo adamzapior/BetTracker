@@ -5,15 +5,21 @@ struct BetAverageRow: View {
     let labelText: String
 
     let icon: String
+    
     let icon2: String
+    
     let icon3: String
 
     let text1: String
+    
     let text2: String
+    
     let text3: String
 
     let betsPendingText: String
+    
     let betsPendingText2: String
+    
     let betsPendingText3: String
 
     let currency: String
@@ -56,6 +62,26 @@ struct BetAverageRow: View {
                     }
                 }
                 .padding(.vertical, 3)
+                
+               // to fix TODO: !!
+                
+//                VStack {
+//                    HStack {
+//
+//                        Text("\(betsPendingText)")
+//                            .font(.headline)
+//                            .foregroundColor(Color.ui.secondary)
+//                            .padding(.bottom, 6)
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+//                            .padding(.trailing, 6)
+//                        Text(" \(currency)")
+//                            .font(.subheadline)
+//                            .foregroundColor(Color.ui.secondary)
+//                            .padding(.bottom, 6)
+//                            .frame(maxWidth: 36, alignment: .center)
+//                            .padding(.trailing, 18)
+//                    }
+//                }
 
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {

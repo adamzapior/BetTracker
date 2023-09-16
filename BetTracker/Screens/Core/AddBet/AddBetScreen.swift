@@ -1,17 +1,3 @@
-//
-//  AddBetView.swift
-//  BetTrackerUI
-//
-//  Created by Adam Zapiór on 21/02/2023.
-//
-
-enum AddBetFieldsFocus: Hashable {
-    case team1
-    case team2
-    case odds
-    case amount
-}
-
 import GRDB
 import SwiftUI
 
@@ -27,20 +13,15 @@ struct AddBetScreen: View {
 
     @State
     private var showAlert = false
-    
+
     @FocusState
-    private var betFieldInFocus: AddBetFieldsFocus?
-    
-    @FocusState var isFocused: Bool
-    
+    private var isFocused: Bool
 
     var body: some View {
-
-        
         ZStack {
             if showAlert == true {
                 CustomAlertView(
-                    title: "Błąd",
+                    title: "Error",
                     messages: vm.validationErrors.map(\.description),
                     primaryButtonLabel: "OK",
                     primaryButtonAction: { showAlert = false }
@@ -108,7 +89,8 @@ struct AddBetScreen: View {
                                         text: $vm.odds,
                                         isError: vm.oddsIsError, // TODO:
                                         overlayText: "",
-                                        isFocused: $isFocused
+                                        isFocused: $isFocused,
+                                        keyboardType: .decimalPad
                                         // to funkcja stworzona, żeby zablokować
                                         // mozliwosc edytowania textfielda, musze wyciagnac kolejny
                                         // obiet tylko dla tego parametru
@@ -120,7 +102,8 @@ struct AddBetScreen: View {
                                             text: $vm.tax,
                                             isError: vm.taxIsError,
                                             overlayText: "%",
-                                            isFocused: $isFocused
+                                            isFocused: $isFocused,
+                                            keyboardType: .decimalPad
                                         )
                                     }
                                 }
@@ -129,7 +112,8 @@ struct AddBetScreen: View {
                                     text: $vm.amount,
                                     isError: vm.amountIsError,
                                     overlayText: vm.defaultCurrency.rawValue.uppercased(),
-                                    isFocused: $isFocused
+                                    isFocused: $isFocused,
+                                    keyboardType: .decimalPad
                                 )
                                 CategoryRow(
                                     icon: "mark",
@@ -228,6 +212,7 @@ struct AddBetScreen: View {
                                 )
                             }
                             .padding(.top, 12)
+                            .padding(.bottom, 64)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
@@ -256,7 +241,8 @@ struct AddBetScreen: View {
                                             text: $vm.betslipName,
                                             isError: vm.betslipNameIsError,
                                             overlayText: "",
-                                            isFocused: $isFocused
+                                            isFocused: $isFocused,
+                                            keyboardType: .default
                                         )
                                     }
                                 }
@@ -281,8 +267,9 @@ struct AddBetScreen: View {
                                         text: $vm.betslipOdds,
                                         isError: vm.betslipOddsIsError, // TODO:
                                         overlayText: "",
-                                        isFocused: $isFocused
-                                        
+                                        isFocused: $isFocused,
+                                        keyboardType: .decimalPad
+
                                         // to funkcja stworzona, żeby zablokować
                                         // mozliwosc edytowania textfielda, musze wyciagnac kolejny
                                         // obiet tylko dla tego parametru
@@ -294,7 +281,8 @@ struct AddBetScreen: View {
                                             text: $vm.tax,
                                             isError: vm.taxIsError,
                                             overlayText: "%",
-                                            isFocused: $isFocused
+                                            isFocused: $isFocused,
+                                            keyboardType: .decimalPad
                                         )
                                     }
                                 }
@@ -304,7 +292,8 @@ struct AddBetScreen: View {
                                     text: $vm.betslipAmount,
                                     isError: vm.betslipAmountIsError,
                                     overlayText: vm.defaultCurrency.rawValue.uppercased(),
-                                    isFocused: $isFocused
+                                    isFocused: $isFocused,
+                                    keyboardType: .decimalPad
                                 )
                                 CategoryRow(
                                     icon: "mark",
@@ -403,6 +392,7 @@ struct AddBetScreen: View {
                                 )
                             }
                             .padding(.top, 12)
+                            .padding(.bottom, 64)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
@@ -444,55 +434,56 @@ struct AddBetScreen: View {
                 alignment: .center,
                 content: {
                     if isFocused == true {
-                        EmptyView() } else {
-                    VStack {
-                        if vm.betType == .singlebet {
-                            Button {
-                                if vm.saveBet() {
-                                    vm.clearTextField()
-                                    dismiss()
-                                } else {
-                                    showAlert = true
+                        EmptyView()
+                    } else {
+                        VStack {
+                            if vm.betType == .singlebet {
+                                Button {
+                                    if vm.saveBet() {
+                                        vm.clearTextField()
+                                        dismiss()
+                                    } else {
+                                        showAlert = true
+                                    }
+                                } label: {
+                                    AddBetButton(text: "Add bet to pending")
+                                        .padding(.horizontal, 64)
+                                        .padding(.vertical, 12)
                                 }
-                            } label: {
-                                AddBetButton(text: "Add bet to pending")
-                                    .padding(.horizontal, 64)
-                                    .padding(.vertical, 12)
+                            }
+
+                            if vm.betType == .betslip {
+                                Button {
+                                    if vm.saveBetslip() {
+                                        dismiss()
+                                    } else {
+                                        showAlert = true
+                                    }
+                                } label: {
+                                    AddBetButton(text: "Add bet to pending")
+                                        .padding(.horizontal, 64)
+                                        .padding(.vertical, 12)
+                                }
                             }
                         }
-                        
-                        if vm.betType == .betslip {
-                            Button {
-                                if vm.saveBetslip() {
-                                    dismiss()
-                                } else {
-                                    showAlert = true
-                                }
-                            } label: {
-                                AddBetButton(text: "Add bet to pending")
-                                    .padding(.horizontal, 64)
-                                    .padding(.vertical, 12)
+                        .background {
+                            if colorScheme == .dark {
+                                // Dark mode-specific background
+                                RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                    .foregroundColor(Color.black.opacity(0.7))
+                                    .blur(radius: 12)
+                                    .ignoresSafeArea()
+
+                            } else {
+                                // Light mode-specific background
+                                RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                    .foregroundColor(Color.clear)
+                                    .background(Material.bar.opacity(0.7))
+                                    .blur(radius: 12)
+                                    .ignoresSafeArea()
                             }
                         }
                     }
-                    .background {
-                        if colorScheme == .dark {
-                            // Dark mode-specific background
-                            RoundedRectangle(cornerRadius: 0, style: .continuous)
-                                .foregroundColor(Color.black.opacity(0.7))
-                                .blur(radius: 12)
-                                .ignoresSafeArea()
-                            
-                        } else {
-                            // Light mode-specific background
-                            RoundedRectangle(cornerRadius: 0, style: .continuous)
-                                .foregroundColor(Color.clear)
-                                .background(Material.bar.opacity(0.7))
-                                .blur(radius: 12)
-                                .ignoresSafeArea()
-                        }
-                    }
-                }
                 }
             )
         }

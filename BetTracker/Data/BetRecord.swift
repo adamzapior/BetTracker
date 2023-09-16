@@ -115,30 +115,3 @@ extension BetslipModel: PersistableRecord {
         container[Columns.score] = score
     }
 }
-
-extension CategoryModel {
-    static var databaseTableName = "bet"
-    
-    enum Columns: String, ColumnExpression {
-        case id
-        case name
-        case order
-        
-    }
-}
-
-extension CategoryModel {
-    init(row: Row) {
-        id = row[Columns.id]
-        name = row[Columns.name]
-        order = row[Columns.order]
-    }
-}
-
-extension CategoryModel: PersistableRecord {
-    func encode(to container: inout PersistenceContainer) throws {
-        container[Columns.id] = id
-        container[Columns.name] = name
-        container[Columns.order] = order
-    }
-}

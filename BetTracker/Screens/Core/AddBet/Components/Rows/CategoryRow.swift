@@ -28,7 +28,7 @@ struct CategoryRow: View {
                     )
             }
             Picker("Select sport", selection: $selectedCategory) {
-                ForEach(Category.allCases, id: \.self) { category in
+                ForEach(Category.allCases.sorted(by: { $0.rawValue < $1.rawValue }), id: \.self) { category in
                     Text(category.rawValue.capitalized)
                 }
             }

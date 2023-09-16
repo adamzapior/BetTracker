@@ -4,8 +4,10 @@ struct EventDatePickerRow: View {
 
     @Binding
     var showDatePicker: Bool
+    
     @Binding
     var selectedDate: Date
+    
     let action: () -> Void
 
     @StateObject

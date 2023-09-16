@@ -14,7 +14,18 @@ enum Category: String, CaseIterable {
     case f1
     case tenis
     case volleyball
-    
+    case baseball
+    case golf
+    case boxing
+    case mma
+    case swimming
+    case cycling
+    case hockey
+    case gymnastic
+    case esport
+    case cricket
+    case athletics
+    case other
 }
 
 extension Category: DatabaseValueConvertible { }

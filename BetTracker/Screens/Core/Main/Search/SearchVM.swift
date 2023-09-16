@@ -33,12 +33,12 @@ class SearchVM: ObservableObject {
 
     @Published
     private var cancellables = Set<AnyCancellable>()
-  
+
     init(respository: Respository) {
         self.respository = respository
 
         loadCurrency()
-        
+
         respository.getSavedBets(model: BetModel.self)
             .map { .some($0) }
             .assign(to: &$bets)
@@ -55,7 +55,6 @@ class SearchVM: ObservableObject {
             }
             .assign(to: \.savedBets, on: self)
             .store(in: &cancellables)
-        
 
         $searchText
             .combineLatest($savedBets)
@@ -75,10 +74,7 @@ class SearchVM: ObservableObject {
             .assign(to: &$searchResults)
     }
 
-
-
     // Respository call:
-
 
     // Sort methods:
 
@@ -131,7 +127,7 @@ class SearchVM: ObservableObject {
     private func loadCurrency() {
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
-    
+
     enum SortOption: String, CaseIterable, Identifiable {
         case all
         case oldest

@@ -17,18 +17,7 @@ class ProfilePhotoVM: ObservableObject {
         checkImageFileExists()
     }
     
-    // MARK: Profile Image Logic
 
-    enum ImageState {
-        case empty
-        case loading(Progress)
-        case success(Image)
-        case failure(Error)
-    }
-
-    enum TransferError: Error {
-        case importFailed
-    }
 
     @Published
     var uiImageToSave: UIImage? // Added***
@@ -63,8 +52,6 @@ class ProfilePhotoVM: ObservableObject {
         }
     }
 
-    // MARK: Public Methods
-
     func saveImageIfNeeded() {
         switch imageState {
         case .success:
@@ -86,6 +73,30 @@ class ProfilePhotoVM: ObservableObject {
             print("Loading")
         }
     }
+    
+    func checkImageFileExists() {
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+            .first!
+        let imageUrl = documentsDirectory.appendingPathComponent("image.jpg")
+
+        if fileManager.fileExists(atPath: imageUrl.path) {
+            do {
+                let imageData = try Data(contentsOf: imageUrl)
+                guard let uiImage = UIImage(data: imageData) else {
+                    imageState = .empty
+                    return
+                }
+                let image = Image(uiImage: uiImage)
+                imageState = .success(image)
+            } catch {
+                imageState = .empty
+            }
+        } else {
+            imageState = .empty
+        }
+    }
+
 
     // MARK: Private Methods
 
@@ -109,27 +120,16 @@ class ProfilePhotoVM: ObservableObject {
         }
     }
 
-    func checkImageFileExists() {
-        let fileManager = FileManager.default
-        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
-            .first!
-        let imageUrl = documentsDirectory.appendingPathComponent("image.jpg")
+    
+    enum ImageState {
+        case empty
+        case loading(Progress)
+        case success(Image)
+        case failure(Error)
+    }
 
-        if fileManager.fileExists(atPath: imageUrl.path) {
-            do {
-                let imageData = try Data(contentsOf: imageUrl)
-                guard let uiImage = UIImage(data: imageData) else {
-                    imageState = .empty
-                    return
-                }
-                let image = Image(uiImage: uiImage)
-                imageState = .success(image)
-            } catch {
-                imageState = .empty
-            }
-        } else {
-            imageState = .empty
-        }
+    enum TransferError: Error {
+        case importFailed
     }
 }
 

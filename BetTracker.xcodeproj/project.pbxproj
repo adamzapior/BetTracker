@@ -42,21 +42,17 @@
 		5858E8312A0C2A4D00CD018F /* ReminderDatePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5858E8302A0C2A4D00CD018F /* ReminderDatePickerRow.swift */; };
 		586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4B2A05A51200309F91 /* ProfileImage.swift */; };
 		586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */; };
-		586D2B542A06B23E00309F91 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B532A06B23E00309F91 /* ProfileHeader.swift */; };
 		5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5874C4B62A6B72F900199AD6 /* GRDB */; };
-		5874C4BD2A6B72FD00199AD6 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 5874C4BC2A6B72FD00199AD6 /* SwiftDate */; };
 		5885E40029D8E4BF005B764E /* AddBetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885E3FF29D8E4BF005B764E /* AddBetButton.swift */; };
 		5887209D2A7081E300D57B16 /* BetslipDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887209C2A7081E300D57B16 /* BetslipDetailsView.swift */; };
 		588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588720A02A71A28B00D57B16 /* BetWrapper.swift */; };
 		588720A32A71AD0D00D57B16 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588720A22A71AD0D00D57B16 /* CategoryModel.swift */; };
-		5895C4B02A75C88900B66275 /* SearchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5895C4AF2A75C88900B66275 /* SearchInteractor.swift */; };
 		58A005432A476F870012B9CF /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005422A476F870012B9CF /* DateExt.swift */; };
 		58A005452A4776920012B9CF /* MarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005442A4776920012B9CF /* MarkButton.swift */; };
 		58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005462A478F1A0012B9CF /* BetslipModel.swift */; };
 		58A387862A0FE25900ED95DB /* EventDatePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A387852A0FE25900ED95DB /* EventDatePickerRow.swift */; };
 		58A387882A0FEA5E00ED95DB /* EventDateRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A387872A0FEA5E00ED95DB /* EventDateRow.swift */; };
 		58A3878C2A0FFDF000ED95DB /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A3878B2A0FFDF000ED95DB /* CategoryRow.swift */; };
-		58A3EFE02AA903F0000335D8 /* CategoryEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A3EFDF2AA903F0000335D8 /* CategoryEditView.swift */; };
 		58A3EFE22AA9B569000335D8 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A3EFE12AA9B569000335D8 /* SwiftUIView.swift */; };
 		58AA328729EB79FD00BBBC9C /* PreferencesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */; };
 		58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328829EB7A0800BBBC9C /* PreferencesView.swift */; };
@@ -131,19 +127,16 @@
 		5858E8302A0C2A4D00CD018F /* ReminderDatePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDatePickerRow.swift; sourceTree = "<group>"; };
 		586D2B4B2A05A51200309F91 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardExt.swift; sourceTree = "<group>"; };
-		586D2B532A06B23E00309F91 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		5885E3FF29D8E4BF005B764E /* AddBetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBetButton.swift; sourceTree = "<group>"; };
 		5887209C2A7081E300D57B16 /* BetslipDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipDetailsView.swift; sourceTree = "<group>"; };
 		588720A02A71A28B00D57B16 /* BetWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetWrapper.swift; sourceTree = "<group>"; };
 		588720A22A71AD0D00D57B16 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
-		5895C4AF2A75C88900B66275 /* SearchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInteractor.swift; sourceTree = "<group>"; };
 		58A005422A476F870012B9CF /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
 		58A005442A4776920012B9CF /* MarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkButton.swift; sourceTree = "<group>"; };
 		58A005462A478F1A0012B9CF /* BetslipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipModel.swift; sourceTree = "<group>"; };
 		58A387852A0FE25900ED95DB /* EventDatePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDatePickerRow.swift; sourceTree = "<group>"; };
 		58A387872A0FEA5E00ED95DB /* EventDateRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDateRow.swift; sourceTree = "<group>"; };
 		58A3878B2A0FFDF000ED95DB /* CategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
-		58A3EFDF2AA903F0000335D8 /* CategoryEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditView.swift; sourceTree = "<group>"; };
 		58A3EFE12AA9B569000335D8 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesVM.swift; sourceTree = "<group>"; };
 		58AA328829EB7A0800BBBC9C /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -174,7 +167,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5874C4BD2A6B72FD00199AD6 /* SwiftDate in Frameworks */,
 				5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,7 +346,6 @@
 			isa = PBXGroup;
 			children = (
 				584E69BB2A75A57700084F78 /* Respository.swift */,
-				5895C4AF2A75C88900B66275 /* SearchInteractor.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -415,7 +406,6 @@
 			children = (
 				58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */,
 				58AA328829EB7A0800BBBC9C /* PreferencesView.swift */,
-				58A3EFDF2AA903F0000335D8 /* CategoryEditView.swift */,
 				58A3EFE12AA9B569000335D8 /* SwiftUIView.swift */,
 			);
 			path = Preferences;
@@ -470,7 +460,6 @@
 			isa = PBXGroup;
 			children = (
 				586D2B4B2A05A51200309F91 /* ProfileImage.swift */,
-				586D2B532A06B23E00309F91 /* ProfileHeader.swift */,
 				580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */,
 			);
 			path = ProfileImage;
@@ -495,7 +484,6 @@
 			name = BetTracker;
 			packageProductDependencies = (
 				5874C4B62A6B72F900199AD6 /* GRDB */,
-				5874C4BC2A6B72FD00199AD6 /* SwiftDate */,
 			);
 			productName = BetTracker;
 			productReference = 58076A4329C906FC00A0762B /* BetTracker.app */;
@@ -527,7 +515,6 @@
 			mainGroup = 58076A3A29C906FC00A0762B;
 			packageReferences = (
 				58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */,
-				58FE63722A0E4EAB0079A698 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 			);
 			productRefGroup = 58076A4429C906FC00A0762B /* Products */;
 			projectDirPath = "";
@@ -561,7 +548,6 @@
 				58076A8329C907A000A0762B /* BetCell.swift in Sources */,
 				58076A8829C907A000A0762B /* TeamInputRow.swift in Sources */,
 				58076A7C29C907A000A0762B /* BetModel.swift in Sources */,
-				586D2B542A06B23E00309F91 /* ProfileHeader.swift in Sources */,
 				58EC47812A1199FF0088E6DC /* BetAverageRow.swift in Sources */,
 				58A005432A476F870012B9CF /* DateExt.swift in Sources */,
 				5858E8312A0C2A4D00CD018F /* ReminderDatePickerRow.swift in Sources */,
@@ -591,14 +577,12 @@
 				58B80F752A8E1DB50011407E /* BetslipDetailsVM.swift in Sources */,
 				58EC47752A1125300088E6DC /* BalanceRow.swift in Sources */,
 				58076A8029C907A000A0762B /* BetDetailsView.swift in Sources */,
-				5895C4B02A75C88900B66275 /* SearchInteractor.swift in Sources */,
 				58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */,
 				58076A7D29C907A000A0762B /* BetsDetailsVM.swift in Sources */,
 				58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */,
 				58076A4929C906FC00A0762B /* ContentView.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */,
 				58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */,
-				58A3EFE02AA903F0000335D8 /* CategoryEditView.swift in Sources */,
 				58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */,
 				58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */,
 				588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */,
@@ -767,9 +751,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = adamzapior.BetTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -797,9 +784,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = adamzapior.BetTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -835,14 +825,6 @@
 				kind = branch;
 			};
 		};
-		58FE63722A0E4EAB0079A698 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/malcommac/SwiftDate.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -850,11 +832,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
-		};
-		5874C4BC2A6B72FD00199AD6 /* SwiftDate */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 58FE63722A0E4EAB0079A698 /* XCRemoteSwiftPackageReference "SwiftDate" */;
-			productName = SwiftDate;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

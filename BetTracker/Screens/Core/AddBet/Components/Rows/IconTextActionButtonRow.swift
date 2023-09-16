@@ -3,8 +3,11 @@ import SwiftUI
 struct IconTextActionButtonRow: View {
 
     let icon: String
+    
     let labelText: String
+    
     let actionButtonIcon: String
+    
     let action: () -> Void
 
     init(
