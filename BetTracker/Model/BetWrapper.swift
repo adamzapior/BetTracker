@@ -55,5 +55,54 @@ enum BetWrapper: Identifiable, Hashable {
         case let .betslip(betslip): return betslip.isWon
         }
     }
+    
+    var selectedTeam: SelectedTeam? {
+        switch self {
+        case let .bet(bet): return bet.selectedTeam
+        case .betslip: return nil
+        }
+    }
+
+    var odds: NSDecimalNumber {
+        switch self {
+        case let .bet(bet): return bet.odds
+        case let .betslip(betslip): return betslip.odds
+        }
+    }
+
+    var category: Category {
+        switch self {
+        case let .bet(bet): return bet.category
+        case let .betslip(betslip): return betslip.category
+        }
+    }
+
+    var tax: NSDecimalNumber {
+        switch self {
+        case let .bet(bet): return bet.tax
+        case let .betslip(betslip): return betslip.tax
+        }
+    }
+
+    var profit: NSDecimalNumber {
+        switch self {
+        case let .bet(bet): return bet.profit
+        case let .betslip(betslip): return betslip.profit
+        }
+    }
+
+    var note: String? {
+        switch self {
+        case let .bet(bet): return bet.note
+        case let .betslip(betslip): return betslip.note
+        }
+    }
+
+    var score: NSDecimalNumber? {
+        switch self {
+        case let .bet(bet): return bet.score
+        case let .betslip(betslip): return betslip.score
+        }
+    }
 
 }

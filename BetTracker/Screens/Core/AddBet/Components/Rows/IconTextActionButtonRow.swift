@@ -8,18 +8,22 @@ struct IconTextActionButtonRow: View {
     
     let actionButtonIcon: String
     
+    let actionButtonColor: Color
+    
     let action: () -> Void
 
     init(
         icon: String,
         labelText: String,
         actionButtonIcon: String,
+        actionButtonColor: Color,
         action: @escaping () -> Void
     ) {
         self.icon = icon
         self.labelText = labelText
         self.actionButtonIcon = actionButtonIcon
         self.action = action
+        self.actionButtonColor = actionButtonColor
     }
 
     var body: some View {
@@ -39,7 +43,7 @@ struct IconTextActionButtonRow: View {
                 Spacer()
                 Image(systemName: "\(actionButtonIcon)")
                     .font(.title)
-                    .foregroundColor(Color.ui.onPrimaryContainer)
+                    .foregroundColor(actionButtonColor)
                     .onTapGesture {
                         action()
                     }

@@ -39,8 +39,11 @@ extension DefaultsKeys {
     static let tax = DefaultsKey<String>("tax")
     static let league = DefaultsKey<String>("league")
     static let selectedDate = DefaultsKey<Date>("selectedDate")
-    static let savedNotificationDate = DefaultsKey<Date>("savedNotificationDate")
-    static let isNotificationSaved = DefaultsKey<Bool>("isNotificationSaved")
+    
+    static let betslipName = DefaultsKey<String>("betslipName")
+    static let betslipAmount = DefaultsKey<String>("betslipAmount")
+    static let betslipOdds = DefaultsKey<String>("betslipOdds")
+    static let betslipTax = DefaultsKey<String>("betslipTax")
 
     /// UserPreferences:
     static let username = DefaultsKey<String>("username")

@@ -31,7 +31,7 @@ struct EventDatePickerRow: View {
                 Spacer()
                 Image(systemName: "chevron.down")
                     .font(.title)
-                    .foregroundColor(Color.ui.onPrimary)
+                    .foregroundColor(Color.ui.onPrimaryContainer)
                     .onTapGesture {
                         showDatePicker = false
                         action()

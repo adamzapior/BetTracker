@@ -1,7 +1,6 @@
 import Combine
 import Foundation
 import GRDB
-import SwiftDate
 
 final class MainViewVM: ObservableObject {
 
@@ -33,9 +32,6 @@ final class MainViewVM: ObservableObject {
 
     @Published
     var historyMerged: [BetWrapper]? = []
-
-    @Published
-    var mergedBets: [BetWrapper]? = []
 
     @Published
     var isPendingMergedCompleted = false
@@ -98,7 +94,7 @@ final class MainViewVM: ObservableObject {
                 guard let vm = self else {
                     return
                 }
-                vm.mergedBets = value
+                vm.historyMerged = value
                 vm.isHistoryMergedCompleted = true
             })
             .store(in: &cancellables)
@@ -106,6 +102,6 @@ final class MainViewVM: ObservableObject {
 
     private func loadUserDefaultsData() {
         username = defaults.get(.username)
-        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
+        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .eur
     }
 }

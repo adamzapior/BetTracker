@@ -48,8 +48,9 @@ struct ProfileView: View {
                                         valueText: mgv.doubleValue
                                             .formattedWith2Digits(),
                                         font: .title2,
-                                        currency: vm.defaultCurrency.uppercased()
+                                        currency: vm.defaultCurrency.rawValue.uppercased()
                                     )
+                                    .padding(.horizontal, 12)
                                 } else {
                                     ProgressView()
                                 }
@@ -60,18 +61,23 @@ struct ProfileView: View {
                                             cellTitle: "TOTAL SPENT",
                                             valueText: mts.doubleValue
                                                 .formattedWith2Digits(),
-                                            currency: vm.defaultCurrency.uppercased()
+                                            currency: vm.defaultCurrency.rawValue.uppercased()
                                         )
                                     } else {
                                         ProgressView()
                                     }
 
-                                    BalanceRow(
-                                        cellTitle: "WON RATE",
-                                        valueText: vm.wonRate.formattedWith2Digits(),
-                                        currency: "%"
-                                    )
+                                    if let wr = vm.wonRate {
+                                        BalanceRow(
+                                            cellTitle: "WON RATE",
+                                            valueText: wr.doubleValue.formattedWith2Digits(),
+                                            currency: "%"
+                                        )
+                                    } else {
+                                        ProgressView()
+                                    }
                                 }
+                                .padding(.horizontal, 12)
 
                                 if let mpc = vm.mergedPendingBetsCount,
                                    let mwc = vm.mergedWonBetsCount,
@@ -88,6 +94,7 @@ struct ProfileView: View {
                                         betsPendingText2: mwc.stringValue,
                                         betsPendingText3: mlc.stringValue
                                     )
+                                    .padding(.horizontal, 12)
                                 } else {
                                     ProgressView()
                                 }
@@ -109,8 +116,9 @@ struct ProfileView: View {
                                             .formattedWith2Digits(),
                                         betsPendingText3: maab.doubleValue
                                             .formattedWith2Digits(),
-                                        currency: vm.defaultCurrency.uppercased()
+                                        currency: vm.defaultCurrency.rawValue.uppercased()
                                     )
+                                    .padding(.horizontal, 12)
                                 } else {
                                     ProgressView()
                                 }
@@ -119,8 +127,9 @@ struct ProfileView: View {
                                     if let mlbp = vm.mergedLargestBetProfit {
                                         BalanceRow(
                                             cellTitle: "BIGGEST PROFIT",
-                                            valueText: mlbp.stringValue,
-                                            currency: vm.defaultCurrency.uppercased()
+                                            valueText: mlbp.doubleValue
+                                                .formattedWith2Digits(),
+                                            currency: vm.defaultCurrency.rawValue.uppercased()
                                         )
                                     } else {
                                         ProgressView()
@@ -128,20 +137,23 @@ struct ProfileView: View {
                                     if let mbbl = vm.mergedBiggestBetLoss {
                                         BalanceRow(
                                             cellTitle: "BIGGEST LOSS",
-                                            valueText: mbbl.stringValue,
-                                            currency: vm.defaultCurrency.uppercased()
+                                            valueText: mbbl.doubleValue
+                                                .formattedWith2Digits(),
+                                            currency: vm.defaultCurrency.rawValue.uppercased()
                                         )
                                     } else {
                                         ProgressView()
                                     }
                                 }
+                                .padding(.horizontal, 12)
+
                                 HStack {
                                     if let mhbo = vm.mergedHiggestBetOddsWon {
                                         BalanceRow(
                                             cellTitle: "HIGHEST ODDS WON",
                                             valueText: mhbo.doubleValue
                                                 .formattedWith2Digits(),
-                                            currency: vm.defaultCurrency.uppercased()
+                                            currency: ""
                                         )
                                     } else {
                                         ProgressView()
@@ -152,14 +164,15 @@ struct ProfileView: View {
                                             cellTitle: "HIGGEST AMOUNT",
                                             valueText: mhba.doubleValue
                                                 .formattedWith2Digits(),
-                                            currency: vm.defaultCurrency.uppercased()
+                                            currency: vm.defaultCurrency.rawValue.uppercased()
                                         )
                                     } else {
                                         ProgressView()
                                     }
                                 }
+                                .padding(.horizontal, 12)
                             }
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 12)
                         }
                     }
                     .padding(.bottom, 64)
@@ -183,6 +196,9 @@ struct ProfileView: View {
         .background(Color.ui.background)
         .onDisappear {
             vmProfilePhoto.saveImageIfNeeded()
+        }
+        .onAppear {
+            vm.loadUserDefaultsData()
         }
     }
 }

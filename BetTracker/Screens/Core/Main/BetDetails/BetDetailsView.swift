@@ -15,7 +15,7 @@ struct BetDetailsView: View {
     @State
     private var showReminderAlert = false
     
-    init(bet: BetModel, backgroundColor _: Color = .clear) {
+    init(bet: BetModel) {
         _vm = StateObject(wrappedValue: BetsDetailsVM(bet: bet, respository: Respository()))
     }
 
@@ -25,13 +25,15 @@ struct BetDetailsView: View {
                 CustomAlertView(
                     title: "Warning",
                     messages: ["Do you want to delete bet?"],
-                    primaryButtonLabel: "Cancel",
-                    primaryButtonAction: { showDeleteAlert = false },
-                    secondaryButtonLabel: "Delete bet",
-                    secondaryButtonAction: {
+                    primaryButtonLabel: "OK",
+                    primaryButtonAction: {
                         vm.deleteBet(bet: vm.bet)
                         vm.removeNotification()
                         dismiss()
+                    },
+                    secondaryButtonLabel: "Cancel",
+                    secondaryButtonAction: {
+                        showDeleteAlert = false
                     }
                 )
             }
@@ -40,12 +42,14 @@ struct BetDetailsView: View {
                 CustomAlertView(
                     title: "Warning",
                     messages: ["Do you want to remove notification?"],
-                    primaryButtonLabel: "Cancel",
-                    primaryButtonAction: { showReminderAlert = false },
-                    secondaryButtonLabel: "Delete reminder",
-                    secondaryButtonAction: {
+                    primaryButtonLabel: "OK",
+                    primaryButtonAction: {
                         vm.removeNotification()
                         vm.isAlertSet = false
+                        showReminderAlert = false
+                    },
+                    secondaryButtonLabel: "Cancel",
+                    secondaryButtonAction: {
                         showReminderAlert = false
                     }
                 )
@@ -70,7 +74,7 @@ struct BetDetailsView: View {
                         Text("vs.")
                             .font(.body)
                         HStack {
-                            Text(vm.bet.team2)
+                            Text(vm.bet.team2.uppercased())
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .font(.title3)
                                 .bold()
@@ -257,7 +261,6 @@ struct BetDetailsView: View {
                                     .ignoresSafeArea()
                             }
                         }
-                        //                    .padding(.top, 36)
                     }
                 )
                 .navigationBarBackButtonHidden()

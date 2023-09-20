@@ -46,42 +46,24 @@ struct BetAverageRow: View {
                             .foregroundColor(Color.ui.onPrimaryContainer)
                             .padding(.bottom, 3)
                             .frame(minWidth: 80, alignment: .leading)
-
+                    }
+                    HStack {
+                        Spacer()
                         Text("\(betsPendingText)")
                             .font(.headline)
                             .foregroundColor(Color.ui.secondary)
                             .padding(.bottom, 6)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.trailing, 6)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 30)
                         Text(" \(currency)")
                             .font(.subheadline)
                             .foregroundColor(Color.ui.secondary)
                             .padding(.bottom, 6)
-                            .frame(maxWidth: 36, alignment: .center)
+                            .frame(maxWidth: 36, alignment: .leading)
                             .padding(.trailing, 18)
                     }
                 }
                 .padding(.vertical, 3)
-                
-               // to fix TODO: !!
-                
-//                VStack {
-//                    HStack {
-//
-//                        Text("\(betsPendingText)")
-//                            .font(.headline)
-//                            .foregroundColor(Color.ui.secondary)
-//                            .padding(.bottom, 6)
-//                            .frame(maxWidth: .infinity, alignment: .leading)
-//                            .padding(.trailing, 6)
-//                        Text(" \(currency)")
-//                            .font(.subheadline)
-//                            .foregroundColor(Color.ui.secondary)
-//                            .padding(.bottom, 6)
-//                            .frame(maxWidth: 36, alignment: .center)
-//                            .padding(.trailing, 18)
-//                    }
-//                }
 
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {
@@ -95,18 +77,20 @@ struct BetAverageRow: View {
                             .foregroundColor(Color.ui.onPrimaryContainer)
                             .padding(.bottom, 3)
                             .frame(minWidth: 80, alignment: .leading)
-
+                    }
+                    HStack {
+                        Spacer()
                         Text("\(betsPendingText2)")
                             .font(.headline)
                             .foregroundColor(Color.ui.secondary)
                             .padding(.bottom, 6)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.trailing, 6)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 30)
                         Text(" \(currency)")
                             .font(.subheadline)
                             .foregroundColor(Color.ui.secondary)
                             .padding(.bottom, 6)
-                            .frame(maxWidth: 36, alignment: .center)
+                            .frame(maxWidth: 36, alignment: .leading)
                             .padding(.trailing, 18)
                     }
                 }
@@ -124,18 +108,20 @@ struct BetAverageRow: View {
                             .foregroundColor(Color.ui.onPrimaryContainer)
                             .padding(.bottom, 3)
                             .frame(minWidth: 80, alignment: .leading)
-
+                    }
+                    HStack {
+                        Spacer()
                         Text("\(betsPendingText3)")
                             .font(.headline)
                             .foregroundColor(Color.ui.secondary)
                             .padding(.bottom, 6)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.trailing, 6)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 30)
                         Text(" \(currency)")
                             .font(.subheadline)
                             .foregroundColor(Color.ui.secondary)
                             .padding(.bottom, 6)
-                            .frame(maxWidth: 36, alignment: .center)
+                            .frame(maxWidth: 36, alignment: .leading)
                             .padding(.trailing, 18)
                     }
                 }

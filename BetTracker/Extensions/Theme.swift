@@ -12,6 +12,9 @@ struct ColorPalette {
     var secondary = Color("Secondary")
     var scheme = Color("Scheme")
     var shadow = Color("Shadow")
+    var wonBetColor = Color("WonBetColor")
+    var lostBetColor = Color("LostBetColor")
+    var pendingBetColor = Color("PendingBetColor")
 }
 
 extension Color {

@@ -7,19 +7,37 @@ class PreferencesVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
 
-    let respository = Respository()
+    let respository: Respository
 
     @Published
-    var username = ""
+    var username = "" {
+        didSet {
+            if username != oldValue {
+                let cleanedName = filterInput(
+                    input: username,
+                    oldValue: oldValue,
+                    filterType: .name
+                )
+                if cleanedName != username {
+                    username = cleanedName
+                }
+            }
+        }
+    }
+
+    @Published
+    var isTaxTextfieldOn: Bool = false
 
     @Published
     var defaultTax = "" {
         didSet {
-            if defaultTax.isEmpty {
-                return
-            }
-            if defaultTax.wholeMatch(of: /[1-9][0-9]?(\.[0-9]{,2})?/) == nil {
-                defaultTax = oldValue
+            let cleanedTax = filterInput(
+                input: defaultTax,
+                oldValue: oldValue,
+                filterType: .tax
+            )
+            if cleanedTax != defaultTax {
+                defaultTax = cleanedTax
             }
         }
     }
@@ -28,131 +46,38 @@ class PreferencesVM: ObservableObject {
     var taxStatus = DefaultTax.taxUnsaved
 
     @Published
-    var defaultCurrency: Currency = Currency.usd
+    var defaultCurrency: Currency = Currency.eur
 
     @Published
-    var isDefaultTaxOn: Bool = false {
-        didSet {
-            if isDefaultTaxOn {
-                taxStatus = .taxUnsaved
-            } else {
-                taxStatus = .taxSaved
-                clearTaxTextField()
-            }
-        }
-    }
+    var isDefaultTaxOn: Bool = false
 
-    init() {
+    @Published
+    var historyMerged: [BetWrapper]? = []
+
+    @Published
+    private var cancellables = Set<AnyCancellable>()
+
+    init(respository: Respository) {
+        self.respository = respository
+        
         loadSavedPreferences()
     }
 
-    func exportToCSV() {
-        var betWrappers: [BetWrapper] = [
-            .bet(BetModel(
-                id: Int64(),
-                date: Date.now,
-                team1: "team1",
-                team2: "team2",
-                selectedTeam: SelectedTeam.team1,
-                league: "",
-                amount: 12,
-                odds: 12,
-                category: Category.f1,
-                tax: 0,
-                profit: 100,
-                note: "",
-                isWon: true,
-                betNotificationID: "",
-                score: 100
-            ))
-        ]
-
-        // Define the CSV header
-        var csvText = "id,date,team1,team2,name,amount,isWon\n"
-
-        // Loop through the BetWrapper array to construct each row
-        for betWrapper in betWrappers {
-            let id = betWrapper.id
-            let date = betWrapper.date.description
-            let team1 = betWrapper.team1 ?? "N/A"
-            let team2 = betWrapper.team2 ?? "N/A"
-            let name = betWrapper.name ?? "N/A"
-            let amount = betWrapper.amount.stringValue
-            let isWon = betWrapper.isWon.map { $0 ? "True" : "False" } ?? "N/A"
-
-            let newLine = "\(id),\(date),\(team1),\(team2),\(name),\(amount),\(isWon)\n"
-            csvText.append(contentsOf: newLine)
-        }
-
-        // Write to a file (e.g., in the app's Documents directory)
-        do {
-            let fileManager = FileManager.default
-            let documentDirectory = try fileManager.url(
-                for: .documentDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: false
-            )
-            
-            let new = "myfile.csv"
-            let fileURL = documentDirectory.appendingPathComponent("BetWrapperData.csv")
-            let fileName = getDocumentsDirectory().appendingPathComponent("OutputD.csv")
-            let path = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(new)
-            
-            
-            
-
-            try csvText.write(to: path!, atomically: true, encoding: .utf8)
-            
-            print("CSV file saved successfully!")
-            print("CSV file saved at path: \(fileURL.path)")
-            print("Number of elements in exampleData: \(betWrappers.count)")
-            
-            if FileManager.default.fileExists(atPath: fileURL.path) {
-                  print("File exists.")
-              } else {
-                  print("File does not exist.")
-              }
-        } catch {
-            print("Failed to write CSV file: \(error)")
-        }
-    }
-    
-    private func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
-    }
-
-    func taxSaved() {
-        taxStatus = .taxSaved
-    }
-
-    func taxUnsaved() {
-        taxStatus = .taxUnsaved
-    }
-
-    func clearTaxTextField() {
-        let taxString = ""
-        defaultTax = taxString
-    }
-
-    func setDefaultTaxTo0() {
-        let taxString = "0"
-        defaults.set(.defaultTax, to: taxString)
-    }
-
-    func ifTaxEmpty() {
-        let tax = defaultTax
-
-        if tax.isEmpty {
-            isDefaultTaxOn = false
+    func saveTaxSettings() {
+        if isTaxTextfieldOn, defaultTax.isEmpty {
+            defaults.set(.isDefaultTaxOn, to: true)
+            defaults.set(.defaultTax, to: "")
+        } else if isTaxTextfieldOn, !defaultTax.isEmpty {
+            defaults.set(.isDefaultTaxOn, to: true)
+            defaults.set(.defaultTax, to: defaultTax)
+        } else if !isTaxTextfieldOn {
+            defaults.set(.isDefaultTaxOn, to: false)
+            defaults.set(.defaultTax, to: "")
         }
     }
 
     func savePreferences() {
         defaults.set(.username, to: username)
-        defaults.set(.isDefaultTaxOn, to: isDefaultTaxOn)
-        defaults.set(.defaultTax, to: defaultTax)
         defaults.set(.defaultCurrency, to: defaultCurrency.rawValue)
     }
 
@@ -162,13 +87,157 @@ class PreferencesVM: ObservableObject {
         defaultTax = defaults.get(.defaultTax)
         defaultCurrency = Currency(
             rawValue: UserDefaults.standard
-                .string(forKey: "defaultCurrency") ?? "usd"
+                .string(forKey: "defaultCurrency") ?? "eur"
         )!
+
+        if isDefaultTaxOn == true {
+            isTaxTextfieldOn = true
+        }
+    }
+
+    func exportToCSV() {
+        getBetsData {
+            self.generateCSVDataAndSave()
+        }
+    }
+
+    private func getBetsData(completion: @escaping () -> Void) {
+        let historyBetsPublisher = respository.getHistoryBets(model: BetModel.self, tableName: TableName.bet.rawValue)
+        let betslipHistoryPublisher = respository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
+
+        Publishers.Zip(historyBetsPublisher, betslipHistoryPublisher)
+            .map { historyBets, betslipHistory -> [BetWrapper] in
+                let combinedBets = (historyBets.map(BetWrapper.bet)) + (betslipHistory.map(BetWrapper.betslip))
+                return combinedBets.sorted(by: { $0.date > $1.date })
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completionStatus in
+                switch completionStatus {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Error: publishers zip error", error)
+                }
+            }, receiveValue: { [weak self] value in
+                self?.historyMerged = value
+                completion()
+            })
+            .store(in: &cancellables)
+    }
+
+    private func generateCSVDataAndSave() {
+        var savedBets: [BetWrapper] = historyMerged!
+
+        var csvText =
+            "id,date,team1,team2,name,amount,isWon,selectedTeam,odds,category,tax,profit,note,score\n"
+
+        for bets in savedBets {
+            let id = bets.id
+            let date = bets.date.description
+            let team1 = bets.team1 ?? "N/A"
+            let team2 = bets.team2 ?? "N/A"
+            let name = bets.name ?? "N/A"
+            let amount = bets.amount.stringValue
+            let isWon = bets.isWon.map { $0 ? "True" : "False" } ?? "N/A"
+            let selectedTeam = bets.selectedTeam
+                .map { $0 == .team1 ? "team1" : "team2" } ?? "N/A"
+            let odds = bets.odds.stringValue
+            let category = String(
+                describing: bets
+                    .category
+            )
+            let tax = bets.tax.stringValue
+            let profit = bets.profit.stringValue
+            let note = bets.note ?? "N/A"
+            let score = bets.score?.stringValue ?? "N/A"
+
+            let newLine =
+                "\(id),\(date),\(team1),\(team2),\(name),\(amount),\(isWon),\(selectedTeam),\(odds),\(category),\(tax),\(profit),\(note),\(score)\n"
+            csvText.append(contentsOf: newLine)
+        }
+
+        do {
+            let fileManager = FileManager.default
+            let documentDirectory = try fileManager.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: false
+            )
+
+            let fileName = "BetsHistory"
+            let currentDate = Date().description
+
+            let finalfileName = fileName.appending(currentDate)
+            let fileURL = documentDirectory.appendingPathComponent("\(finalfileName).csv")
+
+            try csvText.write(to: fileURL, atomically: true, encoding: .utf8)
+
+            print("CSV file saved successfully!")
+            print("CSV file saved at path: \(fileURL.path)")
+
+        } catch {
+            print("Failed to write CSV file: \(error)")
+        }
+    }
+
+    private func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+
+    private func filterInput(
+        input: String,
+        oldValue: String,
+        filterType: FilterType
+    ) -> String {
+        if input.isEmpty {
+            return input
+        }
+        var cleanedInput = input
+            .replacingOccurrences(of: ",", with: ".")
+
+        switch filterType {
+        case .tax:
+            if input.first == "0" {
+                return "0"
+            }
+            if cleanedInput
+                .wholeMatch(of: /[0-9][0-9]{0,3}?((\.|,)[0-9]{,2})?/) ==
+                nil {
+                cleanedInput = oldValue
+            }
+        case .name:
+            if input.first == " " {
+                return ""
+            }
+            let regex = try? NSRegularExpression(pattern: "[ ]+", options: .caseInsensitive)
+            cleanedInput = regex?.stringByReplacingMatches(
+                in: cleanedInput,
+                options: [],
+                range: NSRange(
+                    location: 0,
+                    length: cleanedInput.count
+                ),
+                withTemplate: " "
+            ) ?? cleanedInput
+
+            if cleanedInput.wholeMatch(of: /^[\p{L}0-9 ]{1,24}$/) == nil {
+                cleanedInput = oldValue
+            }
+        }
+
+        return cleanedInput
     }
 
     enum DefaultTax {
         case taxSaved
         case taxUnsaved
+    }
+
+    private enum FilterType {
+        case tax
+        case name
     }
 
 }

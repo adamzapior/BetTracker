@@ -15,11 +15,10 @@ struct BetTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(session)
+                .environmentObject(session)s
         }
     }
 
-    // TODO: Przeniesienie tej usługi do dodania powiadomienia/ustawień deeplink
     func requestNotificationPermission() {
         UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
@@ -34,3 +33,4 @@ struct BetTrackerApp: App {
     }
 
 }
+

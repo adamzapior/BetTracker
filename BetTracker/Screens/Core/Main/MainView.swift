@@ -1,6 +1,5 @@
 import Charts
 import Combine
-import SwiftDate
 import SwiftUI
 
 struct MainView: View {
@@ -20,19 +19,20 @@ struct MainView: View {
             ScrollView(showsIndicators: false) {
                 VStack {
                     VStack {
-                        HStack {
-                            MainLabel(text: "Pending")
-                            Spacer()
-                            Spacer()
+                        if vm.pendingMerged!.isEmpty {
+                            EmptyView()
+                        } else {
+                            HStack {
+                                MainLabel(text: "Pending")
+                                Spacer()
+                                Spacer()
+                            }
+                            .padding(.horizontal, 22)
+                            .padding(.bottom, 1)
                         }
-                        .padding(.horizontal, 22)
-                        .padding(.bottom, 1)
 
                         if vm.pendingMerged!.isEmpty {
-                            VStack {
-                                Text("Add bet to show pending")
-                            }
-                            .padding(.vertical, 48)
+                            EmptyView()
                             
                         } else if vm.isPendingMergedCompleted == false {
                             ProgressView()
@@ -76,12 +76,12 @@ struct MainView: View {
                         HStack {
                             MainLabel(text: "History")
                             Spacer()
-                            Text("") // hack
+                            Spacer()
                         }
                         .padding(.horizontal, 22)
                         .padding(.bottom, 1)
 
-                        if vm.mergedBets!.isEmpty {
+                        if vm.historyMerged!.isEmpty {
                             VStack {
                                 Text("History is empty")
                             }
@@ -90,7 +90,7 @@ struct MainView: View {
                             ProgressView()
                         } else {
                             LazyVStack(spacing: 12) {
-                                ForEach(vm.mergedBets!, id: \.id) { betWrapper in
+                                ForEach(vm.historyMerged!, id: \.id) { betWrapper in
                                     switch betWrapper {
                                     case let .bet(betModel):
                                         NavigationLink(

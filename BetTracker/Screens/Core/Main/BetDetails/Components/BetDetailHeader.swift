@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// TODO: 3 View refactor - opacity, itp
 struct BetDetailHeader: View {
     let title: String
     let isNotificationOn: Bool

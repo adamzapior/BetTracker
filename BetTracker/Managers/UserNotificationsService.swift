@@ -12,22 +12,22 @@ struct UserNotificationsService {
         let content = UNMutableNotificationContent()
 
         let localizedStringNotificationTitle = NSLocalizedString(
-            "%@ Your bet is waiting!",
+            "%@ - your bet is waiting!",
             comment: ""
         )
         let finalStringNotificationTitle = String(format: localizedStringNotificationTitle, name)
 
-        let localizedStringNotificationBody = NSLocalizedString(
-            " You have picked %@ and bet is still pending",
-            comment: ""
-        )
-        let finalStringNotificationBody = String(format: localizedStringNotificationBody, name)
+//        let localizedStringNotificationBody = NSLocalizedString(
+//            "You have picked %@ and bet is still pending",
+//            comment: ""
+//        )
+//        let finalStringNotificationBody = String(format: localizedStringNotificationBody, name)
 
         // ** Notification content **
         content.title = finalStringNotificationTitle
         content.body = NSLocalizedString(
             "Your bet is pending for settlement.",
-            comment: "Notification body"
+            comment: ""
         )
         content.sound = UNNotificationSound.default
 

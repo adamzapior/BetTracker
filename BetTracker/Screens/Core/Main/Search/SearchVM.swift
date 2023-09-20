@@ -74,10 +74,6 @@ class SearchVM: ObservableObject {
             .assign(to: &$searchResults)
     }
 
-    // Respository call:
-
-    // Sort methods:
-
     func allBets() {
         $savedBets
             .assign(to: \.searchResults, on: self)

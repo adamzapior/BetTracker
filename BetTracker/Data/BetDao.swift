@@ -185,7 +185,7 @@ class BetDao {
     }
 
     /// ** Total spent values **
-    ///
+
     func getTotalSpent(
         model _: (some DatabaseModel).Type,
         tableName: String,

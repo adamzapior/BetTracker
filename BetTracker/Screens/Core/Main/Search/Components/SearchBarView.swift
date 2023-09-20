@@ -17,7 +17,7 @@ struct SearchBarView: View {
             }
             .textInputAutocapitalization(.never)
             Image(systemName: "xmark.circle.fill")
-                .foregroundColor(Color.red) // TODO: Color.ui.red
+                .foregroundColor(Color.red) 
                 .onTapGesture {
                     searchText = ""
                 }

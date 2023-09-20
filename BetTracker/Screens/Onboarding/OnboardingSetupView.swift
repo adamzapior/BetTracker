@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// TODO: 2 View refactor
 struct OnboardingSetupView: View {
 
     @StateObject
@@ -27,111 +26,173 @@ struct OnboardingSetupView: View {
                             .bold()
                     }
                     .frame(maxWidth: .infinity)
+                    .padding(.top, 24)
 
-                    Form {
-                        Section(
-                            header: Text("Choose your default tax")
-                                .foregroundColor(Color.ui.onPrimaryContainer)
-                                .frame(
-                                    maxWidth: .infinity,
-                                    alignment: .leading
-                                )
-                        ) {
-                            Toggle("Do you want set default tax?", isOn: $vm.isDefaultTaxOn)
-                            TextField("Enter your tax value", text: $vm.defaultTax)
-                                .focused($isTaxFocused)
-                                .overlay {
-                                    Text("%")
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                        .opacity(0.5)
-                                }
-                                .toolbar {
-                                    ToolbarItemGroup(placement: .keyboard) {
-                                        Button("OK") {
-                                            hideKeyboard()
-                                        }
-                                        .foregroundColor(Color.ui.secondary)
-                                        .bold()
-                                        .font(.title2)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 3)
-                                        .background {
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .stroke(style: StrokeStyle(lineWidth: 2))
-                                                .foregroundColor(Color.ui.secondary)
-                                        }
-                                        .clipShape(RoundedRectangle(cornerRadius: 25))
+                    VStack(spacing: 6) {
+                        VStack {
+                            VStack {
+                                Text("YOUR CURRENCY")
+                                    .font(.footnote)
+                                    .foregroundColor(Color.ui.onPrimaryContainer)
+                                    .padding(.vertical, 3)
+                                    .padding(.horizontal, 6)
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        alignment: .leading
+                                    )
+                            }
+                            HStack {
+                                ZStack {
+                                    HStack {
+                                        Text("Choose your currency")
+                                            .font(.body)
+                                            .frame(height: 36)
+                                            .foregroundColor(Color.ui.secondary)
+                                        Spacer()
                                     }
-                                }
-                                .textFieldStyle(.plain)
-
-                                .onDisappear {
-                                    vm.setDefaultTaxTo0()
-                                }
-                        }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .frame(maxHeight: 125, alignment: .topLeading)
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-
-                    Form {
-                        Section(
-                            header: Text("Choose your default currency")
-                                .foregroundColor(Color.ui.onPrimaryContainer)
-                                .frame(
-                                    maxWidth: .infinity,
-                                    alignment: .leading
-                                )
-                        ) {
-                            Picker("Choose your currency", selection: $vm.defaultCurrency) {
-                                ForEach(Currency.allCases, id: \.self) { currency in
-                                    Text("\(currency.rawValue.uppercased())")
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 6)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .foregroundColor(
+                                                Color.ui.onPrimary
+                                            )
+                                    }
+                                    Picker(
+                                        "Choose your currency",
+                                        selection: $vm.defaultCurrency
+                                    ) {
+                                        ForEach(
+                                            Currency.allCases
+                                                .sorted(by: { $0.rawValue < $1.rawValue }),
+                                            id: \.self
+                                        ) { currency in
+                                            Text("\(currency.rawValue.uppercased())")
+                                        }
+                                    }
+                                    .pickerStyle(.menu)
+                                    .tint(Color.ui.scheme)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                    .edgesIgnoringSafeArea(.all)
                                 }
                             }
-                            .pickerStyle(.menu)
-                            .tint(Color.ui.scheme)
+                            .standardShadow()
                         }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .frame(maxHeight: 90, alignment: .topLeading)
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 5, y: 5)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .padding(.vertical, 24)
-                .keyboardType(.decimalPad)
-
-                HStack(alignment: .bottom) {
-                    if isTaxFocused {
-                    } else {
-                        Button("Get started") {
-                            action()
-                        }
-                        .font(.title2)
-                        .bold()
-                        .foregroundColor(Color.ui.secondary)
-                        .frame(minWidth: 200, minHeight: 56, alignment: .center)
+                        .frame(maxWidth: .infinity, alignment: .top)
+                        .padding(.vertical, 12)
                         .padding(.horizontal, 12)
-                        .padding(.vertical, 3)
-                        .clipShape(RoundedRectangle(cornerRadius: 150))
-                        .background {
-                            RoundedRectangle(cornerRadius: 25)
-                                .stroke(style: StrokeStyle(lineWidth: 2))
-                                .foregroundColor(Color.ui.secondary)
+                        .keyboardType(.decimalPad)
+
+                        VStack {
+                            VStack {
+                                Text("TAX RATE")
+                                    .font(.footnote)
+                                    .foregroundColor(Color.ui.onPrimaryContainer)
+                                    .padding(.vertical, 3)
+                                    .padding(.horizontal, 6)
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        alignment: .leading
+                                    )
+                                HStack {
+                                    HStack {
+                                        Text("Do you want use tax rate?")
+                                            .font(.body)
+                                            .frame(height: 36)
+                                            .foregroundColor(Color.ui.secondary)
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 6)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .foregroundColor(Color.ui.onPrimary)
+                                    }
+                                    .clipped(antialiased: false)
+                                    .standardShadow()
+
+                                    Image(
+                                        systemName: vm.isTaxTextfieldOn
+                                            ? "checkmark.square.fill"
+                                            : "checkmark.square"
+                                    )
+                                    .font(.largeTitle)
+                                    .foregroundColor(
+                                        vm.isTaxTextfieldOn
+                                            ? Color.ui.scheme
+                                            : Color.ui
+                                                .onPrimaryContainer
+                                    )
+                                    .onTapGesture {
+                                        vm.isTaxTextfieldOn.toggle()
+                                    }
+                                }
+
+                                if vm.isTaxTextfieldOn == true {
+                                    HStack {
+                                        TextField(
+                                            "",
+                                            text: $vm.defaultTax,
+                                            prompt: Text("Input your default tax")
+                                                .foregroundColor(Color.ui.onPrimaryContainer)
+                                        )
+                                        .frame(height: 36)
+                                        .keyboardType(.decimalPad)
+                                        .overlay {
+                                            Text("%")
+                                                .frame(
+                                                    maxWidth: .infinity,
+                                                    alignment: .trailing
+                                                )
+                                                .opacity(0.5)
+                                        }
+                                        .textFieldStyle(.plain)
+                                    }
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 6)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .foregroundColor(Color.ui.onPrimary)
+                                    }
+                                    .standardShadow()
+                                }
+                            }
                         }
-                        .clipShape(RoundedRectangle(cornerRadius: 25))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .padding(.horizontal, 12)
+                        .keyboardType(.decimalPad)
+
+                        HStack(alignment: .bottom) {
+                            Button("Get started") {
+                                action()
+                            }
+                            .font(.title2)
+                            .bold()
+                            .foregroundColor(Color.ui.secondary)
+                            .frame(minWidth: 200, minHeight: 56, alignment: .center)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 3)
+                            .clipShape(RoundedRectangle(cornerRadius: 150))
+                            .background {
+                                RoundedRectangle(cornerRadius: 25)
+                                    .stroke(style: StrokeStyle(lineWidth: 2))
+                                    .foregroundColor(Color.ui.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 25))
+                        }
+                        .padding(.bottom, 48)
                     }
+                    .navigationBarBackButtonHidden()
                 }
-                .padding(.bottom, 48)
+                .frame(maxHeight: .infinity, alignment: .center)
+                .onTapGesture {
+                    hideKeyboard()
+                }
+                .onDisappear {
+                    vm.savePreferences()
+                    vm.saveTaxSettings()
+                }
             }
-            .navigationBarBackButtonHidden()
-        }
-        .frame(maxHeight: .infinity, alignment: .center)
-        .onTapGesture {
-            hideKeyboard()
-        }
-        .onDisappear {
-            vm.savePreferences()
-            vm.ifTaxEmpty()
         }
     }
 }

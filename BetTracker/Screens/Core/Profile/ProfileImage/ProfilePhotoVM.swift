@@ -110,7 +110,7 @@ class ProfilePhotoVM: ObservableObject {
                 switch result {
                 case let .success(profileImage?):
                     self.imageState = .success(profileImage.image)
-                    self.uiImageToSave = (profileImage.uiImageX) // Added***
+                    self.uiImageToSave = (profileImage.uiImageX) 
                 case .success(nil):
                     self.imageState = .empty
                 case let .failure(error):

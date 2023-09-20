@@ -53,7 +53,6 @@
 		58A387862A0FE25900ED95DB /* EventDatePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A387852A0FE25900ED95DB /* EventDatePickerRow.swift */; };
 		58A387882A0FEA5E00ED95DB /* EventDateRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A387872A0FEA5E00ED95DB /* EventDateRow.swift */; };
 		58A3878C2A0FFDF000ED95DB /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A3878B2A0FFDF000ED95DB /* CategoryRow.swift */; };
-		58A3EFE22AA9B569000335D8 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A3EFE12AA9B569000335D8 /* SwiftUIView.swift */; };
 		58AA328729EB79FD00BBBC9C /* PreferencesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */; };
 		58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328829EB7A0800BBBC9C /* PreferencesView.swift */; };
 		58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715A2A082AEA00439B98 /* OnboardingView.swift */; };
@@ -137,7 +136,6 @@
 		58A387852A0FE25900ED95DB /* EventDatePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDatePickerRow.swift; sourceTree = "<group>"; };
 		58A387872A0FEA5E00ED95DB /* EventDateRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDateRow.swift; sourceTree = "<group>"; };
 		58A3878B2A0FFDF000ED95DB /* CategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
-		58A3EFE12AA9B569000335D8 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesVM.swift; sourceTree = "<group>"; };
 		58AA328829EB7A0800BBBC9C /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		58B0715A2A082AEA00439B98 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -406,7 +404,6 @@
 			children = (
 				58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */,
 				58AA328829EB7A0800BBBC9C /* PreferencesView.swift */,
-				58A3EFE12AA9B569000335D8 /* SwiftUIView.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -544,7 +541,6 @@
 			files = (
 				58A005452A4776920012B9CF /* MarkButton.swift in Sources */,
 				58076A8729C907A000A0762B /* AddBetVM.swift in Sources */,
-				58A3EFE22AA9B569000335D8 /* SwiftUIView.swift in Sources */,
 				58076A8329C907A000A0762B /* BetCell.swift in Sources */,
 				58076A8829C907A000A0762B /* TeamInputRow.swift in Sources */,
 				58076A7C29C907A000A0762B /* BetModel.swift in Sources */,
@@ -733,12 +729,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"BetTracker/Preview Content\"";
 				DEVELOPMENT_TEAM = B5C5KJWJ34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BetTracker/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BetTracker;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -766,12 +764,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"BetTracker/Preview Content\"";
 				DEVELOPMENT_TEAM = B5C5KJWJ34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BetTracker/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BetTracker;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

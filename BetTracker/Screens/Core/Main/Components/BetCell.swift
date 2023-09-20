@@ -70,10 +70,10 @@ struct BetCell: View {
                         RoundedRectangle(cornerRadius: 25)
                             .foregroundColor(
                                 bet.isWon.fold(
-                                    ifTrue: { Color.green },
-                                    ifFalse: { Color.red },
-                                    ifNil: { Color.orange }
-                                ).opacity(0.15)
+                                    ifTrue: { Color.ui.wonBetColor },
+                                    ifFalse: { Color.ui.lostBetColor },
+                                    ifNil: { Color.ui.pendingBetColor }
+                                )
                             )
                             .padding(.horizontal, -8)
                     }
@@ -91,10 +91,10 @@ struct BetCell: View {
                         RoundedRectangle(cornerRadius: 25)
                             .foregroundColor(
                                 bet.isWon.fold(
-                                    ifTrue: { Color.green },
-                                    ifFalse: { Color.red },
-                                    ifNil: { Color.orange }
-                                ).opacity(0.15)
+                                    ifTrue: { Color.ui.wonBetColor },
+                                    ifFalse: { Color.ui.lostBetColor },
+                                    ifNil: { Color.ui.pendingBetColor }
+                                )
                             )
                             .padding(.horizontal, -8)
                     }

@@ -4,7 +4,9 @@ struct BetslipDetailsView: View {
     @Environment(\.dismiss)
     var dismiss
 
-    /// to pozmnielem moze byc zle
+    @Environment(\.colorScheme)
+    var colorScheme
+
     @StateObject
     var vm: BetslipDetailsVM
 
@@ -23,13 +25,15 @@ struct BetslipDetailsView: View {
                 CustomAlertView(
                     title: "Warning",
                     messages: ["Do you want to delete bet?"],
-                    primaryButtonLabel: "Cancel",
-                    primaryButtonAction: { showDeleteAlert = false },
-                    secondaryButtonLabel: "Delete bet",
-                    secondaryButtonAction: {
+                    primaryButtonLabel: "OK",
+                    primaryButtonAction: {
                         vm.deleteBet(bet: vm.bet)
                         vm.removeNotification()
                         dismiss()
+                    },
+                    secondaryButtonLabel: "Cancel",
+                    secondaryButtonAction: {
+                        showDeleteAlert = false
                     }
                 )
             }
@@ -38,12 +42,14 @@ struct BetslipDetailsView: View {
                 CustomAlertView(
                     title: "Warning",
                     messages: ["Do you want to remove notification?"],
-                    primaryButtonLabel: "Cancel",
-                    primaryButtonAction: { showReminderAlert = false },
-                    secondaryButtonLabel: "Delete reminder",
-                    secondaryButtonAction: {
+                    primaryButtonLabel: "OK",
+                    primaryButtonAction: {
                         vm.removeNotification()
                         vm.isAlertSet = false
+                        showReminderAlert = false
+                    },
+                    secondaryButtonLabel: "Cancel",
+                    secondaryButtonAction: {
                         showReminderAlert = false
                     }
                 )
@@ -53,7 +59,7 @@ struct BetslipDetailsView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 5) {
                         HStack {
-                            Text(vm.bet.name)
+                            Text(vm.bet.name.uppercased())
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .font(.title3)
                                 .bold()
@@ -201,7 +207,6 @@ struct BetslipDetailsView: View {
                                 MarkLostButton(text: "Set as lost")
                                     .padding(.horizontal, 64)
                                     .onTapGesture {
-                                        // TODO: vm and respository
                                         vm.markBetLost()
                                         dismiss()
                                     }
@@ -211,7 +216,6 @@ struct BetslipDetailsView: View {
                                 MarkWonButton(text: "Set as won")
                                     .padding(.horizontal, 64)
                                     .onTapGesture {
-                                        // TODO: vm and respository
                                         vm.markBetWon()
                                         dismiss()
                                     }
@@ -220,12 +224,22 @@ struct BetslipDetailsView: View {
                         }
                     }
                     .background {
-                        RoundedRectangle(cornerRadius: 0, style: .continuous)
-                            .foregroundColor(Color.clear)
-                            .background(Material.bar.opacity(0.7))
-                            .blur(radius: 12)
+                        if colorScheme == .dark {
+                            // Dark mode-specific background
+                            RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                .foregroundColor(Color.black.opacity(0.7))
+                                .blur(radius: 12)
+                                .ignoresSafeArea()
+
+                        } else {
+                            // Light mode-specific background
+                            RoundedRectangle(cornerRadius: 0, style: .continuous)
+                                .foregroundColor(Color.clear)
+                                .background(Material.bar.opacity(0.7))
+                                .blur(radius: 12)
+                                .ignoresSafeArea()
+                        }
                     }
-                    .padding(.top, 36)
                 }
             )
             .navigationBarBackButtonHidden()

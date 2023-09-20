@@ -19,9 +19,6 @@ class BetsDetailsVM: ObservableObject {
     @Published
     var isAlertSet: Bool = false
 
-//    @Published
-//    var isShowingAlert: Bool = false
-
     init(bet: BetModel, respository: Respository) {
         self.bet = bet
         self.respository = respository

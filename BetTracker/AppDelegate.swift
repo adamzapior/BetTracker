@@ -16,7 +16,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     configureUserNotifications()
-//      - wyłączenie tej funkcji powoduje, że nie działają akcje
     return true
   }
 }
@@ -32,7 +31,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     completionHandler(.banner)
   }
   
-  // tego nie musze !!!
   private func configureUserNotifications() {
     UNUserNotificationCenter.current().delegate = self
     // 1

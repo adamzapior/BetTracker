@@ -13,7 +13,7 @@ struct MarkWonButton: View {
             Text(text)
                 .font(.headline)
                 .bold()
-                .foregroundColor(Color.ui.background)
+                .foregroundColor(Color.white)
             Spacer()
             Image(systemName: "checkmark.square.fill")
                 .font(.headline)
@@ -25,7 +25,7 @@ struct MarkWonButton: View {
                 .foregroundColor(
                     Color.ui.scheme
                 )
-                .opacity(1)
+                .opacity(0.7)
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
                         .stroke(Color.secondary, lineWidth: 0.2)
@@ -50,7 +50,7 @@ struct MarkLostButton: View {
             Text(text)
                 .font(.headline)
                 .bold()
-                .foregroundColor(Color.ui.background)
+                .foregroundColor(Color.white)
             Spacer()
             Image(systemName: "minus.square.fill")
                 .font(.headline)
@@ -62,7 +62,7 @@ struct MarkLostButton: View {
                 .foregroundColor(
                     Color.red
                 )
-                .opacity(1)
+                .opacity(0.7)
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
                         .stroke(Color.secondary, lineWidth: 0.2)

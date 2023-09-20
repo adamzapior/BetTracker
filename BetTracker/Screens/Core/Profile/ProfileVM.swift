@@ -9,20 +9,14 @@ class ProfileVM: ObservableObject {
     private let defaults = UserDefaultsManager.path
     private let respository: Respository
 
-    var defaultCurrency: String = "USD"
+    @Published
+    var defaultCurrency: Currency = Currency.eur
+    
+    @Published
     var username: String = ""
 
-    /// TODO:
-    var wonRate: Double {
-        0 // to fix
-//        let score = 0
-//        if lostBetsCount != 0 {
-//            Double(truncating: wonBetsCount.dividing(by: lostBetsCount))
-//        }
-    }
-
     @Published
-    var currentStatsState: StatsState = .week
+    var currentStatsState: StatsState = .month
 
     @Published
     var mergedBalanceValue: NSDecimalNumber? = nil
@@ -48,6 +42,9 @@ class ProfileVM: ObservableObject {
     var mergedHiggestBetOddsWon: NSDecimalNumber? = nil
     @Published
     var mergedHiggestBetAmount: NSDecimalNumber? = nil
+    
+    @Published
+    var wonRate: NSDecimalNumber? = nil
 
     @Published
     var isLoading: Bool = true
@@ -324,11 +321,34 @@ class ProfileVM: ObservableObject {
                 .map { $0.adding($1) as NSDecimalNumber? }
             }
             .assign(to: &$mergedHiggestBetAmount)
+
+        Publishers.CombineLatest($mergedWonBetsCount, $mergedLostBetsCount)
+            .map { [weak self] won, lost -> NSDecimalNumber in
+                self?.mergedWonBetsCount = won
+                self?.mergedLostBetsCount = lost
+                return self?.calculateWonRate(wonBets: won, lostBets: lost) ?? NSDecimalNumber.zero
+            }
+            .assign(to: &$wonRate)
+
+    }
+    
+    func loadUserDefaultsData() {
+        username = defaults.get(.username)
+        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .eur
     }
 
-    private func loadUserDefaultsData() {
-        username = defaults.get(.username)
-        defaultCurrency = defaults.get(.defaultCurrency)
+    private func calculateWonRate(wonBets: NSDecimalNumber?, lostBets: NSDecimalNumber?) -> NSDecimalNumber {
+        if let wonBets = wonBets, let lostBets = lostBets {
+            if wonBets == NSDecimalNumber.zero, lostBets == NSDecimalNumber.zero {
+                return NSDecimalNumber.zero
+            }
+
+            let totalBets = wonBets.adding(lostBets)
+            let rate = wonBets.multiplying(by: NSDecimalNumber(value: 100)).dividing(by: totalBets)
+
+            return rate
+        }
+        return NSDecimalNumber.zero
     }
 
     private func startDate(state: StatsState) -> Date {

@@ -33,9 +33,7 @@ struct BalanceRow: View {
                     .foregroundColor(Color.ui.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .frame(maxHeight: .infinity, alignment: .bottom)
-//                    .padding(.bottom, 6)
             }
-//            .padding(.vertical, 3)
             .padding(.horizontal, 12)
 
             HStack {

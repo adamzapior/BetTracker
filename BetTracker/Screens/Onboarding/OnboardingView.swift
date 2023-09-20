@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// TODO: 1 View refactor
 struct OnboardingView: View {
 
     let action: () -> Void

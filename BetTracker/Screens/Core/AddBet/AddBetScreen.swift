@@ -9,7 +9,7 @@ struct AddBetScreen: View {
     var colorScheme
 
     @StateObject
-    var vm = AddBetVM()
+    var vm = AddBetVM(respository: Respository())
 
     @State
     private var showAlert = false
@@ -30,7 +30,7 @@ struct AddBetScreen: View {
 
             VStack(spacing: 2) {
                 if vm.betType == .singlebet {
-                    ScrollView(showsIndicators: false) { // Here was ScrollView
+                    ScrollView(showsIndicators: false) {
                         Group {
                             VStack(alignment: .leading, spacing: 8) {
                                 VStack {
@@ -69,6 +69,7 @@ struct AddBetScreen: View {
                                     )
                                 }
                             }
+                            .padding(.horizontal, 12)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                             VStack(spacing: 12) {
@@ -83,17 +84,14 @@ struct AddBetScreen: View {
                                 .padding(.top, 12)
 
                                 HStack {
-                                    // ** Odds input **
                                     AddBetInputRow(
                                         hint: "Bet odds*",
                                         text: $vm.odds,
-                                        isError: vm.oddsIsError, // TODO:
+                                        isError: vm.oddsIsError,
                                         overlayText: "",
                                         isFocused: $isFocused,
                                         keyboardType: .decimalPad
-                                        // to funkcja stworzona, żeby zablokować
-                                        // mozliwosc edytowania textfielda, musze wyciagnac kolejny
-                                        // obiet tylko dla tego parametru
+
                                     )
 
                                     if vm.taxRowStateValue == .active {
@@ -121,6 +119,7 @@ struct AddBetScreen: View {
                                     vm: vm
                                 )
                             }
+                            .padding(.horizontal, 12)
 
                             VStack(spacing: 12) {
                                 // state
@@ -156,13 +155,13 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is off",
-                                            actionButtonIcon: "plus.app.fill"
+                                            actionButtonIcon: "plus.app.fill",
+                                            actionButtonColor: Color.ui.onPrimaryContainer
                                         ) {
                                             vm.addReminder()
                                         }
 
                                     case .editing:
-
                                         HStack {
                                             ReminderDatePickerRow(
                                                 showDatePicker: $vm.showDatePicker,
@@ -177,7 +176,8 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is on",
-                                            actionButtonIcon: "xmark.app.fill"
+                                            actionButtonIcon: "xmark.app.fill",
+                                            actionButtonColor: Color.red
                                         ) {
                                             vm.deleteReminder()
                                         }
@@ -192,7 +192,8 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "note",
                                             labelText: "Add note",
-                                            actionButtonIcon: "plus.app.fill"
+                                            actionButtonIcon: "chevron.right",
+                                            actionButtonColor: Color.ui.onPrimaryContainer
                                         ) {
                                             vm.openNote()
                                         }
@@ -211,13 +212,13 @@ struct AddBetScreen: View {
                                     currency: vm.defaultCurrency.rawValue.uppercased()
                                 )
                             }
+                            .padding(.horizontal, 12)
                             .padding(.top, 12)
                             .padding(.bottom, 64)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    .padding(.horizontal, 12)
-                    .transition(.slide) // Apply slide transition
+                    .transition(.slide) 
                 }
 
                 if vm.betType == .betslip {
@@ -247,6 +248,7 @@ struct AddBetScreen: View {
                                     }
                                 }
                             }
+                            .padding(.horizontal, 12)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                             VStack(spacing: 12) {
@@ -261,18 +263,13 @@ struct AddBetScreen: View {
                                 .padding(.top, 12)
 
                                 HStack {
-                                    // ** Odds input **
                                     AddBetInputRow(
                                         hint: "Bet odds*",
                                         text: $vm.betslipOdds,
-                                        isError: vm.betslipOddsIsError, // TODO:
+                                        isError: vm.betslipOddsIsError,
                                         overlayText: "",
                                         isFocused: $isFocused,
                                         keyboardType: .decimalPad
-
-                                        // to funkcja stworzona, żeby zablokować
-                                        // mozliwosc edytowania textfielda, musze wyciagnac kolejny
-                                        // obiet tylko dla tego parametru
                                     )
 
                                     if vm.taxRowStateValue == .active {
@@ -301,9 +298,9 @@ struct AddBetScreen: View {
                                     vm: vm
                                 )
                             }
+                            .padding(.horizontal, 12)
 
                             VStack(spacing: 12) {
-                                // state
                                 ZStack {
                                     switch vm.dateState {
                                     case .closed:
@@ -336,13 +333,13 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is off",
-                                            actionButtonIcon: "plus.app.fill"
+                                            actionButtonIcon: "plus.app.fill",
+                                            actionButtonColor: Color.ui.onPrimaryContainer
                                         ) {
                                             vm.addReminder()
                                         }
 
                                     case .editing:
-
                                         HStack {
                                             ReminderDatePickerRow(
                                                 showDatePicker: $vm.showDatePicker,
@@ -357,7 +354,8 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is on",
-                                            actionButtonIcon: "xmark.app.fill"
+                                            actionButtonIcon: "xmark.app.fill",
+                                            actionButtonColor: Color.red
                                         ) {
                                             vm.deleteReminder()
                                         }
@@ -372,7 +370,8 @@ struct AddBetScreen: View {
                                         IconTextActionButtonRow(
                                             icon: "note",
                                             labelText: "Add note",
-                                            actionButtonIcon: "plus.app.fill"
+                                            actionButtonIcon: "chevron.right",
+                                            actionButtonColor: Color.ui.onPrimaryContainer
                                         ) {
                                             vm.openNote()
                                         }
@@ -391,12 +390,12 @@ struct AddBetScreen: View {
                                     currency: vm.defaultCurrency.rawValue.uppercased()
                                 )
                             }
+                            .padding(.horizontal, 12)
                             .padding(.top, 12)
                             .padding(.bottom, 64)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    .padding(.horizontal, 12)
                 }
             }
             .padding(.top, 12)
@@ -455,6 +454,7 @@ struct AddBetScreen: View {
                             if vm.betType == .betslip {
                                 Button {
                                     if vm.saveBetslip() {
+                                        vm.clearTextField()
                                         dismiss()
                                     } else {
                                         showAlert = true
