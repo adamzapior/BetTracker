@@ -8,8 +8,8 @@ The application will be available soon on the App Store.
 - [x] SwiftUI
 - [x] Combine
 - [x] GRDB
-- [x] UserNotifications
 - [x] UserDefaults
+- [x] UserNotifications
 
 ## Architecture
 
@@ -21,7 +21,7 @@ This app is designed with <b>MVVM pattern</b>. Apart from using the MVVM archite
 
 ## Features
 
-- **Bet Management:** Easily create bets and bet slips with parameters like team or name, amount, odds, tax, category, event and notification dates, and additional notes. Users can also mark bets as won or lost and delete them or their notifications before triggering.
+- **Bet Management:** Easily create bets and betslips with parameters like team or name, amount, odds, tax, category, event and notification dates, and additional notes. Users can also mark bets as won or lost and delete them or their notifications before triggering.
 - **Search & Sort:** Quickly search bets by name or by one of the default sorting criteria.
 - **User Profiles & Customization:** Users can personalize their profiles with custom avatars and usernames, and set their default tax rate.
 - **Statistics:** Keep track of various stats including balance and averages of expenditures, wins, and losses over weekly, monthly, yearly, or all-time periods.
@@ -29,4 +29,6 @@ This app is designed with <b>MVVM pattern</b>. Apart from using the MVVM archite
 
 ## Screenshots
 
-Work in progress.
+![BetTracker](https://i.imgur.com/EllNmU8.png)
+![BetTracker](https://i.imgur.com/xKex2f1.png)
+![BetTracker](https://i.imgur.com/CUQH2c2.png)
