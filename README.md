@@ -2,8 +2,7 @@
 
 **Welcome to BetTracker, the smartest way to track and manage all your bets in one sleek interface!**
 
-The application will be available soon on the App Store.
-
+[![BetTrackerAppStore](https://github.com/adamzapior/BetTracker/blob/main/README%20Resources/appstore-badge.png?raw=true)](https://apps.apple.com/pl/app/bettracker-bets-analyzer/id6467141981) 
 ## Tech Stack used to build app:
 - [x] SwiftUI
 - [x] Combine
@@ -13,7 +12,7 @@ The application will be available soon on the App Store.
 
 ## Architecture
 
-![BetTracker-desgin-pattern](https://i.imgur.com/l8jhy08.png)
+![BetTracker-desgin-pattern](https://github.com/adamzapior/BetTracker/blob/main/README%20Resources/bettracker-designpattern.png?raw=true)
 
 This app is designed with <b>MVVM pattern</b>. Apart from using the MVVM architecture, I was inspired by one of the articles on Medium, which additionally separates the communication layer with the database and allows for easier use of the Respository mock in potential tests.
 
@@ -29,6 +28,6 @@ This app is designed with <b>MVVM pattern</b>. Apart from using the MVVM archite
 
 ## Screenshots
 
-![BetTracker](https://i.imgur.com/EllNmU8.png)
-![BetTracker](https://i.imgur.com/xKex2f1.png)
-![BetTracker](https://i.imgur.com/CUQH2c2.png)
+![BetTracker](https://github.com/adamzapior/BetTracker/blob/main/README%20Resources/screenshots1.png?raw=true)
+![BetTracker](https://github.com/adamzapior/BetTracker/blob/main/README%20Resources/screenshots2.png?raw=true)
+![BetTracker](https://github.com/adamzapior/BetTracker/blob/main/README%20Resources/screenshots3.png?raw=true)
