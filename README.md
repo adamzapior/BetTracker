@@ -17,7 +17,7 @@ The application will be available soon on the App Store.
 
 This app is designed with <b>MVVM pattern</b>. Apart from using the MVVM architecture, I was inspired by one of the articles on Medium, which additionally separates the communication layer with the database and allows for easier use of the Respository mock in potential tests.
 
-![Link to the article](https://medium.com/macoclock/swiftui-mvvm-clean-architecture-e976ad3577b5)
+[Link to the article](https://medium.com/macoclock/swiftui-mvvm-clean-architecture-e976ad3577b5)
 
 ## Features
 
