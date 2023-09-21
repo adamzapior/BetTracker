@@ -26,10 +26,6 @@ class BetsDetailsVM: ObservableObject {
         setup()
     }
 
-    deinit {
-        print("VM is out")
-    }
-
     // MARK: -  Bet edit/delete methods:
 
     func markBetWon() {

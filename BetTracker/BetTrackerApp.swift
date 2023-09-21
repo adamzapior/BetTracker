@@ -15,7 +15,7 @@ struct BetTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(session)s
+                .environmentObject(session)
         }
     }
 

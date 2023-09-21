@@ -187,14 +187,14 @@ struct BetslipDetailsView: View {
                                 HStack(spacing: 16) {
                                     MarkWonButton(text: "BET WON")
                                         .onTapGesture {
-                                            // TODO: vm and respository
                                             vm.markBetWon()
+                                            vm.removeNotification()
                                             dismiss()
                                         }
                                     MarkLostButton(text: "BET LOST")
                                         .onTapGesture {
-                                            // TODO: vm and respository
                                             vm.markBetLost()
+                                            vm.removeNotification()
                                             dismiss()
                                         }
                                 }

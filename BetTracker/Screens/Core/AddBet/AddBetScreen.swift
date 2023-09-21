@@ -172,7 +172,7 @@ struct AddBetScreen: View {
                                         }
                                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                                    case .delete:
+                                    case .saved:
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is on",
@@ -350,7 +350,7 @@ struct AddBetScreen: View {
                                         }
                                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                                    case .delete:
+                                    case .saved:
                                         IconTextActionButtonRow(
                                             icon: "bell",
                                             labelText: "Reminder is on",

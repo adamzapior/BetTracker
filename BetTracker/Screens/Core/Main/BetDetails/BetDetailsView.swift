@@ -211,11 +211,13 @@ struct BetDetailsView: View {
                                         MarkWonButton(text: "BET WON")
                                             .onTapGesture {
                                                 vm.markBetWon()
+                                                vm.removeNotification()
                                                 dismiss()
                                             }
                                         MarkLostButton(text: "BET LOST")
                                             .onTapGesture {
                                                 vm.markBetLost()
+                                                vm.removeNotification()
                                                 dismiss()
                                             }
                                     }

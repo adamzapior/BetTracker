@@ -91,6 +91,7 @@ final class AddBetVM: ObservableObject {
     var tax = "" {
         didSet {
             updateProfit()
+            taxIsError = false
             let cleanedTax = filterInput(
                 input: tax,
                 oldValue: oldValue,
@@ -188,8 +189,10 @@ final class AddBetVM: ObservableObject {
     var selectedNotificationDate = Date.now
 
     @Published
-    var betNotificationID = UUID().uuidString
-    
+    var betNotificationID = UUID()
+        .uuidString
+    // DB always save ID, but it's used to save notification if reminderState =/= .saved
+
     @Published
     var isReminderSaved: Bool = false
 
@@ -248,7 +251,7 @@ final class AddBetVM: ObservableObject {
 
     init(respository: Respository) {
         self.respository = respository
-        
+
         isDefaultTaxSet = defaults.get(.isDefaultTaxOn)
         configureTaxInput()
         loadDefaultCurrency()
@@ -295,7 +298,7 @@ final class AddBetVM: ObservableObject {
     }
 
     func saveReminder() {
-        reminderState = .delete
+        reminderState = .saved
         isReminderSaved = true
     }
 
@@ -348,34 +351,52 @@ final class AddBetVM: ObservableObject {
             return false
         }
 
-        print("data saved")
-
         var newTax = tax
 
         if !isDefaultTaxSet {
             newTax = NSDecimalNumber.zero.stringValue
         }
 
-        let bet = BetModel(
-            id: nil,
-            date: selectedDate,
-            team1: team1,
-            team2: team2,
-            selectedTeam: selectedTeam,
-            league: league,
-            amount: NSDecimalNumber(string: amount),
-            odds: NSDecimalNumber(string: odds),
-            category: selectedCategory,
-            tax: NSDecimalNumber(string: newTax),
-            profit: profit,
-            note: note,
-            isWon: nil,
-            betNotificationID: betNotificationID,
-            score: score
-        )
-
-        saveSelectedReminder(betType: .singlebet)
-        respository.saveBet(model: bet)
+        if reminderState == .saved {
+            let bet = BetModel(
+                id: nil,
+                date: selectedDate,
+                team1: team1,
+                team2: team2,
+                selectedTeam: selectedTeam,
+                league: league,
+                amount: NSDecimalNumber(string: amount),
+                odds: NSDecimalNumber(string: odds),
+                category: selectedCategory,
+                tax: NSDecimalNumber(string: newTax),
+                profit: profit,
+                note: note,
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
+            )
+            saveSelectedReminder(betType: .singlebet)
+            respository.saveBet(model: bet)
+        } else {
+            let bet = BetModel(
+                id: nil,
+                date: selectedDate,
+                team1: team1,
+                team2: team2,
+                selectedTeam: selectedTeam,
+                league: league,
+                amount: NSDecimalNumber(string: amount),
+                odds: NSDecimalNumber(string: odds),
+                category: selectedCategory,
+                tax: NSDecimalNumber(string: newTax),
+                profit: profit,
+                note: note,
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
+            )
+            respository.saveBet(model: bet)
+        }
 
         return true
     }
@@ -419,27 +440,44 @@ final class AddBetVM: ObservableObject {
             newTax = NSDecimalNumber.zero.stringValue
         }
 
-        let betslip = BetslipModel(
-            id: nil,
-            date: selectedDate,
-            name: betslipName,
-            amount: NSDecimalNumber(string: betslipAmount),
-            odds: NSDecimalNumber(string: betslipOdds),
-            category: selectedCategory,
-            tax: NSDecimalNumber(string: newTax),
-            profit: profit,
-            note: note,
-            isWon: nil,
-            betNotificationID: betNotificationID,
-            score: score
-        )
-
-        saveSelectedReminder(betType: .betslip)
-        respository.saveBet(model: betslip)
+        if reminderState == .saved {
+            let betslip = BetslipModel(
+                id: nil,
+                date: selectedDate,
+                name: betslipName,
+                amount: NSDecimalNumber(string: betslipAmount),
+                odds: NSDecimalNumber(string: betslipOdds),
+                category: selectedCategory,
+                tax: NSDecimalNumber(string: newTax),
+                profit: profit,
+                note: note,
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
+            )
+            saveSelectedReminder(betType: .betslip)
+            respository.saveBet(model: betslip)
+        } else {
+            let betslip = BetslipModel(
+                id: nil,
+                date: selectedDate,
+                name: betslipName,
+                amount: NSDecimalNumber(string: betslipAmount),
+                odds: NSDecimalNumber(string: betslipOdds),
+                category: selectedCategory,
+                tax: NSDecimalNumber(string: newTax),
+                profit: profit,
+                note: note,
+                isWon: nil,
+                betNotificationID: betNotificationID,
+                score: score
+            )
+            respository.saveBet(model: betslip)
+        }
 
         return true
     }
-    
+
     // ** Methods used to run inside .onApper and .onDissapear view methods **
 
     func saveTextInTexfield() {
@@ -447,7 +485,7 @@ final class AddBetVM: ObservableObject {
         defaults.set(.team2, to: team2)
         defaults.set(.amount, to: amount)
         defaults.set(.odds, to: odds)
-        
+
         defaults.set(.betslipName, to: betslipName)
         defaults.set(.betslipAmount, to: betslipAmount)
         defaults.set(.betslipOdds, to: betslipOdds)
@@ -458,13 +496,12 @@ final class AddBetVM: ObservableObject {
         team2 = defaults.get(.team2)
         amount = defaults.get(.amount)
         odds = defaults.get(.odds)
-        
+
         tax = defaults.get(.defaultTax) // load default Tax to field
-        
+
         betslipName = defaults.get(.betslipName)
         betslipAmount = defaults.get(.betslipAmount)
         betslipOdds = defaults.get(.betslipOdds)
-
     }
 
     func clearTextField() {
@@ -477,7 +514,7 @@ final class AddBetVM: ObservableObject {
         betslipAmount = ""
         betslipOdds = ""
     }
-    
+
     // MARK: - Calculate methods
 
     // Predicted win methods:
@@ -490,7 +527,6 @@ final class AddBetVM: ObservableObject {
         guard let amountString, !amountString.isEmpty,
               let oddsString, !oddsString.isEmpty
         else {
-            print("One or more input values is null or empty222")
             return nil
         }
 
@@ -513,15 +549,12 @@ final class AddBetVM: ObservableObject {
               let taxString, !taxString.isEmpty,
               let tax = Decimal(string: taxString)
         else {
-            print("One or more input values is null, empty, or cannot be converted to Decimal")
             return nil
         }
 
         let taxCorrected = 1.0 - tax / 100
-        print("Tax corrected: \(taxCorrected)")
 
         let predictedWin = amount * odds * taxCorrected
-        print("Predicted win: \(predictedWin)")
 
         return predictedWin
     }
@@ -588,7 +621,7 @@ final class AddBetVM: ObservableObject {
             }
         }
     }
-    
+
     // MARK: -  METHODS FOR ADD BET VIEWMODEL VARIABLES:
 
     /**
@@ -598,7 +631,6 @@ final class AddBetVM: ObservableObject {
      - Parameter notificationTriggerDate:Selected date to trigger notification
      */
     private func saveSelectedReminder(betType: BetType) {
-        
         switch betType {
         case .singlebet:
             if selectedTeam == .team1 {
@@ -614,7 +646,6 @@ final class AddBetVM: ObservableObject {
                     titleName: "\(team2)",
                     notificationTriggerDate: selectedNotificationDate
                 )
-                
             }
         case .betslip:
             UserNotificationsService().scheduleNotification(
@@ -756,8 +787,9 @@ final class AddBetVM: ObservableObject {
         taxIsError = false
         notificationIsError = false
     }
-    
-    /// TAX STATE: Read taxStatus from init, func run in init and set value of isTaxInputDisabled depend on taxStatus Value
+
+    /// TAX STATE: Read taxStatus from init, func run in init and set value of isTaxInputDisabled
+    /// depend on taxStatus Value
     /// taxStatus is boolean value of default tax user settings.
     ///     1. taxStatus = true - the user has a default tax value set
     ///     2. taxStatus = false - user has no default tax value set
@@ -768,7 +800,7 @@ final class AddBetVM: ObservableObject {
             isTaxInputOn = false
         }
     }
-    
+
     private func loadDefaultCurrency() {
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .eur
     }
@@ -781,7 +813,7 @@ final class AddBetVM: ObservableObject {
     enum ReminderRowState {
         case add
         case editing
-        case delete
+        case saved
     }
 
     enum taxRowState {

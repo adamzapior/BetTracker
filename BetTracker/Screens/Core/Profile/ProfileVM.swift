@@ -52,10 +52,6 @@ class ProfileVM: ObservableObject {
     @Published
     var cancellables = Set<AnyCancellable>()
 
-    deinit {
-        print("VM is out")
-    }
-
     init(respository: Respository) {
         self.respository = respository
 

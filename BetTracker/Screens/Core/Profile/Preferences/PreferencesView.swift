@@ -162,7 +162,6 @@ struct PreferencesView: View {
                                                     .onPrimaryContainer
                                         )
                                         .onTapGesture {
-                                            print("image tapped")
                                             vm.isTaxTextfieldOn.toggle()
                                         }
                                     }
