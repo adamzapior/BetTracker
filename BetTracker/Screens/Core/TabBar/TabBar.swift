@@ -35,7 +35,7 @@ struct TabBar: View {
     }
 
     private static let destinations = [
-        Destination(icon: "house", view: { MainView(database: BetDao()) }),
+        Destination(icon: "house", view: { MainView() }),
         Destination(icon: "heart", view: { ProfileView() })
     ]
 

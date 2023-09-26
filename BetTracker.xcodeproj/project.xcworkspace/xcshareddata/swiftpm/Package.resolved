@@ -1,4 +1,5 @@
 {
+  "originHash" : "e1f590ebae0996a483a309ee11e5283c209b47743a8ff9678fcf39a1d12e4156",
   "pins" : [
     {
       "identity" : "grdb.swift",
@@ -8,7 +9,16 @@
         "branch" : "master",
         "revision" : "a1b76f9e06fb5aa20851317639440b7411fff49d"
       }
+    },
+    {
+      "identity" : "lifetimetracker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzysztofzablocki/LifetimeTracker.git",
+      "state" : {
+        "revision" : "fccc98aae719f6615d1f0cfd8f5e60f3888bdf62",
+        "version" : "1.8.4"
+      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

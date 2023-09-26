@@ -1,9 +1,10 @@
 import Foundation
+import LifetimeTracker
 
 class BetslipDetailsVM: ObservableObject {
+    @Injected(\.repository) var repository
 
     let bet: BetslipModel
-    let repository: Repository
 
     let defaults = UserDefaultsManager.path
     var defaultCurrency: Currency = .usd
@@ -13,11 +14,14 @@ class BetslipDetailsVM: ObservableObject {
     @Published
     var isAlertSet: Bool = false
 
-    init(bet: BetslipModel, repository: Repository) {
+    init(bet: BetslipModel) {
         self.bet = bet
-        self.repository = repository
 
         setup()
+
+        #if DEBUG
+        trackLifetime()
+        #endif
     }
 
     // MARK: -  Bet edit/delete methods:
@@ -82,5 +86,11 @@ class BetslipDetailsVM: ObservableObject {
         case uncleared
         case won
         case lost
+    }
+}
+
+extension BetslipDetailsVM: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
     }
 }

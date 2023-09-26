@@ -9,12 +9,17 @@ import Combine
 import CoreTransferable
 import PhotosUI
 import SwiftUI
+import LifetimeTracker
 
 @MainActor
 class ProfilePhotoVM: ObservableObject {
     
     init() {
         checkImageFileExists()
+        
+#if DEBUG
+trackLifetime()
+#endif
     }
     
 
@@ -155,3 +160,8 @@ class ImageSaver: NSObject {
 
 }
 
+extension ProfilePhotoVM: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
+    }
+}

@@ -1,13 +1,14 @@
 import Combine
 import Foundation
 import GRDB
+import LifetimeTracker
 
 final class MainViewVM: ObservableObject {
+    @Injected(\.repository) var repository
 
     private let defaults = UserDefaultsManager.path
-    let repository: Repository
 
-    var defaultCurrency: Currency = Currency.usd
+    var defaultCurrency: Currency = .usd
 
     @Published
     var username = String()
@@ -45,9 +46,7 @@ final class MainViewVM: ObservableObject {
     @Published
     private var cancellables = Set<AnyCancellable>()
 
-    init(repository: Repository) {
-        self.repository = repository
-
+    init() {
         loadUserDefaultsData()
         showUsername = !username.isEmpty
 
@@ -98,10 +97,20 @@ final class MainViewVM: ObservableObject {
                 vm.isHistoryMergedCompleted = true
             })
             .store(in: &cancellables)
+
+        #if DEBUG
+        trackLifetime()
+        #endif
     }
 
     private func loadUserDefaultsData() {
         username = defaults.get(.username)
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .eur
+    }
+}
+
+extension MainViewVM: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
     }
 }

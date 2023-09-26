@@ -4,14 +4,11 @@ import SwiftUI
 
 struct MainView: View {
 
-    let database = BetDao()
-
     @StateObject
     var vm: MainViewVM
 
-    init(database _: BetDao) {
-        let repository = Repository()
-        _vm = StateObject(wrappedValue: MainViewVM(repository: repository))
+    init() {
+        _vm = StateObject(wrappedValue: MainViewVM())
     }
 
     var body: some View {

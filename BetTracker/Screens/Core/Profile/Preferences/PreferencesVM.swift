@@ -2,12 +2,12 @@ import Combine
 import Foundation
 import SwiftUI
 import UIKit
+import LifetimeTracker
 
 class PreferencesVM: ObservableObject {
+    @Injected(\.repository) var repository
 
     let defaults = UserDefaultsManager.path
-
-    let repository: Repository
 
     @Published
     var username = "" {
@@ -57,11 +57,14 @@ class PreferencesVM: ObservableObject {
     @Published
     private var cancellables = Set<AnyCancellable>()
 
-    init(repository: Repository) {
-        self.repository = repository
-        
+    init() {        
         loadSavedPreferences()
+        
+#if DEBUG
+trackLifetime()
+#endif
     }
+
 
     func saveTaxSettings() {
         if isTaxTextfieldOn, defaultTax.isEmpty {
@@ -240,4 +243,10 @@ class PreferencesVM: ObservableObject {
         case name
     }
 
+}
+
+extension PreferencesVM: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
+    }
 }

@@ -1,11 +1,13 @@
 import Combine
 import Foundation
+import LifetimeTracker
 
 class SearchVM: ObservableObject {
 
-    let defaults = UserDefaultsManager.path
-    var repository: Repository
+    @Injected(\.repository) var repository
 
+    let defaults = UserDefaultsManager.path
+    
     var defaultCurrency: Currency = .usd
 
     let sortOptions: [SortOption] = [.all, .oldest, .won, .lost, .amount]
@@ -34,9 +36,7 @@ class SearchVM: ObservableObject {
     @Published
     private var cancellables = Set<AnyCancellable>()
 
-    init(repository: Repository) {
-        self.repository = repository
-
+    init() {
         loadCurrency()
 
         repository.getSavedBets(model: BetModel.self)
@@ -53,7 +53,9 @@ class SearchVM: ObservableObject {
                     (betslipHistory?.map(BetWrapper.betslip) ?? [])
                 return combinedBets.sorted(by: { $0.date > $1.date })
             }
-            .assign(to: \.savedBets, on: self)
+            .sink(receiveValue: { [weak self] combinedBets in
+                self?.savedBets = combinedBets
+            })
             .store(in: &cancellables)
 
         $searchText
@@ -72,6 +74,10 @@ class SearchVM: ObservableObject {
                 }
             }
             .assign(to: &$searchResults)
+        
+        #if DEBUG
+        trackLifetime()
+        #endif
     }
 
     func allBets() {
@@ -134,4 +140,10 @@ class SearchVM: ObservableObject {
         var id: String { rawValue }
     }
 
+}
+
+extension SearchVM: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
+    }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LifetimeTracker
 
 // TODO: Reminders do ogarnięcia
 
@@ -15,6 +16,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+      
+#if DEBUG
+    LifetimeTracker.setup(
+        onUpdate: LifetimeTrackerDashboardIntegration(
+            visibility: .alwaysVisible,
+            style: .circular,
+            textColorForNoIssues: .systemGreen,
+            textColorForLeakDetected: .systemRed
+        ).refreshUI
+    )
+#endif
+      
     configureUserNotifications()
     return true
   }

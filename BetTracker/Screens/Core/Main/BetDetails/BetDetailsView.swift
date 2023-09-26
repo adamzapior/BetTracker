@@ -16,7 +16,7 @@ struct BetDetailsView: View {
     private var showReminderAlert = false
     
     init(bet: BetModel) {
-        _vm = StateObject(wrappedValue: BetsDetailsVM(bet: bet, repository: Repository()))
+        _vm = StateObject(wrappedValue: BetsDetailsVM(bet: bet))
     }
 
     var body: some View {

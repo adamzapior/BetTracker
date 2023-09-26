@@ -13,7 +13,7 @@ struct ContentView: View {
                     .transition(.move(edge: .bottom))
             case .onboardingSetup:
                 OnboardingSetupView(
-                    vm: PreferencesVM(repository: Repository()),
+                    vm: PreferencesVM(),
                     action: session.completeOnboardingSetup
                 )
                 .animation(.easeInOut, value: 0.5)

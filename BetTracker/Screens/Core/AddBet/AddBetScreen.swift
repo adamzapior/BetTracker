@@ -9,7 +9,7 @@ struct AddBetScreen: View {
     var colorScheme
 
     @StateObject
-    var vm = AddBetVM(repository: Repository())
+    var vm = AddBetVM()
 
     @State
     private var showAlert = false

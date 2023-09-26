@@ -1,9 +1,10 @@
 import Foundation
+import LifetimeTracker
 
 class BetsDetailsVM: ObservableObject {
+    @Injected(\.repository) var repository
 
     let bet: BetModel
-    let repository: Repository
 
     let defaults = UserDefaultsManager.path
     var defaultCurrency: Currency = .usd
@@ -19,11 +20,14 @@ class BetsDetailsVM: ObservableObject {
     @Published
     var isAlertSet: Bool = false
 
-    init(bet: BetModel, repository: Repository) {
+    init(bet: BetModel) {
         self.bet = bet
-        self.repository = repository
 
         setup()
+
+        #if DEBUG
+        trackLifetime()
+        #endif
     }
 
     // MARK: -  Bet edit/delete methods:
@@ -83,5 +87,10 @@ class BetsDetailsVM: ObservableObject {
     private func loadDefaultCurrency() {
         defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
     }
+}
 
+extension BetsDetailsVM: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
+    }
 }

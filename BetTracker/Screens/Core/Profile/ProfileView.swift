@@ -7,7 +7,7 @@ struct ProfileView: View {
     var colorScheme
 
     @StateObject
-    var vm = ProfileVM(repository: Repository())
+    var vm = ProfileVM()
 
     @StateObject
     var vmProfilePhoto = ProfilePhotoVM()

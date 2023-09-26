@@ -1,11 +1,13 @@
 import Combine
 import Foundation
 import SwiftUI
+import LifetimeTracker
 
 final class AddBetVM: ObservableObject {
+    
+    @Injected(\.repository) var repository
 
     let defaults = UserDefaultsManager.path
-    let repository: Repository
 
     var isDefaultTaxSet: Bool
 
@@ -249,12 +251,14 @@ final class AddBetVM: ObservableObject {
     @Published
     var notificationIsError = false
 
-    init(repository: Repository) {
-        self.repository = repository
-
+    init() {
         isDefaultTaxSet = defaults.get(.isDefaultTaxOn)
         configureTaxInput()
         loadDefaultCurrency()
+        
+#if DEBUG
+trackLifetime()
+#endif
     }
 
     // MARK: - State Navigation
@@ -868,4 +872,10 @@ enum BetType: String, CaseIterable, Identifiable {
 
     case singlebet = "Single Bet"
     case betslip
+}
+
+extension AddBetVM: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
+    }
 }

@@ -60,7 +60,12 @@
 		58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B3B3142AA13DE400F83554 /* StandardShadowExt.swift */; };
 		58B55B032A8C2DC70088A72B /* BetsDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B55B022A8C2DC70088A72B /* BetsDetailRow.swift */; };
 		58B80F752A8E1DB50011407E /* BetslipDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B80F742A8E1DB50011407E /* BetslipDetailsVM.swift */; };
-		58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4102A0A706500C8CCCC /* SessionManager.swift */; };
+		58BD61072CAAB17A000BF464 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BD61022CAAB17A000BF464 /* SessionManager.swift */; };
+		58BD61082CAAB17A000BF464 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BD61032CAAB17A000BF464 /* Injected.swift */; };
+		58BD61092CAAB17A000BF464 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BD61042CAAB17A000BF464 /* Services.swift */; };
+		58BD610A2CAAB17A000BF464 /* TaskCancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BD61052CAAB17A000BF464 /* TaskCancellable.swift */; };
+		58BD610B2CAAB17A000BF464 /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BD61062CAAB17A000BF464 /* DependencyInjection.swift */; };
+		58BD610E2CAAB193000BF464 /* LifetimeTracker in Frameworks */ = {isa = PBXBuildFile; productRef = 58BD610D2CAAB193000BF464 /* LifetimeTracker */; };
 		58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */; };
 		58BEC4322A0B623D00C8CCCC /* UserNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */; };
 		58C4854F2A0E8A9E00E62522 /* IconTextActionButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C4854E2A0E8A9E00E62522 /* IconTextActionButtonRow.swift */; };
@@ -143,7 +148,11 @@
 		58B3B3142AA13DE400F83554 /* StandardShadowExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardShadowExt.swift; sourceTree = "<group>"; };
 		58B55B022A8C2DC70088A72B /* BetsDetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetsDetailRow.swift; sourceTree = "<group>"; };
 		58B80F742A8E1DB50011407E /* BetslipDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipDetailsVM.swift; sourceTree = "<group>"; };
-		58BEC4102A0A706500C8CCCC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		58BD61022CAAB17A000BF464 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		58BD61032CAAB17A000BF464 /* Injected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
+		58BD61042CAAB17A000BF464 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		58BD61052CAAB17A000BF464 /* TaskCancellable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCancellable.swift; sourceTree = "<group>"; };
+		58BD61062CAAB17A000BF464 /* DependencyInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
 		58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsService.swift; sourceTree = "<group>"; };
 		58C4854E2A0E8A9E00E62522 /* IconTextActionButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextActionButtonRow.swift; sourceTree = "<group>"; };
@@ -165,6 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58BD610E2CAAB193000BF464 /* LifetimeTracker in Frameworks */,
 				5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,6 +202,7 @@
 		58076A4529C906FC00A0762B /* BetTracker */ = {
 			isa = PBXGroup;
 			children = (
+				58BD61012CAAB172000BF464 /* Dependecies */,
 				58C485542A0EA84100E62522 /* Info.plist */,
 				58076A4A29C906FE00A0762B /* Assets.xcassets */,
 				58076A4629C906FC00A0762B /* BetTrackerApp.swift */,
@@ -394,8 +405,8 @@
 		58AA328429EB796800BBBC9C /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */,
 				58AA328829EB7A0800BBBC9C /* PreferencesView.swift */,
+				58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -409,10 +420,21 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		58BD61012CAAB172000BF464 /* Dependecies */ = {
+			isa = PBXGroup;
+			children = (
+				58BD61062CAAB17A000BF464 /* DependencyInjection.swift */,
+				58BD61032CAAB17A000BF464 /* Injected.swift */,
+				58BD61042CAAB17A000BF464 /* Services.swift */,
+				58BD61022CAAB17A000BF464 /* SessionManager.swift */,
+				58BD61052CAAB17A000BF464 /* TaskCancellable.swift */,
+			);
+			path = Dependecies;
+			sourceTree = "<group>";
+		};
 		58BEC40F2A0999BE00C8CCCC /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				58BEC4102A0A706500C8CCCC /* SessionManager.swift */,
 				58BEC42D2A0A968600C8CCCC /* UserDefaultsManager.swift */,
 				58BEC4312A0B623D00C8CCCC /* UserNotificationsService.swift */,
 				58C485572A0EEE0300E62522 /* HapticsManager.swift */,
@@ -473,6 +495,7 @@
 			name = BetTracker;
 			packageProductDependencies = (
 				5874C4B62A6B72F900199AD6 /* GRDB */,
+				58BD610D2CAAB193000BF464 /* LifetimeTracker */,
 			);
 			productName = BetTracker;
 			productReference = 58076A4329C906FC00A0762B /* BetTracker.app */;
@@ -504,6 +527,7 @@
 			mainGroup = 58076A3A29C906FC00A0762B;
 			packageReferences = (
 				58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				58BD610C2CAAB193000BF464 /* XCRemoteSwiftPackageReference "LifetimeTracker" */,
 			);
 			productRefGroup = 58076A4429C906FC00A0762B /* Products */;
 			projectDirPath = "";
@@ -547,10 +571,10 @@
 				5887209D2A7081E300D57B16 /* BetslipDetailsView.swift in Sources */,
 				584E69BC2A75A57700084F78 /* Repository.swift in Sources */,
 				58A3878C2A0FFDF000ED95DB /* CategoryRow.swift in Sources */,
-				58BEC4112A0A706500C8CCCC /* SessionManager.swift in Sources */,
 				580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */,
 				5820EDAB2A96B1DF00C06DBC /* NoteRow.swift in Sources */,
 				58EC477B2A1142AD0088E6DC /* WonRateRow.swift in Sources */,
+				58BD610B2CAAB17A000BF464 /* DependencyInjection.swift in Sources */,
 				58BEC4322A0B623D00C8CCCC /* UserNotificationsService.swift in Sources */,
 				58EC47792A11417F0088E6DC /* NumbersExt.swift in Sources */,
 				58076A9529CA37BF00A0762B /* BetDao.swift in Sources */,
@@ -564,11 +588,13 @@
 				58B55B032A8C2DC70088A72B /* BetsDetailRow.swift in Sources */,
 				58B80F752A8E1DB50011407E /* BetslipDetailsVM.swift in Sources */,
 				58EC47752A1125300088E6DC /* BalanceRow.swift in Sources */,
+				58BD610A2CAAB17A000BF464 /* TaskCancellable.swift in Sources */,
 				58076A8029C907A000A0762B /* BetDetailsView.swift in Sources */,
 				58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */,
 				58076A7D29C907A000A0762B /* BetsDetailsVM.swift in Sources */,
 				58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */,
 				58076A4929C906FC00A0762B /* ContentView.swift in Sources */,
+				58BD61072CAAB17A000BF464 /* SessionManager.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileView.swift in Sources */,
 				58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */,
 				58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */,
@@ -577,6 +603,7 @@
 				58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */,
 				5885E40029D8E4BF005B764E /* AddBetButton.swift in Sources */,
 				58076A9329C98B9800A0762B /* BetRecord.swift in Sources */,
+				58BD61082CAAB17A000BF464 /* Injected.swift in Sources */,
 				58EC47772A112AB60088E6DC /* CurrencyModel.swift in Sources */,
 				58A387882A0FEA5E00ED95DB /* EventDateRow.swift in Sources */,
 				58076A7629C907A000A0762B /* SearchView.swift in Sources */,
@@ -589,6 +616,7 @@
 				5845A63029E6321700A95E2B /* PredictedProfitRow.swift in Sources */,
 				583AB5A929D230A200F4B9DC /* ProfileVM.swift in Sources */,
 				58A387862A0FE25900ED95DB /* EventDatePickerRow.swift in Sources */,
+				58BD61092CAAB17A000BF464 /* Services.swift in Sources */,
 				58076A8A29C907A000A0762B /* AddBetScreen.swift in Sources */,
 				58076A7729C907A000A0762B /* SearchVM.swift in Sources */,
 				58076A4729C906FC00A0762B /* BetTrackerApp.swift in Sources */,
@@ -817,6 +845,14 @@
 				kind = branch;
 			};
 		};
+		58BD610C2CAAB193000BF464 /* XCRemoteSwiftPackageReference "LifetimeTracker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/LifetimeTracker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -824,6 +860,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
+		};
+		58BD610D2CAAB193000BF464 /* LifetimeTracker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 58BD610C2CAAB193000BF464 /* XCRemoteSwiftPackageReference "LifetimeTracker" */;
+			productName = LifetimeTracker;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

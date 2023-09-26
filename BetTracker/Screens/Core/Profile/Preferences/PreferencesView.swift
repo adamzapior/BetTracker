@@ -13,7 +13,7 @@ struct PreferencesView: View {
     var openURL
 
     @StateObject
-    var vm = PreferencesVM(repository: Repository())
+    var vm = PreferencesVM()
 
     @State
     private var showAlert = false
@@ -23,6 +23,7 @@ struct PreferencesView: View {
 
     @FocusState
     private var isFocused: Bool
+    
 
     var body: some View {
         NavigationView {
