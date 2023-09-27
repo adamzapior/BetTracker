@@ -16,7 +16,7 @@ struct BetslipDetailsView: View {
     private var showReminderAlert = false
 
     init(bet: BetslipModel, backgroundColor _: Color = .clear) {
-        _vm = StateObject(wrappedValue: BetslipDetailsVM(bet: bet, respository: Respository()))
+        _vm = StateObject(wrappedValue: BetslipDetailsVM(bet: bet, repository: Repository()))
     }
 
     var body: some View {

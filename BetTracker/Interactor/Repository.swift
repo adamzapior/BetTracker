@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import GRDB
 
-protocol RespositoryProtocol {
+protocol RepositoryProtocol {
     
     func saveBet<T: DatabaseModel>(model: T)
     
@@ -53,7 +53,7 @@ protocol RespositoryProtocol {
         -> AnyPublisher<NSDecimalNumber, Never>
 }
 
-class Respository: RespositoryProtocol {
+class Repository: RepositoryProtocol {
 
     let db = BetDao()
     

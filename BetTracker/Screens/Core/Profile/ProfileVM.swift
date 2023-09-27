@@ -7,7 +7,8 @@ import SwiftUI
 class ProfileVM: ObservableObject {
 
     private let defaults = UserDefaultsManager.path
-    private let respository: Respository
+    private let repository: Repository
+    
 
     @Published
     var defaultCurrency: Currency = Currency.eur
@@ -52,8 +53,8 @@ class ProfileVM: ObservableObject {
     @Published
     var cancellables = Set<AnyCancellable>()
 
-    init(respository: Respository) {
-        self.respository = respository
+    init(repository: Repository) {
+        self.repository = repository
 
         loadUserDefaultsData()
 
@@ -61,12 +62,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getBalanceValue(
+                    repository.getBalanceValue(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getBalanceValue(
+                    repository.getBalanceValue(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate
@@ -84,12 +85,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getTotalSpent(
+                    repository.getTotalSpent(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getTotalSpent(
+                    repository.getTotalSpent(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate
@@ -103,13 +104,13 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getBetsCount(
+                    repository.getBetsCount(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate,
                         isWon: true
                     ),
-                    respository.getBetsCount(
+                    repository.getBetsCount(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate,
@@ -124,13 +125,13 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getBetsCount(
+                    repository.getBetsCount(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate,
                         isWon: false
                     ),
-                    respository.getBetsCount(
+                    repository.getBetsCount(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate,
@@ -145,12 +146,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getPendingBetsCount(
+                    repository.getPendingBetsCount(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getPendingBetsCount(
+                    repository.getPendingBetsCount(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate
@@ -164,13 +165,13 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getAvgWonBet(
+                    repository.getAvgWonBet(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate,
                         isWon: true
                     ),
-                    respository.getAvgWonBet(
+                    repository.getAvgWonBet(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate,
@@ -185,13 +186,13 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getAvgWonBet(
+                    repository.getAvgWonBet(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate,
                         isWon: false
                     ),
-                    respository.getAvgWonBet(
+                    repository.getAvgWonBet(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate,
@@ -206,13 +207,13 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getAvgWonBet(
+                    repository.getAvgWonBet(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate,
                         isWon: false
                     ),
-                    respository.getAvgWonBet(
+                    repository.getAvgWonBet(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate,
@@ -227,12 +228,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getAvgAmountBet(
+                    repository.getAvgAmountBet(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getAvgAmountBet(
+                    repository.getAvgAmountBet(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate
@@ -246,12 +247,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getLargestBetProfit(
+                    repository.getLargestBetProfit(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getLargestBetProfit(
+                    repository.getLargestBetProfit(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate
@@ -265,12 +266,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getBiggestBetLoss(
+                    repository.getBiggestBetLoss(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getBiggestBetLoss(
+                    repository.getBiggestBetLoss(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate
@@ -284,12 +285,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getHiggestBetOddsWon(
+                    repository.getHiggestBetOddsWon(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getHiggestBetOddsWon(
+                    repository.getHiggestBetOddsWon(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate
@@ -303,12 +304,12 @@ class ProfileVM: ObservableObject {
             .flatMap { state in
                 let startDate = self.startDate(state: state)
                 return Publishers.CombineLatest(
-                    respository.getHighestBetAmount(
+                    repository.getHighestBetAmount(
                         model: BetModel.self,
                         tableName: TableName.bet.rawValue,
                         startDate: startDate
                     ),
-                    respository.getHighestBetAmount(
+                    repository.getHighestBetAmount(
                         model: BetslipModel.self,
                         tableName: TableName.betslip.rawValue,
                         startDate: startDate

@@ -5,7 +5,7 @@ import GRDB
 final class MainViewVM: ObservableObject {
 
     private let defaults = UserDefaultsManager.path
-    let respository: Respository
+    let repository: Repository
 
     var defaultCurrency: Currency = Currency.usd
 
@@ -45,25 +45,25 @@ final class MainViewVM: ObservableObject {
     @Published
     private var cancellables = Set<AnyCancellable>()
 
-    init(respository: Respository) {
-        self.respository = respository
+    init(repository: Repository) {
+        self.repository = repository
 
         loadUserDefaultsData()
         showUsername = !username.isEmpty
 
-        respository.getPendingBets(model: BetModel.self, tableName: TableName.bet.rawValue)
+        repository.getPendingBets(model: BetModel.self, tableName: TableName.bet.rawValue)
             .map { .some($0) }
             .assign(to: &$pendingBets)
 
-        respository.getPendingBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
+        repository.getPendingBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
             .map { .some($0) }
             .assign(to: &$pendingBetslipBets)
 
-        respository.getHistoryBets(model: BetModel.self, tableName: TableName.bet.rawValue)
+        repository.getHistoryBets(model: BetModel.self, tableName: TableName.bet.rawValue)
             .map { .some($0) }
             .assign(to: &$historyBets)
 
-        respository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
+        repository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
             .map { .some($0) }
             .assign(to: &$betslipHistory)
 

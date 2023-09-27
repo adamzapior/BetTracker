@@ -3,7 +3,7 @@ import Foundation
 class BetsDetailsVM: ObservableObject {
 
     let bet: BetModel
-    let respository: Respository
+    let repository: Repository
 
     let defaults = UserDefaultsManager.path
     var defaultCurrency: Currency = .usd
@@ -19,9 +19,9 @@ class BetsDetailsVM: ObservableObject {
     @Published
     var isAlertSet: Bool = false
 
-    init(bet: BetModel, respository: Respository) {
+    init(bet: BetModel, repository: Repository) {
         self.bet = bet
-        self.respository = respository
+        self.repository = repository
 
         setup()
     }
@@ -31,19 +31,19 @@ class BetsDetailsVM: ObservableObject {
     func markBetWon() {
         let newScore = (bet.profit).subtracting(bet.amount)
 
-        respository.markBetStatus(model: bet, isWon: true, tableName: TableName.bet.rawValue)
-        respository.updateProfit(model: bet, score: newScore, tableName: TableName.bet.rawValue)
+        repository.markBetStatus(model: bet, isWon: true, tableName: TableName.bet.rawValue)
+        repository.updateProfit(model: bet, score: newScore, tableName: TableName.bet.rawValue)
     }
 
     func markBetLost() {
         let newScore = (bet.amount).multiplying(by: -1)
 
-        respository.markBetStatus(model: bet, isWon: false, tableName: TableName.bet.rawValue)
-        respository.updateProfit(model: bet, score: newScore, tableName: TableName.bet.rawValue)
+        repository.markBetStatus(model: bet, isWon: false, tableName: TableName.bet.rawValue)
+        repository.updateProfit(model: bet, score: newScore, tableName: TableName.bet.rawValue)
     }
 
     func deleteBet(bet: BetModel) {
-        respository.deleteBet(model: bet)
+        repository.deleteBet(model: bet)
     }
 
     func removeNotification() {

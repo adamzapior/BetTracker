@@ -5,7 +5,7 @@ import SwiftUI
 final class AddBetVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
-    let respository: Respository
+    let repository: Repository
 
     var isDefaultTaxSet: Bool
 
@@ -249,8 +249,8 @@ final class AddBetVM: ObservableObject {
     @Published
     var notificationIsError = false
 
-    init(respository: Respository) {
-        self.respository = respository
+    init(repository: Repository) {
+        self.repository = repository
 
         isDefaultTaxSet = defaults.get(.isDefaultTaxOn)
         configureTaxInput()
@@ -376,7 +376,7 @@ final class AddBetVM: ObservableObject {
                 score: score
             )
             saveSelectedReminder(betType: .singlebet)
-            respository.saveBet(model: bet)
+            repository.saveBet(model: bet)
         } else {
             let bet = BetModel(
                 id: nil,
@@ -395,7 +395,7 @@ final class AddBetVM: ObservableObject {
                 betNotificationID: betNotificationID,
                 score: score
             )
-            respository.saveBet(model: bet)
+            repository.saveBet(model: bet)
         }
 
         return true
@@ -456,7 +456,7 @@ final class AddBetVM: ObservableObject {
                 score: score
             )
             saveSelectedReminder(betType: .betslip)
-            respository.saveBet(model: betslip)
+            repository.saveBet(model: betslip)
         } else {
             let betslip = BetslipModel(
                 id: nil,
@@ -472,7 +472,7 @@ final class AddBetVM: ObservableObject {
                 betNotificationID: betNotificationID,
                 score: score
             )
-            respository.saveBet(model: betslip)
+            repository.saveBet(model: betslip)
         }
 
         return true

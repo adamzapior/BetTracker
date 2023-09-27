@@ -4,7 +4,7 @@ import Foundation
 class SearchVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
-    var respository: Respository
+    var repository: Repository
 
     var defaultCurrency: Currency = .usd
 
@@ -34,16 +34,16 @@ class SearchVM: ObservableObject {
     @Published
     private var cancellables = Set<AnyCancellable>()
 
-    init(respository: Respository) {
-        self.respository = respository
+    init(repository: Repository) {
+        self.repository = repository
 
         loadCurrency()
 
-        respository.getSavedBets(model: BetModel.self)
+        repository.getSavedBets(model: BetModel.self)
             .map { .some($0) }
             .assign(to: &$bets)
 
-        respository.getSavedBets(model: BetslipModel.self)
+        repository.getSavedBets(model: BetslipModel.self)
             .map { .some($0) }
             .assign(to: &$betslips)
 

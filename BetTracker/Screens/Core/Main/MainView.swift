@@ -10,8 +10,8 @@ struct MainView: View {
     var vm: MainViewVM
 
     init(database _: BetDao) {
-        let respository = Respository()
-        _vm = StateObject(wrappedValue: MainViewVM(respository: respository))
+        let repository = Repository()
+        _vm = StateObject(wrappedValue: MainViewVM(repository: repository))
     }
 
     var body: some View {
@@ -33,7 +33,7 @@ struct MainView: View {
 
                         if vm.pendingMerged!.isEmpty {
                             EmptyView()
-                            
+
                         } else if vm.isPendingMergedCompleted == false {
                             ProgressView()
                         } else {

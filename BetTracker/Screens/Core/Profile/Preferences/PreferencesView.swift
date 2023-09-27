@@ -13,7 +13,7 @@ struct PreferencesView: View {
     var openURL
 
     @StateObject
-    var vm = PreferencesVM(respository: Respository())
+    var vm = PreferencesVM(repository: Repository())
 
     @State
     private var showAlert = false

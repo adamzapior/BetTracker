@@ -7,7 +7,7 @@ class PreferencesVM: ObservableObject {
 
     let defaults = UserDefaultsManager.path
 
-    let respository: Respository
+    let repository: Repository
 
     @Published
     var username = "" {
@@ -57,8 +57,8 @@ class PreferencesVM: ObservableObject {
     @Published
     private var cancellables = Set<AnyCancellable>()
 
-    init(respository: Respository) {
-        self.respository = respository
+    init(repository: Repository) {
+        self.repository = repository
         
         loadSavedPreferences()
     }
@@ -102,8 +102,8 @@ class PreferencesVM: ObservableObject {
     }
 
     private func getBetsData(completion: @escaping () -> Void) {
-        let historyBetsPublisher = respository.getHistoryBets(model: BetModel.self, tableName: TableName.bet.rawValue)
-        let betslipHistoryPublisher = respository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
+        let historyBetsPublisher = repository.getHistoryBets(model: BetModel.self, tableName: TableName.bet.rawValue)
+        let betslipHistoryPublisher = repository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
 
         Publishers.Zip(historyBetsPublisher, betslipHistoryPublisher)
             .map { historyBets, betslipHistory -> [BetWrapper] in
