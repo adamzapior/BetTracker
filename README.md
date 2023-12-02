@@ -1,5 +1,7 @@
 # BetTracker
 
+![label](https://i.imgur.com/NGgeCSY.png)
+
 **Welcome to BetTracker, the smartest way to track and manage all your bets in one sleek interface!**
 
 Quickly and easily input your bets, from single wagers to betlips. Personalize your tracking with custom tax rates and other values to get a real-time view of your potential returns. Set timely notifications ensuring you never miss settling a bet and stay on top of every wager, win or lose. With a single tap, export all your betting data into a spreadsheet, ideal for analysis, backup, or sharing.
