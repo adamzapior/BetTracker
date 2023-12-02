@@ -1,6 +1,6 @@
-# BetTracker
-
 ![label](https://i.imgur.com/NGgeCSY.png)
+
+# BetTracker
 
 **Welcome to BetTracker, the smartest way to track and manage all your bets in one sleek interface!**
 
