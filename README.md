@@ -32,6 +32,7 @@ This app is designed with <b>MVVM pattern</b>. Apart from using the MVVM archite
 
 ## Development plan
 
+- Clear views navigation
 - XCTests
 - Accessibility for all screen sizes
 - Draw match type setting
