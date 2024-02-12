@@ -201,7 +201,6 @@
 				58076A5929C9079F00A0762B /* Extensions */,
 				58076A5E29C9079F00A0762B /* Model */,
 				58076A8E29C98B1000A0762B /* Data */,
-				580BC5C72A7279C300330998 /* Interactor */,
 				5870E9DA29E456610023CC01 /* Screens */,
 				58076A4C29C906FE00A0762B /* Preview Content */,
 			);
@@ -333,19 +332,12 @@
 		58076A8E29C98B1000A0762B /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				584E69BB2A75A57700084F78 /* Repository.swift */,
 				58076A8F29C98B4000A0762B /* BetDb.swift */,
 				58076A9229C98B9800A0762B /* BetRecord.swift */,
 				58076A9429CA37BE00A0762B /* BetDao.swift */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		580BC5C72A7279C300330998 /* Interactor */ = {
-			isa = PBXGroup;
-			children = (
-				584E69BB2A75A57700084F78 /* Repository.swift */,
-			);
-			path = Interactor;
 			sourceTree = "<group>";
 		};
 		583AB5A729D2303A00F4B9DC /* Profile */ = {

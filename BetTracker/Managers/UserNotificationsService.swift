@@ -17,11 +17,6 @@ struct UserNotificationsService {
         )
         let finalStringNotificationTitle = String(format: localizedStringNotificationTitle, name)
 
-//        let localizedStringNotificationBody = NSLocalizedString(
-//            "You have picked %@ and bet is still pending",
-//            comment: ""
-//        )
-//        let finalStringNotificationBody = String(format: localizedStringNotificationBody, name)
 
         // ** Notification content **
         content.title = finalStringNotificationTitle
