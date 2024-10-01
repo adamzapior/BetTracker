@@ -21,7 +21,7 @@ class BetDb {
         let db = try! DatabaseQueue(path: databaseURL.path)
 
         try? db.write { db in
-            try db.create(table: TableName.bet.rawValue) { t in
+            try db.create(table: TableName.bet.rawValue, ifNotExists: true) { t in
                 t.autoIncrementedPrimaryKey("id")
                 t.column("date", .datetime).notNull()
                 t.column("team1", .text).notNull()
@@ -41,7 +41,7 @@ class BetDb {
         }
 
         try? db.write { db in
-            try db.create(table: TableName.betslip.rawValue) { t in
+            try db.create(table: TableName.betslip.rawValue, ifNotExists: true) { t in
                 t.autoIncrementedPrimaryKey("id")
                 t.column("name", .text)
                 t.column("date", .datetime).notNull()
