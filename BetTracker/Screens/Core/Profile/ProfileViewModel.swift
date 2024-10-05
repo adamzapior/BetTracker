@@ -5,61 +5,57 @@ import PhotosUI
 import SwiftUI
 
 @MainActor
-class ProfileVM: ObservableObject {
+class ProfileViewModel: ObservableObject {
     @Injected(\.repository) var repository
+    @Injected(\.userDefaults) var userDefaults
 
-    private let defaults = UserDefaultsManager.path
+    /// User data
+    @Published var defaultCurrency: Currency = .eur
+    @Published var username: String = ""
 
-    @Published
-    var defaultCurrency: Currency = .eur
+    /// Selected stats period
+    @Published var selectedStatsPeriod: StatsPeriod = .month
 
-    @Published
-    var username: String = ""
+    /// Stats data
+    @Published var mergedBalanceValue: NSDecimalNumber? = nil
+    @Published var mergedTotalSpent: NSDecimalNumber? = nil
+    @Published var mergedWonBetsCount: NSDecimalNumber? = nil
+    @Published var mergedLostBetsCount: NSDecimalNumber? = nil
+    @Published var mergedPendingBetsCount: NSDecimalNumber? = nil
+    @Published var mergedAvgWonBet: NSDecimalNumber? = nil
+    @Published var mergedAvgLostBet: NSDecimalNumber? = nil
+    @Published var mergedAvgAmountBet: NSDecimalNumber? = nil
+    @Published var mergedLargestBetProfit: NSDecimalNumber? = nil
+    @Published var mergedBiggestBetLoss: NSDecimalNumber? = nil
+    @Published var mergedHiggestBetOddsWon: NSDecimalNumber? = nil
+    @Published var mergedHiggestBetAmount: NSDecimalNumber? = nil
+    @Published var wonRate: NSDecimalNumber? = nil
 
-    @Published
-    var currentStatsState: StatsState = .month
-
-    @Published
-    var mergedBalanceValue: NSDecimalNumber? = nil
-    @Published
-    var mergedTotalSpent: NSDecimalNumber? = nil
-    @Published
-    var mergedWonBetsCount: NSDecimalNumber? = nil
-    @Published
-    var mergedLostBetsCount: NSDecimalNumber? = nil
-    @Published
-    var mergedPendingBetsCount: NSDecimalNumber? = nil
-    @Published
-    var mergedAvgWonBet: NSDecimalNumber? = nil
-    @Published
-    var mergedAvgLostBet: NSDecimalNumber? = nil
-    @Published
-    var mergedAvgAmountBet: NSDecimalNumber? = nil
-    @Published
-    var mergedLargestBetProfit: NSDecimalNumber? = nil
-    @Published
-    var mergedBiggestBetLoss: NSDecimalNumber? = nil
-    @Published
-    var mergedHiggestBetOddsWon: NSDecimalNumber? = nil
-    @Published
-    var mergedHiggestBetAmount: NSDecimalNumber? = nil
-
-    @Published
-    var wonRate: NSDecimalNumber? = nil
-
-    @Published
-    var isLoading: Bool = true
-
-    @Published
-    var cancellables = Set<AnyCancellable>()
+    @Published var cancellables = Set<AnyCancellable>()
 
     init() {
         loadUserDefaultsData()
+        bindStatsData()
 
-        $currentStatsState
+        #if DEBUG
+        trackLifetime()
+        #endif
+    }
+
+    // MARK: - Public
+
+    func loadUserDefaultsData() {
+        username = userDefaults.getValue(for: .username)
+        defaultCurrency = Currency(rawValue: userDefaults.getValue(for: .defaultCurrency)) ?? .eur
+    }
+
+    // MARK: - Private
+
+    private func bindStatsData() {
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getBalanceValue(
                         model: BetModel.self,
@@ -77,14 +73,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedBalanceValue = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getTotalSpent(
                         model: BetModel.self,
@@ -102,14 +97,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedTotalSpent = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getBetsCount(
                         model: BetModel.self,
@@ -129,14 +123,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedWonBetsCount = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getBetsCount(
                         model: BetModel.self,
@@ -156,14 +149,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedLostBetsCount = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getPendingBetsCount(
                         model: BetModel.self,
@@ -181,14 +173,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedPendingBetsCount = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getAvgWonBet(
                         model: BetModel.self,
@@ -208,14 +199,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedAvgWonBet = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getAvgWonBet(
                         model: BetModel.self,
@@ -235,14 +225,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedAvgLostBet = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getAvgAmountBet(
                         model: BetModel.self,
@@ -260,14 +249,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedAvgAmountBet = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getLargestBetProfit(
                         model: BetModel.self,
@@ -285,14 +273,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedLargestBetProfit = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getBiggestBetLoss(
                         model: BetModel.self,
@@ -310,14 +297,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedBiggestBetLoss = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getHiggestBetOddsWon(
                         model: BetModel.self,
@@ -335,14 +321,13 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedHiggestBetOddsWon = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
 
-        $currentStatsState
+        $selectedStatsPeriod
             .flatMap { [weak self] state -> AnyPublisher<NSDecimalNumber?, Never> in
                 guard let self = self else { return Just(nil).eraseToAnyPublisher() }
-                let startDate = self.startDate(state: state)
+                let startDate = self.getDateToFilter(for: state)
                 return Publishers.CombineLatest(
                     self.repository.getHighestBetAmount(
                         model: BetModel.self,
@@ -360,10 +345,9 @@ class ProfileVM: ObservableObject {
             }
             .sink { [weak self] newValue in
                 self?.mergedHiggestBetAmount = newValue
-                self?.isLoading = false
             }
             .store(in: &cancellables)
-        
+
         Publishers.CombineLatest($mergedWonBetsCount, $mergedLostBetsCount)
             .map { [weak self] won, lost -> NSDecimalNumber in
                 guard let self = self else { return NSDecimalNumber.zero }
@@ -375,18 +359,14 @@ class ProfileVM: ObservableObject {
                 self?.wonRate = newWonRate
             }
             .store(in: &cancellables)
-
-        #if DEBUG
-        trackLifetime()
-        #endif
     }
 
-    func loadUserDefaultsData() {
-        username = defaults.get(.username)
-        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .eur
-    }
-
-    private func calculateWonRate(wonBets: NSDecimalNumber?, lostBets: NSDecimalNumber?) -> NSDecimalNumber {
+    private func calculateWonRate(
+        wonBets: NSDecimalNumber?,
+        lostBets: NSDecimalNumber?
+    )
+        -> NSDecimalNumber
+    {
         if let wonBets = wonBets, let lostBets = lostBets {
             if wonBets == NSDecimalNumber.zero, lostBets == NSDecimalNumber.zero {
                 return NSDecimalNumber.zero
@@ -400,46 +380,19 @@ class ProfileVM: ObservableObject {
         return NSDecimalNumber.zero
     }
 
-    private func startDate(state: StatsState) -> Date {
+    private func getDateToFilter(for period: StatsPeriod) -> Date {
         let startDate: Date
-        switch state {
-        case .week: startDate = StartDate.last7days.dateValue!
-        case .month: startDate = StartDate.lastMonth.dateValue!
-        case .year: startDate = StartDate.lastYear.dateValue!
-        case .alltime: startDate = StartDate.allTime.dateValue!
+        switch period {
+        case .week: startDate = FilteredPeriod.last7days.dateValue!
+        case .month: startDate = FilteredPeriod.lastMonth.dateValue!
+        case .year: startDate = FilteredPeriod.lastYear.dateValue!
+        case .alltime: startDate = FilteredPeriod.allTime.dateValue!
         }
         return startDate
     }
-
-    private enum TableName: String, CaseIterable {
-        case bet
-        case betslip
-    }
-
-    private enum StartDate {
-        case last7days
-        case lastMonth
-        case lastYear
-        case allTime
-
-        var dateValue: Date? {
-            let calendar = Calendar.current
-            let currentDate = Date()
-            switch self {
-            case .last7days:
-                return calendar.date(byAdding: .day, value: -7, to: currentDate)
-            case .lastMonth:
-                return calendar.date(byAdding: .month, value: -1, to: currentDate)
-            case .lastYear:
-                return calendar.date(byAdding: .year, value: -1, to: currentDate)
-            case .allTime:
-                return calendar.date(byAdding: .year, value: -30, to: currentDate)
-            }
-        }
-    }
 }
 
-enum StatsState: String, CaseIterable, Identifiable {
+enum StatsPeriod: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 
     case week = "Last week"
@@ -448,7 +401,29 @@ enum StatsState: String, CaseIterable, Identifiable {
     case alltime = "All time"
 }
 
-extension ProfileVM: LifetimeTrackable {
+private enum FilteredPeriod {
+    case last7days
+    case lastMonth
+    case lastYear
+    case allTime
+
+    var dateValue: Date? {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        switch self {
+        case .last7days:
+            return calendar.date(byAdding: .day, value: -7, to: currentDate)
+        case .lastMonth:
+            return calendar.date(byAdding: .month, value: -1, to: currentDate)
+        case .lastYear:
+            return calendar.date(byAdding: .year, value: -1, to: currentDate)
+        case .allTime:
+            return calendar.date(byAdding: .year, value: -30, to: currentDate)
+        }
+    }
+}
+
+extension ProfileViewModel: LifetimeTrackable {
     class var lifetimeConfiguration: LifetimeConfiguration {
         return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
     }
