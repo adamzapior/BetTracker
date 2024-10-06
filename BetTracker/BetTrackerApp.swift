@@ -8,13 +8,18 @@ struct BetTrackerApp: App {
     @StateObject
     private var session = SessionManager()
 
+    @Bindable private var appRouter = AppRouter()
+
     init() {
         requestNotificationPermission()
+        
+
     }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(appRouter)
                 .environmentObject(session)
         }
     }
