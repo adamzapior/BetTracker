@@ -8,24 +8,19 @@
 import Foundation
 
 protocol Services {
-//    var defaultsManager: UserDefaultsManager { get }
+    var defaultsManager: UserDefaultsManager { get }
     var repository: Repository { get }
 }
 
-// I need to think about this - should it be final?
 final class AppServices: Services {
-//    var defaultsManager: UserDefaultsManager
     var repository: Repository
+    var defaultsManager: UserDefaultsManager
   
     
-    init(repository: Repository) {
+    init(repository: Repository, defaultsManager: UserDefaultsManager) {
         self.repository = repository
+        self.defaultsManager = defaultsManager
     }
-    
-//    init(defaultsManager: UserDefaultsManager, repository: Repository) {
-//        self.defaultsManager = defaultsManager
-//        self.repository = repository
-//    }
 }
 
 /// Class used for Unit Tests

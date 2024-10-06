@@ -1,36 +1,56 @@
 import Foundation
+import LifetimeTracker
 
-final class UserDefaultsManager {
-    static let path = UserDefaults.standard
-    var value: String
-
-    init(_ value: String) {
-        self.value = value
+class UserDefaultsManager {
+    private let userDefaults: UserDefaults
+    
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+        
+#if DEBUG
+trackLifetime()
+#endif
     }
-
-    // MARK: Global variables from UserDefaults:
-
-    static var defaultCurrencyValue = "PLN"
-
+    
+    func getValue<T: Defaultable>(for key: DefaultsKey<T>) -> T.Value {
+        userDefaults.object(forKey: key.value) as? T.Value ?? T.defaultValue
+    }
+    
+    func setValue<T>(_ value: T, for key: DefaultsKey<T>) {
+        userDefaults.set(value, forKey: key.value)
+    }
+    
+    // MARK: Global variables
+    static var defaultCurrencyValue: String {
+        get {
+            UserDefaults.standard.string(forKey: "defaultCurrency") ?? "PLN"
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "defaultCurrency")
+        }
+    }
 }
+
+extension UserDefaultsManager: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "UserDefaultsManager")
+    }
+}
+
 
 class DefaultsKeys { }
 
 final class DefaultsKey<T>: DefaultsKeys {
     let value: String
-
     init(_ value: String) {
         self.value = value
     }
 }
 
 // MARK: UserDefaults Keys to save&load
-
 extension DefaultsKeys {
-
     /// Onboarding:
     static let hasSeenOnboarding = DefaultsKey<Bool>("hasSeenOnboarding")
-
     /// Add bet texfields:
     static let team1 = DefaultsKey<String>("team1")
     static let team2 = DefaultsKey<String>("team2")
@@ -44,7 +64,6 @@ extension DefaultsKeys {
     static let betslipAmount = DefaultsKey<String>("betslipAmount")
     static let betslipOdds = DefaultsKey<String>("betslipOdds")
     static let betslipTax = DefaultsKey<String>("betslipTax")
-
     /// UserPreferences:
     static let username = DefaultsKey<String>("username")
     static let isDefaultTaxOn = DefaultsKey<Bool>("isDefaultTaxOn")
@@ -52,17 +71,9 @@ extension DefaultsKeys {
     static let defaultCurrency = DefaultsKey<String>("defaultCurrency")
 }
 
-// MARK: UserDefaults methods
-
-extension UserDefaults {
-
-    func get<T: Defaultable>(_ key: DefaultsKey<T>) -> T.Value {
-        object(forKey: key.value) as? T.Value ?? T.defaultValue
-    }
-
-    func set<T>(_ key: DefaultsKey<T>, to value: T) {
-        set(value, forKey: key.value)
-    }
+public protocol Defaultable {
+    associatedtype Value
+    static var defaultValue: Value { get }
 }
 
 extension String: Defaultable {
@@ -74,10 +85,5 @@ extension Date: Defaultable {
 }
 
 extension Bool: Defaultable {
-    public static var defaultValue: Bool = false
-}
-
-public protocol Defaultable {
-    associatedtype Value
-    static var defaultValue: Value { get }
+    public static var defaultValue: Bool { false }
 }

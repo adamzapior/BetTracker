@@ -12,6 +12,7 @@ public class LoginState: ObservableObject {
 }
 
 class AppLoginManager: LoginManager {
+    @Injected(\.userDefaults) var userDefaults
 
     
     public var state: LoginState = LoginState()
@@ -20,12 +21,12 @@ class AppLoginManager: LoginManager {
     
     init(state: LoginState) {
         self.state = state
-        self.setupValues()
+//        self.setupValues()
     }
     
     private func setupValues() {
-        self.state.loggedIn = UserDefaultsManager.path.get(.hasSeenOnboarding)
-        self.state.userName = UserDefaultsManager.path.get(.username)
+        self.state.loggedIn = userDefaults.getValue(for: .hasSeenOnboarding)
+        self.state.userName = userDefaults.getValue(for: .username)
     }
     
     func logIn() {
@@ -60,7 +61,7 @@ class MockLoginManager: LoginManager {
 
 final class SessionManager: ObservableObject {
 
-    let defaults = UserDefaultsManager.path
+    @Injected(\.userDefaults) var userDefaults
 
     enum CurrentState {
         case loggedIn
@@ -82,7 +83,8 @@ final class SessionManager: ObservableObject {
 
     func completeOnboardingSetup() {
         currentState = .loggedIn
-        defaults.set(.hasSeenOnboarding, to: true)
+//        defaults.set(.hasSeenOnboarding, to: true)
+        userDefaults.setValue(true, for: .hasSeenOnboarding)
     }
 
     func configureCurrentState() {
@@ -91,7 +93,8 @@ final class SessionManager: ObservableObject {
          - User closes the app after viewing onboarding > Resume the app from the main view (main app)
          */
 
-        let hasCompletedOnboarding = defaults.get(.hasSeenOnboarding)
+//        let hasCompletedOnboarding = defaults.get(.hasSeenOnboarding)
+        let hasCompletedOnboarding = userDefaults.getValue(for: .hasSeenOnboarding)
 
         if hasCompletedOnboarding {
             currentState = .loggedIn
