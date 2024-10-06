@@ -1,15 +1,15 @@
 import Combine
 import Foundation
 import GRDB
+import LifetimeTracker
 
 protocol RepositoryProtocol {
-    
     func saveBet<T: DatabaseModel>(model: T)
-    
+
     func deleteBet<T: DatabaseModel>(model: T)
-    
+
     func markBetStatus<T: DatabaseModel>(model: T, isWon: Bool, tableName: String)
-    
+
     func updateProfit<T: DatabaseModel>(model: T, score: NSDecimalNumber, tableName: String)
 
     func getPendingBets<T: DatabaseModel>(
@@ -33,7 +33,7 @@ protocol RepositoryProtocol {
         startDate: Date,
         isWon: Bool?
     ) -> AnyPublisher<NSDecimalNumber, Never>
-    
+
     func getPendingBetsCount<T: DatabaseModel>(
         model: T.Type,
         tableName: String,
@@ -54,25 +54,30 @@ protocol RepositoryProtocol {
 }
 
 class Repository: RepositoryProtocol {
-
     let db = BetDao()
-    
+
+    init() {
+        #if DEBUG
+        trackLifetime()
+        #endif
+    }
+
     func saveBet<T: DatabaseModel>(model: T) {
         db.saveBet(model: model)
     }
-    
+
     func deleteBet<T: DatabaseModel>(model: T) {
         db.deleteBet(model: model)
     }
-    
+
     func markBetStatus<T: DatabaseModel>(model: T, isWon: Bool, tableName: String) {
         db.markFinished(model: model, isWon: isWon, tableName: tableName)
     }
-    
+
     func updateProfit<T: DatabaseModel>(model: T, score: NSDecimalNumber, tableName: String) {
         db.updateProfit(model: model, score: score, tableName: tableName)
     }
-    
+
     func getPendingBets<T: DatabaseModel>(
         model: T.Type,
         tableName: String
@@ -121,7 +126,7 @@ class Repository: RepositoryProtocol {
             isWon: isWonValue
         )
     }
-    
+
     func getPendingBetsCount<T: DatabaseModel>(
         model: T.Type,
         tableName: String,
@@ -181,5 +186,11 @@ class Repository: RepositoryProtocol {
         startDate: Date
     ) -> AnyPublisher<NSDecimalNumber, Never> {
         db.getHiggestBetAmount(model: model, tableName: tableName, startDate: startDate)
+    }
+}
+
+extension Repository: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "Repository")
     }
 }
