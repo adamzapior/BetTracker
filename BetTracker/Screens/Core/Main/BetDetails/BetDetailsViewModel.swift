@@ -1,7 +1,7 @@
 import Foundation
 import LifetimeTracker
 
-class BetDetailsViewModel: ObservableObject {
+class BetDetailsViewModel: ObservableObject, BetsDetailsViewModelsProtocol {
     @Injected(\.repository) var repository
     @Injected(\.userDefaults) var userDefaults
 
