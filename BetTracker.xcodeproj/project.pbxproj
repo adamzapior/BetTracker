@@ -13,7 +13,6 @@
 		58076A4E29C906FE00A0762B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58076A4D29C906FE00A0762B /* Preview Assets.xcassets */; };
 		58076A7929C907A000A0762B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A5A29C9079F00A0762B /* Theme.swift */; };
 		58076A7C29C907A000A0762B /* BetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A5F29C9079F00A0762B /* BetModel.swift */; };
-		58076A8129C907A000A0762B /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A6829C907A000A0762B /* TabBar.swift */; };
 		58076A8729C907A000A0762B /* AddBetVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A7129C907A000A0762B /* AddBetVM.swift */; };
 		58076A8829C907A000A0762B /* TeamInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A7329C907A000A0762B /* TeamInputRow.swift */; };
 		58076A8929C907A000A0762B /* AddBetInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A7429C907A000A0762B /* AddBetInputRow.swift */; };
@@ -41,6 +40,7 @@
 		580CB6BE2CB470B2009771E6 /* FeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6A92CB470B2009771E6 /* FeedScreen.swift */; };
 		580CB6BF2CB470B2009771E6 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6AA2CB470B2009771E6 /* FeedViewModel.swift */; };
 		580CB6C22CB471FA009771E6 /* BetTypeCapsuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6C12CB471FA009771E6 /* BetTypeCapsuleView.swift */; };
+		580CB6C42CB47507009771E6 /* AddBetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6C32CB47507009771E6 /* AddBetViewModel.swift */; };
 		5820EDAB2A96B1DF00C06DBC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820EDAA2A96B1DE00C06DBC /* NoteRow.swift */; };
 		583AB5A929D230A200F4B9DC /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AB5A829D230A200F4B9DC /* ProfileViewModel.swift */; };
 		5845A63029E6321700A95E2B /* PredictedProfitRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5845A62F29E6321700A95E2B /* PredictedProfitRow.swift */; };
@@ -87,7 +87,6 @@
 		58E887AD2A00528A0079C045 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E887AC2A00528A0079C045 /* ProfileScreen.swift */; };
 		58EC47772A112AB60088E6DC /* CurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC47762A112AB60088E6DC /* CurrencyModel.swift */; };
 		58EC47792A11417F0088E6DC /* NumbersExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC47782A11417F0088E6DC /* NumbersExt.swift */; };
-		58EC47812A1199FF0088E6DC /* BetAverageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EC47802A1199FF0088E6DC /* BetAverageRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -111,7 +110,6 @@
 		58076A4D29C906FE00A0762B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		58076A5A29C9079F00A0762B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		58076A5F29C9079F00A0762B /* BetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetModel.swift; sourceTree = "<group>"; };
-		58076A6829C907A000A0762B /* TabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		58076A7129C907A000A0762B /* AddBetVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBetVM.swift; sourceTree = "<group>"; };
 		58076A7329C907A000A0762B /* TeamInputRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamInputRow.swift; sourceTree = "<group>"; };
 		58076A7429C907A000A0762B /* AddBetInputRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBetInputRow.swift; sourceTree = "<group>"; };
@@ -139,6 +137,7 @@
 		580CB6A92CB470B2009771E6 /* FeedScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedScreen.swift; sourceTree = "<group>"; };
 		580CB6AA2CB470B2009771E6 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		580CB6C12CB471FA009771E6 /* BetTypeCapsuleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BetTypeCapsuleView.swift; path = "../../../../../../../../Library/Mobile Documents/.Trash/BetTypeCapsuleView.swift"; sourceTree = "<group>"; };
+		580CB6C32CB47507009771E6 /* AddBetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBetViewModel.swift; sourceTree = "<group>"; };
 		5820EDAA2A96B1DE00C06DBC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
 		583AB5A829D230A200F4B9DC /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5845A62F29E6321700A95E2B /* PredictedProfitRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictedProfitRow.swift; sourceTree = "<group>"; };
@@ -184,7 +183,6 @@
 		58E887AC2A00528A0079C045 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		58EC47762A112AB60088E6DC /* CurrencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModel.swift; sourceTree = "<group>"; };
 		58EC47782A11417F0088E6DC /* NumbersExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersExt.swift; sourceTree = "<group>"; };
-		58EC47802A1199FF0088E6DC /* BetAverageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetAverageRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,19 +267,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		58076A6729C907A000A0762B /* TabBar */ = {
-			isa = PBXGroup;
-			children = (
-				58076A6829C907A000A0762B /* TabBar.swift */,
-			);
-			path = TabBar;
-			sourceTree = "<group>";
-		};
 		58076A7029C907A000A0762B /* AddBet */ = {
 			isa = PBXGroup;
 			children = (
 				58076A7529C907A000A0762B /* AddBetScreen.swift */,
 				58076A7129C907A000A0762B /* AddBetVM.swift */,
+				580CB6C32CB47507009771E6 /* AddBetViewModel.swift */,
 				58076A7229C907A000A0762B /* Components */,
 			);
 			path = AddBet;
@@ -402,7 +393,6 @@
 			children = (
 				58E887AC2A00528A0079C045 /* ProfileScreen.swift */,
 				583AB5A829D230A200F4B9DC /* ProfileViewModel.swift */,
-				586D2B4D2A05A5A800309F91 /* Components */,
 				58F4F5952A124D0A00A805C6 /* ProfileImage */,
 				58AA328429EB796800BBBC9C /* Preferences */,
 			);
@@ -420,14 +410,6 @@
 				58BD61162CAB38FC000BF464 /* View+Extensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		586D2B4D2A05A5A800309F91 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				58EC47802A1199FF0088E6DC /* BetAverageRow.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		5870E9DA29E456610023CC01 /* Screens */ = {
@@ -450,7 +432,6 @@
 			isa = PBXGroup;
 			children = (
 				58C58F2C2A9BEE14006A6229 /* Componetns */,
-				58076A6729C907A000A0762B /* TabBar */,
 				580CB6AB2CB470B2009771E6 /* FeedTab */,
 				58076A7029C907A000A0762B /* AddBet */,
 				583AB5A729D2303A00F4B9DC /* Profile */,
@@ -631,7 +612,6 @@
 				580CB6AC2CB470B2009771E6 /* DeleteBetAlertView.swift in Sources */,
 				580CB6B02CB470B2009771E6 /* BetStatusActionView.swift in Sources */,
 				58076A7C29C907A000A0762B /* BetModel.swift in Sources */,
-				58EC47812A1199FF0088E6DC /* BetAverageRow.swift in Sources */,
 				58BD61282CAB3C31000BF464 /* BaseRouter.swift in Sources */,
 				58A005432A476F870012B9CF /* DateExt.swift in Sources */,
 				58BD611D2CAB38FC000BF464 /* Font+Extensions.swift in Sources */,
@@ -696,9 +676,9 @@
 				58076A8A29C907A000A0762B /* AddBetScreen.swift in Sources */,
 				58076A4729C906FC00A0762B /* BetTrackerApp.swift in Sources */,
 				586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */,
+				580CB6C42CB47507009771E6 /* AddBetViewModel.swift in Sources */,
 				580CB6AE2CB470B2009771E6 /* BetsDetailsViewModelsProtocol.swift in Sources */,
 				58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */,
-				58076A8129C907A000A0762B /* TabBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
