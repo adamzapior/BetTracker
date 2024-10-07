@@ -3,53 +3,37 @@ import Foundation
 import GRDB
 import LifetimeTracker
 
-final class MainViewVM: ObservableObject {
+final class FeedViewModel: ObservableObject {
     @Injected(\.repository) var repository
-
-    private let defaults = UserDefaultsManager.path
+    @Injected(\.userDefaults) var userDefaults
 
     var defaultCurrency: Currency = .usd
 
-    @Published
-    var username = String()
+    @Published var pendingBets: [BetModel]? = []
+    @Published var pendingBetslipBets: [BetslipModel]? = []
+    @Published var pendingMerged: [BetWrapper]? = []
+    @Published var historyBets: [BetModel]? = []
+    @Published var betslipHistory: [BetslipModel]? = []
+    @Published var historyMerged: [BetWrapper]? = []
 
-    @Published
-    var showUsername = false
-
-    @Published
-    var pendingBets: [BetModel]? = []
-
-    @Published
-    var pendingBetslipBets: [BetslipModel]? = []
-
-    @Published
-    var pendingMerged: [BetWrapper]? = []
-
-    @Published
-    var historyBets: [BetModel]? = []
-
-    @Published
-    var betslipHistory: [BetslipModel]? = []
-
-    @Published
-    var historyMerged: [BetWrapper]? = []
-
-    @Published
     var isPendingMergedCompleted = false
-
-    @Published
     var isHistoryMergedCompleted = false
 
-    @Published
-    var isSearchClicked = false
-
-    @Published
-    private var cancellables = Set<AnyCancellable>()
+    @Published private var cancellables = Set<AnyCancellable>()
 
     init() {
         loadUserDefaultsData()
-        showUsername = !username.isEmpty
+        fetchData()
+        observeData()
 
+        #if DEBUG
+        trackLifetime()
+        #endif
+    }
+
+    // MARK: Private
+
+    private func fetchData() {
         repository.getPendingBets(model: BetModel.self, tableName: TableName.bet.rawValue)
             .map { .some($0) }
             .assign(to: &$pendingBets)
@@ -65,7 +49,9 @@ final class MainViewVM: ObservableObject {
         repository.getHistoryBets(model: BetslipModel.self, tableName: TableName.betslip.rawValue)
             .map { .some($0) }
             .assign(to: &$betslipHistory)
+    }
 
+    private func observeData() {
         Publishers.CombineLatest($pendingBets, $pendingBetslipBets)
             .map { historyBets, betslipHistory -> [BetWrapper] in
                 let combinedBets = (historyBets?.map(BetWrapper.bet) ?? []) +
@@ -97,19 +83,14 @@ final class MainViewVM: ObservableObject {
                 vm.isHistoryMergedCompleted = true
             })
             .store(in: &cancellables)
-
-        #if DEBUG
-        trackLifetime()
-        #endif
     }
 
     private func loadUserDefaultsData() {
-        username = defaults.get(.username)
-        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .eur
+        defaultCurrency = Currency(rawValue: userDefaults.getValue(for: .defaultCurrency)) ?? .eur
     }
 }
 
-extension MainViewVM: LifetimeTrackable {
+extension FeedViewModel: LifetimeTrackable {
     class var lifetimeConfiguration: LifetimeConfiguration {
         return LifetimeConfiguration(maxCount: 1, groupName: "ViewModels")
     }
