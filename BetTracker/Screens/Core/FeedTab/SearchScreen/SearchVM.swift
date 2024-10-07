@@ -5,8 +5,8 @@ import LifetimeTracker
 class SearchVM: ObservableObject {
 
     @Injected(\.repository) var repository
+    @Injected(\.userDefaults) var userDefaults
 
-    let defaults = UserDefaultsManager.path
     
     var defaultCurrency: Currency = .usd
 
@@ -127,7 +127,7 @@ class SearchVM: ObservableObject {
     }
 
     private func loadCurrency() {
-        defaultCurrency = Currency(rawValue: defaults.get(.defaultCurrency)) ?? .usd
+        defaultCurrency = Currency(rawValue: userDefaults.getValue(for: .defaultCurrency)) ?? .usd
     }
 
     enum SortOption: String, CaseIterable, Identifiable {

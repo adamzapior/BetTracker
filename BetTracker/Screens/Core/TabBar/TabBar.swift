@@ -35,8 +35,8 @@ struct TabBar: View {
     }
 
     private static let destinations = [
-        Destination(icon: "house", view: { MainView() }),
-        Destination(icon: "heart", view: { ProfileView() })
+        Destination(icon: "house", view: { FeedScreen() }),
+        Destination(icon: "heart", view: { ProfileScreen() })
     ]
 
     @EnvironmentObject

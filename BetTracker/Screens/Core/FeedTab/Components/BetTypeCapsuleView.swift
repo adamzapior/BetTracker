@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MainLabel: View {
+struct BetTypeCapsuleView: View {
     let text: String
     let backgroundColor: Color
 

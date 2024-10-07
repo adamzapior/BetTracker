@@ -91,7 +91,7 @@ struct ContentView: View {
 //                    .tag(Tab.c)
 //                    .environment(appRouter.tabCRouter)
 
-                MainView()
+                FeedScreen()
                     .tag(Tab.a)
                     .tabItem {
                         Image(systemName: Tab.a.icon)

@@ -32,7 +32,7 @@ struct BetCellView: View {
         .accessibilityHint(accessibilityHint)
     }
     
-    // MARK: UI Sections
+    // MARK: - UI Sections
     
     private var teamsSection: some View {
         HStack {
@@ -80,7 +80,7 @@ struct BetCellView: View {
         .padding(.horizontal, 24)
     }
     
-    // MARK: UI Elements
+    // MARK: - UI Elements
     
     private var amountText: String {
         let amount = bet.isWon != nil ? bet.score?.doubleValue : bet.amount.doubleValue
