@@ -8,24 +8,20 @@
 import Foundation
 import SwiftUI
 
-struct AppState {
-    var loginState: LoginState = .init()
-}
+//struct AppState1 {
+//    var loginState: LoginState = .init()
+//}
 
 public final class DependencyInjection {
-    private(set) var loginManager: any LoginManager
-    private(set) var appState: AppState
     private(set) var repository: Repository
     private(set) var userDefaults: UserDefaultsManager
     
-    init(appState: AppState,
-         loginManager: any LoginManager,
+    init(
          repository: Repository,
          userDefaults: UserDefaultsManager
     )
     {
-        self.appState = appState
-        self.loginManager = loginManager
+      
         self.repository = repository
         self.userDefaults = userDefaults
     }
@@ -42,24 +38,19 @@ extension DependencyInjection {
     }()
         
     static func assembleRealApp() -> DependencyInjection {
-        let appState = AppState()
         let repository = Repository()
         let userDefaults = UserDefaultsManager()
         
-        return .init(appState: appState,
-                     loginManager: AppLoginManager(
-                         state: appState.loginState),
+        return .init(
                      repository: repository,
                      userDefaults: userDefaults)
     }
     
     static func allMocks() -> DependencyInjection {
-        let appState = AppState()
         let repository = Repository()
         let userDefaults = UserDefaultsManager()
 
-        return .init(appState: appState,
-                     loginManager: MockLoginManager(), 
+        return .init(
                      repository: repository,
                      userDefaults: userDefaults)
     }

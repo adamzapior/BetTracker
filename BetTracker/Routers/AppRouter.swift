@@ -6,20 +6,23 @@
 //
 
 import Foundation
+import LifetimeTracker
 import SwiftUI
 
+
 @Observable class AppRouter {
-    //MARK: - App states
+    // MARK: - App states
+
 //    var presentedSheet: PresentedSheet?
     var selectedTab: ContentView.Tab = .a
 
-    //MARK: - Routers
+    // MARK: - Routers
+
     var tabARouter = FeedTabRouter()
-    var tabCRouter = ProfileTabRouter()
+    var tabBRouter = ProfileTabRouter()
 }
 
 @Observable class ProfileTabRouter: BaseRouter {
-    
     enum Destination: Codable, RouterDestination {
         var description: String {
             switch self {
@@ -34,7 +37,8 @@ import SwiftUI
         return [Destination.self]
     }
     
-    //MARK: - Public
+    // MARK: - Public
+
     func navigate(to destination: Destination) {
         path.append(destination)
     }
@@ -64,7 +68,6 @@ import SwiftUI
             case .betslip: return "Betslip"
             case .search: return "Search"
             case .add: return "Add bet"
-
             }
         }
         
@@ -109,12 +112,12 @@ import SwiftUI
         return [Destination.self]
     }
     
-    //MARK: - Public
+    // MARK: - Public
+
     func navigate(to destination: Destination) {
         path.append(destination)
     }
 }
-
 
 // Rozszerzenia dla BetModel i BetslipModel, aby konformowały do Codable
 extension BetModel: Codable {
@@ -149,11 +152,11 @@ extension BetModel: Codable {
         team2 = try container.decode(String.self, forKey: .team2)
         selectedTeam = try SelectedTeam(rawValue: container.decode(Int.self, forKey: .selectedTeam)) ?? .team1
         league = try container.decodeIfPresent(String.self, forKey: .league)
-        amount = NSDecimalNumber(string: try container.decode(String.self, forKey: .amount))
-        odds = NSDecimalNumber(string: try container.decode(String.self, forKey: .odds))
+        amount = try NSDecimalNumber(string: container.decode(String.self, forKey: .amount))
+        odds = try NSDecimalNumber(string: container.decode(String.self, forKey: .odds))
         category = try Category(rawValue: container.decode(String.self, forKey: .category)) ?? .other
-        tax = NSDecimalNumber(string: try container.decode(String.self, forKey: .tax))
-        profit = NSDecimalNumber(string: try container.decode(String.self, forKey: .profit))
+        tax = try NSDecimalNumber(string: container.decode(String.self, forKey: .tax))
+        profit = try NSDecimalNumber(string: container.decode(String.self, forKey: .profit))
         note = try container.decodeIfPresent(String.self, forKey: .note)
         isWon = try container.decodeIfPresent(Bool.self, forKey: .isWon)
         betNotificationID = try container.decodeIfPresent(String.self, forKey: .betNotificationID)
@@ -187,11 +190,11 @@ extension BetslipModel: Codable {
         id = try container.decode(Int64?.self, forKey: .id)
         date = try container.decode(Date.self, forKey: .date)
         name = try container.decode(String.self, forKey: .name)
-        amount = NSDecimalNumber(string: try container.decode(String.self, forKey: .amount))
-        odds = NSDecimalNumber(string: try container.decode(String.self, forKey: .odds))
+        amount = try NSDecimalNumber(string: container.decode(String.self, forKey: .amount))
+        odds = try NSDecimalNumber(string: container.decode(String.self, forKey: .odds))
         category = try Category(rawValue: container.decode(String.self, forKey: .category)) ?? .other
-        tax = NSDecimalNumber(string: try container.decode(String.self, forKey: .tax))
-        profit = NSDecimalNumber(string: try container.decode(String.self, forKey: .profit))
+        tax = try NSDecimalNumber(string: container.decode(String.self, forKey: .tax))
+        profit = try NSDecimalNumber(string: container.decode(String.self, forKey: .profit))
         note = try container.decodeIfPresent(String.self, forKey: .note)
         isWon = try container.decodeIfPresent(Bool.self, forKey: .isWon)
         betNotificationID = try container.decodeIfPresent(String.self, forKey: .betNotificationID)

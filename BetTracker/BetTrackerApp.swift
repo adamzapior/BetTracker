@@ -5,9 +5,7 @@ struct BetTrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self)
     var appDelegate
 
-    @StateObject
-    private var session = SessionManager()
-
+    @StateObject private var sessionManager = SessionManager()
     @Bindable private var appRouter = AppRouter()
 
     init() {
@@ -20,7 +18,7 @@ struct BetTrackerApp: App {
         WindowGroup {
             ContentView()
                 .environment(appRouter)
-                .environmentObject(session)
+                .environmentObject(sessionManager)
         }
     }
 
