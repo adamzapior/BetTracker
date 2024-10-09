@@ -21,8 +21,6 @@
 		58076A9329C98B9800A0762B /* BetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A9229C98B9800A0762B /* BetRecord.swift */; };
 		58076A9529CA37BF00A0762B /* BetDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58076A9429CA37BE00A0762B /* BetDao.swift */; };
 		580C607C2A0746A600DBBD25 /* ProfilePhotoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */; };
-		580CB6AC2CB470B2009771E6 /* DeleteBetAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6902CB470B2009771E6 /* DeleteBetAlertView.swift */; };
-		580CB6AD2CB470B2009771E6 /* DeleteReminderBetAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6912CB470B2009771E6 /* DeleteReminderBetAlertView.swift */; };
 		580CB6AE2CB470B2009771E6 /* BetsDetailsViewModelsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6932CB470B2009771E6 /* BetsDetailsViewModelsProtocol.swift */; };
 		580CB6AF2CB470B2009771E6 /* BetsDetailRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6952CB470B2009771E6 /* BetsDetailRowView.swift */; };
 		580CB6B02CB470B2009771E6 /* BetStatusActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6962CB470B2009771E6 /* BetStatusActionView.swift */; };
@@ -118,8 +116,6 @@
 		58076A9229C98B9800A0762B /* BetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetRecord.swift; sourceTree = "<group>"; };
 		58076A9429CA37BE00A0762B /* BetDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetDao.swift; sourceTree = "<group>"; };
 		580C607B2A0746A600DBBD25 /* ProfilePhotoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoVM.swift; sourceTree = "<group>"; };
-		580CB6902CB470B2009771E6 /* DeleteBetAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteBetAlertView.swift; sourceTree = "<group>"; };
-		580CB6912CB470B2009771E6 /* DeleteReminderBetAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteReminderBetAlertView.swift; sourceTree = "<group>"; };
 		580CB6932CB470B2009771E6 /* BetsDetailsViewModelsProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetsDetailsViewModelsProtocol.swift; sourceTree = "<group>"; };
 		580CB6952CB470B2009771E6 /* BetsDetailRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetsDetailRowView.swift; sourceTree = "<group>"; };
 		580CB6962CB470B2009771E6 /* BetStatusActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetStatusActionView.swift; sourceTree = "<group>"; };
@@ -298,15 +294,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		580CB6922CB470B2009771E6 /* Alerts */ = {
-			isa = PBXGroup;
-			children = (
-				580CB6902CB470B2009771E6 /* DeleteBetAlertView.swift */,
-				580CB6912CB470B2009771E6 /* DeleteReminderBetAlertView.swift */,
-			);
-			path = Alerts;
-			sourceTree = "<group>";
-		};
 		580CB6942CB470B2009771E6 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,7 +315,6 @@
 		580CB69E2CB470B2009771E6 /* BetsDetailsScreens */ = {
 			isa = PBXGroup;
 			children = (
-				580CB6922CB470B2009771E6 /* Alerts */,
 				580CB6942CB470B2009771E6 /* Protocols */,
 				580CB6982CB470B2009771E6 /* Views */,
 				580CB6992CB470B2009771E6 /* BetDetailsScreen.swift */,
@@ -354,7 +340,6 @@
 			children = (
 				580CB6A32CB470B2009771E6 /* SearchBarView.swift */,
 				580CB6A42CB470B2009771E6 /* SortButton.swift */,
-				58B071572A082ABC00439B98 /* Onboarding */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -416,6 +401,7 @@
 		5870E9DA29E456610023CC01 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				58B071572A082ABC00439B98 /* Onboarding */,
 				58A296CE29D44CF700E9E600 /* Core */,
 			);
 			path = Screens;
@@ -607,9 +593,7 @@
 				58076A8729C907A000A0762B /* AddBetVM.swift in Sources */,
 				580CB6B42CB470B2009771E6 /* BetslipDetailsScreen.swift in Sources */,
 				58BD611E2CAB38FC000BF464 /* CGFloat+Extensions.swift in Sources */,
-				580CB6AD2CB470B2009771E6 /* DeleteReminderBetAlertView.swift in Sources */,
 				58076A8829C907A000A0762B /* TeamInputRow.swift in Sources */,
-				580CB6AC2CB470B2009771E6 /* DeleteBetAlertView.swift in Sources */,
 				580CB6B02CB470B2009771E6 /* BetStatusActionView.swift in Sources */,
 				58076A7C29C907A000A0762B /* BetModel.swift in Sources */,
 				58BD61282CAB3C31000BF464 /* BaseRouter.swift in Sources */,

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CustomAlertView: View {
+    @Binding var isPresented: Bool
     var title: String
     var messages: [String?]
 
@@ -11,16 +12,17 @@ struct CustomAlertView: View {
     var image: Image?
 
     var body: some View {
+        if isPresented {
         ZStack {
             Color.black
                 .opacity(0.3)
-
+            
             ZStack {
                 VStack {
                     Text(title)
                         .font(.headline)
                         .multilineTextAlignment(.center)
-
+                    
                     ForEach(messages.compactMap { $0 }, id: \.self) { message in
                         Text(message)
                             .font(.subheadline)
@@ -28,7 +30,7 @@ struct CustomAlertView: View {
                             .padding(1)
                     }
                     .padding(.bottom, 4)
-
+                    
                     HStack(spacing: 16) {
                         Button(action: {
                             primaryButtonAction()
@@ -70,52 +72,53 @@ struct CustomAlertView: View {
         .zIndex(100)
         .edgesIgnoringSafeArea(.all)
     }
-}
-
-struct CustomAlertView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            CustomAlertView(
-                title: "Success!",
-                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
-                primaryButtonLabel: "OK",
-                primaryButtonAction: { }
-            )
-            .previewLayout(.sizeThatFits)
-            .padding()
-
-            CustomAlertView(
-                title: "Error!",
-                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
-                primaryButtonLabel: "Try Again",
-                primaryButtonAction: { },
-                secondaryButtonLabel: "Cancel",
-                secondaryButtonAction: { }
-            )
-            .previewLayout(.sizeThatFits)
-            .padding()
-
-            CustomAlertView(
-                title: "Confirmation",
-                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
-                primaryButtonLabel: "Yes",
-                primaryButtonAction: { },
-                secondaryButtonLabel: "No",
-                secondaryButtonAction: { }
-            )
-            .previewLayout(.sizeThatFits)
-            .padding()
-
-            CustomAlertView(
-                title: "Warning!",
-                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
-                primaryButtonLabel: "Proceed",
-                primaryButtonAction: { },
-                secondaryButtonLabel: "Cancel",
-                secondaryButtonAction: { }
-            )
-            .previewLayout(.sizeThatFits)
-            .padding()
-        }
     }
 }
+
+//struct CustomAlertView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            CustomAlertView(
+//                title: "Success!",
+//                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
+//                primaryButtonLabel: "OK",
+//                primaryButtonAction: { }
+//            )
+//            .previewLayout(.sizeThatFits)
+//            .padding()
+//
+//            CustomAlertView(
+//                title: "Error!",
+//                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
+//                primaryButtonLabel: "Try Again",
+//                primaryButtonAction: { },
+//                secondaryButtonLabel: "Cancel",
+//                secondaryButtonAction: { }
+//            )
+//            .previewLayout(.sizeThatFits)
+//            .padding()
+//
+//            CustomAlertView(
+//                title: "Confirmation",
+//                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
+//                primaryButtonLabel: "Yes",
+//                primaryButtonAction: { },
+//                secondaryButtonLabel: "No",
+//                secondaryButtonAction: { }
+//            )
+//            .previewLayout(.sizeThatFits)
+//            .padding()
+//
+//            CustomAlertView(
+//                title: "Warning!",
+//                messages: ["Błąd 1", "Błąd 2", "Błąd 3"],
+//                primaryButtonLabel: "Proceed",
+//                primaryButtonAction: { },
+//                secondaryButtonLabel: "Cancel",
+//                secondaryButtonAction: { }
+//            )
+//            .previewLayout(.sizeThatFits)
+//            .padding()
+//        }
+//    }
+//}

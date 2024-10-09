@@ -4,8 +4,8 @@ struct BetDetailsScreen: View {
     @StateObject var viewModel: BetDetailsViewModel
     @Environment(FeedTabRouter.self) private var router
 
-    @State private var showDeleteAlert = false
-    @State private var showReminderAlert = false
+    @State private var isDeleteAlertPresented = false
+    @State private var isReminderAlertPresented = false
 
     init(bet: BetModel) {
         _viewModel = StateObject(wrappedValue: BetDetailsViewModel(bet: bet))
@@ -13,9 +13,8 @@ struct BetDetailsScreen: View {
 
     var body: some View {
         ZStack {
-            DeleteBetAlertView(isPresented: $showDeleteAlert, viewModel: viewModel)
-                .environment(router)
-            DeleteReminderBetAlertView(isPresented: $showReminderAlert, viewModel: viewModel)
+            deleteReminderAlertView()
+            deleteBetAlertView()
 
             VStack {
                 ScrollView(showsIndicators: false) {
@@ -45,7 +44,7 @@ struct BetDetailsScreen: View {
                         .opacity(0.7)
                         .padding(.trailing, 6)
                         .onTapGesture {
-                            showReminderAlert = true
+                            isReminderAlertPresented = true
                         }
                         .accessibilityLabel("Remove reminder")
                         .accessibilityHint("Tap to remove the reminder for this bet")
@@ -57,7 +56,7 @@ struct BetDetailsScreen: View {
                 Image(systemName: "trash")
                     .foregroundColor(Color.red)
                     .onTapGesture {
-                        showDeleteAlert = true
+                        isDeleteAlertPresented = true
                     }
                     .accessibilityLabel("Delete bet")
                     .accessibilityHint("Tap to delete this bet")
@@ -198,5 +197,37 @@ struct BetDetailsScreen: View {
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 12)
         .padding(.bottom, 12)
+    }
+    
+    private func deleteBetAlertView() -> some View {
+        CustomAlertView(
+            isPresented: $isDeleteAlertPresented,
+            title: "Warning",
+            messages: ["Do you want to delete bet?"],
+            primaryButtonLabel: "OK",
+            primaryButtonAction: {
+                viewModel.deleteBet()
+                viewModel.deleteBetNotification()
+                router.popToRoot()
+            },
+            secondaryButtonLabel: "Cancel",
+            secondaryButtonAction: { isDeleteAlertPresented = false }
+        )
+    }
+    
+    private func deleteReminderAlertView() -> some View {
+        CustomAlertView(
+            isPresented: $isReminderAlertPresented,
+            title: "Warning",
+            messages: ["Do you want to remove notification?"],
+            primaryButtonLabel: "OK",
+            primaryButtonAction: {
+                viewModel.deleteBetNotification()
+                viewModel.isAlertSet = false
+                isReminderAlertPresented = false
+            },
+            secondaryButtonLabel: "Cancel",
+            secondaryButtonAction: { isReminderAlertPresented = false }
+        )
     }
 }
