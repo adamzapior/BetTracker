@@ -62,6 +62,12 @@ struct PreferencesScreen: View {
                 }
             }
             
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                Link(destination: url, label: {
+                    Label("Notification settings", systemImage: "bell")
+                })
+            }
+            
             Button(action: {
                 showExportAlert = true
             }) {
