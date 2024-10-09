@@ -57,8 +57,8 @@
 		58A387862A0FE25900ED95DB /* EventDatePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A387852A0FE25900ED95DB /* EventDatePickerRow.swift */; };
 		58A387882A0FEA5E00ED95DB /* EventDateRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A387872A0FEA5E00ED95DB /* EventDateRow.swift */; };
 		58A3878C2A0FFDF000ED95DB /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A3878B2A0FFDF000ED95DB /* CategoryRow.swift */; };
-		58AA328729EB79FD00BBBC9C /* PreferencesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */; };
-		58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328829EB7A0800BBBC9C /* PreferencesView.swift */; };
+		58AA328729EB79FD00BBBC9C /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328629EB79FD00BBBC9C /* PreferencesViewModel.swift */; };
+		58AA328929EB7A0800BBBC9C /* PreferencesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328829EB7A0800BBBC9C /* PreferencesScreen.swift */; };
 		58B0715B2A082AEA00439B98 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715A2A082AEA00439B98 /* OnboardingView.swift */; };
 		58B0715F2A08638B00439B98 /* OnboardingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */; };
 		58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B3B3142AA13DE400F83554 /* StandardShadowExt.swift */; };
@@ -153,8 +153,8 @@
 		58A387852A0FE25900ED95DB /* EventDatePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDatePickerRow.swift; sourceTree = "<group>"; };
 		58A387872A0FEA5E00ED95DB /* EventDateRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDateRow.swift; sourceTree = "<group>"; };
 		58A3878B2A0FFDF000ED95DB /* CategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
-		58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesVM.swift; sourceTree = "<group>"; };
-		58AA328829EB7A0800BBBC9C /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		58AA328629EB79FD00BBBC9C /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		58AA328829EB7A0800BBBC9C /* PreferencesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesScreen.swift; sourceTree = "<group>"; };
 		58B0715A2A082AEA00439B98 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		58B0715E2A08638B00439B98 /* OnboardingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupView.swift; sourceTree = "<group>"; };
 		58B3B3142AA13DE400F83554 /* StandardShadowExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardShadowExt.swift; sourceTree = "<group>"; };
@@ -325,7 +325,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		580CB69E2CB470B2009771E6 /* BetDetailsScreen */ = {
+		580CB69E2CB470B2009771E6 /* BetsDetailsScreens */ = {
 			isa = PBXGroup;
 			children = (
 				580CB6922CB470B2009771E6 /* Alerts */,
@@ -336,7 +336,7 @@
 				580CB69B2CB470B2009771E6 /* BetslipDetailsScreen.swift */,
 				580CB69C2CB470B2009771E6 /* BetslipDetailsViewModel.swift */,
 			);
-			path = BetDetailsScreen;
+			path = BetsDetailsScreens;
 			sourceTree = "<group>";
 		};
 		580CB6A22CB470B2009771E6 /* Components */ = {
@@ -354,6 +354,7 @@
 			children = (
 				580CB6A32CB470B2009771E6 /* SearchBarView.swift */,
 				580CB6A42CB470B2009771E6 /* SortButton.swift */,
+				58B071572A082ABC00439B98 /* Onboarding */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -372,7 +373,7 @@
 			isa = PBXGroup;
 			children = (
 				580CB6C02CB4719D009771E6 /* FeedScreen */,
-				580CB69E2CB470B2009771E6 /* BetDetailsScreen */,
+				580CB69E2CB470B2009771E6 /* BetsDetailsScreens */,
 				580CB6A22CB470B2009771E6 /* Components */,
 				580CB6A82CB470B2009771E6 /* SearchScreen */,
 			);
@@ -388,15 +389,15 @@
 			path = FeedScreen;
 			sourceTree = "<group>";
 		};
-		583AB5A729D2303A00F4B9DC /* Profile */ = {
+		583AB5A729D2303A00F4B9DC /* ProfileTab */ = {
 			isa = PBXGroup;
 			children = (
 				58E887AC2A00528A0079C045 /* ProfileScreen.swift */,
 				583AB5A829D230A200F4B9DC /* ProfileViewModel.swift */,
 				58F4F5952A124D0A00A805C6 /* ProfileImage */,
-				58AA328429EB796800BBBC9C /* Preferences */,
+				58AA328429EB796800BBBC9C /* PreferencesScreen */,
 			);
-			path = Profile;
+			path = ProfileTab;
 			sourceTree = "<group>";
 		};
 		585D7D792CB3278400F5A866 /* Extensions */ = {
@@ -415,7 +416,6 @@
 		5870E9DA29E456610023CC01 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				58B071572A082ABC00439B98 /* Onboarding */,
 				58A296CE29D44CF700E9E600 /* Core */,
 			);
 			path = Screens;
@@ -434,18 +434,18 @@
 				58C58F2C2A9BEE14006A6229 /* Componetns */,
 				580CB6AB2CB470B2009771E6 /* FeedTab */,
 				58076A7029C907A000A0762B /* AddBet */,
-				583AB5A729D2303A00F4B9DC /* Profile */,
+				583AB5A729D2303A00F4B9DC /* ProfileTab */,
 			);
 			path = Core;
 			sourceTree = "<group>";
 		};
-		58AA328429EB796800BBBC9C /* Preferences */ = {
+		58AA328429EB796800BBBC9C /* PreferencesScreen */ = {
 			isa = PBXGroup;
 			children = (
-				58AA328829EB7A0800BBBC9C /* PreferencesView.swift */,
-				58AA328629EB79FD00BBBC9C /* PreferencesVM.swift */,
+				58AA328829EB7A0800BBBC9C /* PreferencesScreen.swift */,
+				58AA328629EB79FD00BBBC9C /* PreferencesViewModel.swift */,
 			);
-			path = Preferences;
+			path = PreferencesScreen;
 			sourceTree = "<group>";
 		};
 		58B071572A082ABC00439B98 /* Onboarding */ = {
@@ -635,7 +635,7 @@
 				58076A8929C907A000A0762B /* AddBetInputRow.swift in Sources */,
 				586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */,
 				58BD61272CAB3C31000BF464 /* RouterDestination.swift in Sources */,
-				58AA328729EB79FD00BBBC9C /* PreferencesVM.swift in Sources */,
+				58AA328729EB79FD00BBBC9C /* PreferencesViewModel.swift in Sources */,
 				580CB6BE2CB470B2009771E6 /* FeedScreen.swift in Sources */,
 				58BD610A2CAAB17A000BF464 /* TaskCancellable.swift in Sources */,
 				580CB6BA2CB470B2009771E6 /* SearchBarView.swift in Sources */,
@@ -645,7 +645,7 @@
 				58BD61072CAAB17A000BF464 /* SessionManager.swift in Sources */,
 				580CB6B52CB470B2009771E6 /* BetslipDetailsViewModel.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileScreen.swift in Sources */,
-				58AA328929EB7A0800BBBC9C /* PreferencesView.swift in Sources */,
+				58AA328929EB7A0800BBBC9C /* PreferencesScreen.swift in Sources */,
 				58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */,
 				58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */,
 				588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */,
