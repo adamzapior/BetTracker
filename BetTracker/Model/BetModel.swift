@@ -2,7 +2,6 @@ import Foundation
 import GRDB
 
 struct BetModel: Identifiable, Hashable, DatabaseModel, FetchableRecord {
-
     init(
         id: Int64?,
         date: Date,
@@ -58,12 +57,26 @@ struct BetModel: Identifiable, Hashable, DatabaseModel, FetchableRecord {
         dateFormatter.dateFormat = "M/d/yyyy"
         return dateFormatter.string(from: date)
     }
-
 }
 
 enum SelectedTeam: Int {
     case team1
     case team2
+    case draw
+
+    static var allCases: [SelectedTeam] {
+        return [.team1, .team2, .draw]
+    }
 }
 
-extension SelectedTeam: DatabaseValueConvertible { }
+extension SelectedTeam {
+    var displayName: String {
+        switch self {
+        case .team1: return "Team 1"
+        case .team2: return "Team 2"
+        case .draw: return "Draw"
+        }
+    }
+}
+
+extension SelectedTeam: DatabaseValueConvertible {}

@@ -38,7 +38,6 @@
 		580CB6BE2CB470B2009771E6 /* FeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6A92CB470B2009771E6 /* FeedScreen.swift */; };
 		580CB6BF2CB470B2009771E6 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6AA2CB470B2009771E6 /* FeedViewModel.swift */; };
 		580CB6C22CB471FA009771E6 /* BetTypeCapsuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6C12CB471FA009771E6 /* BetTypeCapsuleView.swift */; };
-		580CB6C42CB47507009771E6 /* AddBetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580CB6C32CB47507009771E6 /* AddBetViewModel.swift */; };
 		5820EDAB2A96B1DF00C06DBC /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820EDAA2A96B1DE00C06DBC /* NoteRow.swift */; };
 		583AB5A929D230A200F4B9DC /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583AB5A829D230A200F4B9DC /* ProfileViewModel.swift */; };
 		5845A63029E6321700A95E2B /* PredictedProfitRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5845A62F29E6321700A95E2B /* PredictedProfitRow.swift */; };
@@ -133,7 +132,6 @@
 		580CB6A92CB470B2009771E6 /* FeedScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedScreen.swift; sourceTree = "<group>"; };
 		580CB6AA2CB470B2009771E6 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		580CB6C12CB471FA009771E6 /* BetTypeCapsuleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BetTypeCapsuleView.swift; path = "../../../../../../../../Library/Mobile Documents/.Trash/BetTypeCapsuleView.swift"; sourceTree = "<group>"; };
-		580CB6C32CB47507009771E6 /* AddBetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBetViewModel.swift; sourceTree = "<group>"; };
 		5820EDAA2A96B1DE00C06DBC /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
 		583AB5A829D230A200F4B9DC /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5845A62F29E6321700A95E2B /* PredictedProfitRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictedProfitRow.swift; sourceTree = "<group>"; };
@@ -268,7 +266,6 @@
 			children = (
 				58076A7529C907A000A0762B /* AddBetScreen.swift */,
 				58076A7129C907A000A0762B /* AddBetVM.swift */,
-				580CB6C32CB47507009771E6 /* AddBetViewModel.swift */,
 				58076A7229C907A000A0762B /* Components */,
 			);
 			path = AddBet;
@@ -660,7 +657,6 @@
 				58076A8A29C907A000A0762B /* AddBetScreen.swift in Sources */,
 				58076A4729C906FC00A0762B /* BetTrackerApp.swift in Sources */,
 				586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */,
-				580CB6C42CB47507009771E6 /* AddBetViewModel.swift in Sources */,
 				580CB6AE2CB470B2009771E6 /* BetsDetailsViewModelsProtocol.swift in Sources */,
 				58B0715F2A08638B00439B98 /* OnboardingSetupScreen.swift in Sources */,
 			);
