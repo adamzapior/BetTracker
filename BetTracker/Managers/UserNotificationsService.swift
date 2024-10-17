@@ -1,8 +1,15 @@
 import Foundation
 import SwiftUI
 import UserNotifications
+import LifetimeTracker
 
-struct UserNotificationsService {
+class UserNotificationsService {
+    
+    init() {
+#if DEBUG
+trackLifetime()
+#endif
+    }
 
     func scheduleNotification(
         withID id: String,
@@ -58,5 +65,11 @@ struct UserNotificationsService {
                 completion(false)
             }
         }
+    }
+}
+
+extension UserNotificationsService: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        return LifetimeConfiguration(maxCount: 1, groupName: "NotificationManager")
     }
 }
