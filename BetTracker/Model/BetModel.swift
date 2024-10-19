@@ -59,6 +59,19 @@ struct BetModel: Identifiable, Hashable, DatabaseModel, FetchableRecord {
     }
 }
 
+extension BetModel {
+    func getBetPickValue() -> String {
+        switch self.selectedTeam {
+        case .team1:
+            return team1
+        case .team2:
+            return team2
+        case .draw:
+            return "Draw"
+        }
+    }
+}
+
 enum SelectedTeam: Int {
     case team1
     case team2
