@@ -22,6 +22,7 @@ struct CustomAlertView: View {
                     Text(title)
                         .font(.headline)
                         .multilineTextAlignment(.center)
+                        .padding(.top, 12)
                     
                     ForEach(messages.compactMap { $0 }, id: \.self) { message in
                         Text(message)
@@ -29,7 +30,7 @@ struct CustomAlertView: View {
                             .multilineTextAlignment(.center)
                             .padding(1)
                     }
-                    .padding(.bottom, 4)
+                    .padding(.bottom, 12)
                     
                     HStack(spacing: 16) {
                         Button(action: {
@@ -37,28 +38,28 @@ struct CustomAlertView: View {
                         }, label: {
                             Text(primaryButtonLabel)
                                 .font(.headline)
-                                .foregroundColor(.white)
-                                .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(Color.ui.scheme)
-                                .cornerRadius(12)
                         })
+                        .buttonStyle(ActionButton())
+
                         if let secondaryButtonLabel {
                             Button(action: {
                                 secondaryButtonAction?()
                             }, label: {
                                 Text(secondaryButtonLabel)
                                     .font(.headline)
-                                    .foregroundColor(Color.ui.secondary)
-                                    .padding()
+//                                    .foregroundColor(Color.ui.secondary)
+//                                    .padding()
                                     .frame(maxWidth: .infinity)
-                                    .background(Color.ui.background)
-                                    .cornerRadius(12)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .stroke(Color.ui.scheme, lineWidth: 2)
-                                    )
+//                                    .background(Color.ui.background)
+//                                    .cornerRadius(12)
+//                                    .overlay(
+//                                        RoundedRectangle(cornerRadius: 12)
+//                                            .stroke(Color.ui.scheme, lineWidth: 2)
+//                                    )
                             })
+                            .buttonStyle(CancelButton())
+
                         }
                     }
                 }
