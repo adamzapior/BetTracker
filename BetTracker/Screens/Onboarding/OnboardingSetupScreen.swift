@@ -18,8 +18,24 @@ struct OnboardingSetupScreen: View {
                             
                         Spacer(minLength: 20)
                             
-                        getStartedButtonView()
+                        Section(footer:
+                            HStack {
+                                Spacer()
+                                Button(action: { action() }) {
+                                    Text("Get started")
+                                        .frame(maxWidth: .infinity)
+                                        .font(.headline)
+                                }
+                                .buttonStyle(ActionButton())
+
+                                Spacer()
+                            }
+                            .padding(.horizontal, 12)
                             .frame(height: geometry.size.height * 0.25)
+
+                        ) {
+                            EmptyView()
+                        }
                     }
                 }
             }
@@ -68,35 +84,6 @@ struct OnboardingSetupScreen: View {
                     Text("%")
                 }
             }
-        }
-    }
-
-    private func getStartedButtonView() -> some View {
-        GeometryReader { geometry in
-            VStack {
-                Button(action: {
-                    action()
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.ui.background)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 25)
-                                    .stroke(Color.ui.secondary, lineWidth: 1)
-                            )
-                        
-                        Text("Get started")
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(Color.ui.secondary)
-                    }
-                    .frame(width: max(min(geometry.size.width - 24, 300), 100), height: 56)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 72)
-            }
-            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)
-            .padding(.bottom, 48)
         }
     }
 }

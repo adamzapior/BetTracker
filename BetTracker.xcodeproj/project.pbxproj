@@ -40,6 +40,8 @@
 		584E69BC2A75A57700084F78 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584E69BB2A75A57700084F78 /* Repository.swift */; };
 		58645D312CC25F66009ACB34 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D302CC25F66009ACB34 /* ActionButton.swift */; };
 		58645D332CC26AF5009ACB34 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D322CC26AF5009ACB34 /* CancelButton.swift */; };
+		58645D372CC466C8009ACB34 /* FeedTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D362CC466C8009ACB34 /* FeedTabRouter.swift */; };
+		58645D392CC466D8009ACB34 /* ProfileTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D382CC466D8009ACB34 /* ProfileTabRouter.swift */; };
 		586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4B2A05A51200309F91 /* ProfileImage.swift */; };
 		586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */; };
 		5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5874C4B62A6B72F900199AD6 /* GRDB */; };
@@ -126,6 +128,8 @@
 		584E69BB2A75A57700084F78 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		58645D302CC25F66009ACB34 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		58645D322CC26AF5009ACB34 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
+		58645D362CC466C8009ACB34 /* FeedTabRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTabRouter.swift; sourceTree = "<group>"; };
+		58645D382CC466D8009ACB34 /* ProfileTabRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabRouter.swift; sourceTree = "<group>"; };
 		586D2B4B2A05A51200309F91 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardExt.swift; sourceTree = "<group>"; };
 		588720A02A71A28B00D57B16 /* BetWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetWrapper.swift; sourceTree = "<group>"; };
@@ -449,6 +453,8 @@
 			children = (
 				585D7D792CB3278400F5A866 /* Extensions */,
 				58BD61212CAB3A0E000BF464 /* AppRouter.swift */,
+				58645D362CC466C8009ACB34 /* FeedTabRouter.swift */,
+				58645D382CC466D8009ACB34 /* ProfileTabRouter.swift */,
 				58BD61252CAB3C31000BF464 /* BaseRouter.swift */,
 				58BD61242CAB3C31000BF464 /* RouterDestination.swift */,
 				58BD61232CAB3C31000BF464 /* RouterDestinationDecoder.swift */,
@@ -592,6 +598,7 @@
 				580CB6BE2CB470B2009771E6 /* FeedScreen.swift in Sources */,
 				58BD610A2CAAB17A000BF464 /* TaskCancellable.swift in Sources */,
 				58645D312CC25F66009ACB34 /* ActionButton.swift in Sources */,
+				58645D372CC466C8009ACB34 /* FeedTabRouter.swift in Sources */,
 				580CB6BA2CB470B2009771E6 /* SearchBarView.swift in Sources */,
 				58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */,
 				58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */,
@@ -604,6 +611,7 @@
 				58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */,
 				588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */,
 				58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */,
+				58645D392CC466D8009ACB34 /* ProfileTabRouter.swift in Sources */,
 				58BD611C2CAB38FC000BF464 /* View+Extensions.swift in Sources */,
 				580CB6C22CB471FA009771E6 /* BetTypeCapsuleView.swift in Sources */,
 				580CB6BD2CB470B2009771E6 /* SearchVM.swift in Sources */,
