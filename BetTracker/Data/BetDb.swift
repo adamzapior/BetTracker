@@ -56,6 +56,16 @@ class BetDb {
                 t.column("score", .integer)
             }
         }
+
+        try? db.write { db in
+            try db.create(table: CategoryModel.databaseTableName, ifNotExists: true) { t in
+                t.autoIncrementedPrimaryKey("id")
+                t.column("name", .text).notNull().unique()
+                t.column("systemIcon", .text).notNull()
+                t.column("indexPath", .integer).notNull()
+            }
+        }
+
         try? db.write { db in
             try db.create(table: TagModel.databaseTableName, ifNotExists: true) { t in
                 t.autoIncrementedPrimaryKey("id")

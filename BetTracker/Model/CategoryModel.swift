@@ -29,3 +29,18 @@ enum Category: String, CaseIterable {
 }
 
 extension Category: DatabaseValueConvertible { }
+
+struct CategoryModel: Identifiable, Equatable, Codable {
+   
+    var id: Int64?
+    let name: String
+    let systemImage: String
+    var indexPath: Int
+
+    init(id: Int64?, name: String, systemImage: String, indexPath: Int) {
+        self.id = id
+        self.name = name
+        self.systemImage = systemImage
+        self.indexPath = indexPath
+    }
+}

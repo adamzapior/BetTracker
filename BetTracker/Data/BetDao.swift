@@ -39,6 +39,44 @@ class BetDao {
         }
     }
 
+
+    func observeCategories() -> AnyPublisher<[CategoryModel], Never> {
+        ValueObservation
+            .tracking { db in
+                try CategoryModel.fetchAll(db)
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
+
+    func insertCategory(model: CategoryModel) {
+        try? BetDb.db.write { db in
+            // Najpierw sprawdź czy istnieje kategoria o tej nazwie
+            if let existingCategory = try CategoryModel.filter(CategoryModel.Columns.name == model.name).fetchOne(db) {
+                // Jeśli istnieje, zaktualizuj pozostałe pola zachowując istniejące id
+                var updatedModel = model
+                updatedModel.id = existingCategory.id
+                try updatedModel.update(db)
+            } else {
+                // Jeśli nie istnieje, dodaj nowy rekord
+                try model.insert(db)
+            }
+        }
+    }
+
+    func updateCategory(model: CategoryModel) {
+        try? BetDb.db.write { db in
+            try model.update(db)
+        }
+    }
+
+    func deleteCategory(model: CategoryModel) {
+        _ = try? BetDb.db.write { db in
+            try model.delete(db)
+        }
+    }
+
     func getSavedBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
