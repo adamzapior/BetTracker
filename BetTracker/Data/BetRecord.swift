@@ -115,3 +115,39 @@ extension BetslipModel: PersistableRecord {
         container[Columns.score] = score
     }
 }
+extension TagModel: DatabaseModel, TableRecord, FetchableRecord, PersistableRecord {
+    static let databaseTableName = "tags"
+
+    enum Columns: String, ColumnExpression {
+        case id
+        case name
+        case color_red
+        case color_green
+        case color_blue
+        case color_alpha
+        case indexPath
+    }
+
+    init(row: Row) throws {
+        id = row[Columns.id]
+        name = row[Columns.name]
+        colorComponents = ColorComponents(
+            red: row[Columns.color_red],
+            green: row[Columns.color_green],
+            blue: row[Columns.color_blue],
+            alpha: row[Columns.color_alpha]
+        )
+        indexPath = row[Columns.indexPath]
+    }
+
+    func encode(to container: inout PersistenceContainer) {
+        container[Columns.id] = id
+        container[Columns.name] = name
+        container[Columns.color_red] = colorComponents.red
+        container[Columns.color_green] = colorComponents.green
+        container[Columns.color_blue] = colorComponents.blue
+        container[Columns.color_alpha] = colorComponents.alpha
+        container[Columns.indexPath] = indexPath
+    }
+}
+

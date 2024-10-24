@@ -42,11 +42,26 @@
 		58645D332CC26AF5009ACB34 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D322CC26AF5009ACB34 /* CancelButton.swift */; };
 		58645D372CC466C8009ACB34 /* FeedTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D362CC466C8009ACB34 /* FeedTabRouter.swift */; };
 		58645D392CC466D8009ACB34 /* ProfileTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D382CC466D8009ACB34 /* ProfileTabRouter.swift */; };
+		58645D3E2CC6CB14009ACB34 /* TagsSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D3D2CC6CB14009ACB34 /* TagsSettingsScreen.swift */; };
+		58645D402CC6CB33009ACB34 /* TagsSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58645D3F2CC6CB33009ACB34 /* TagsSettingsViewModel.swift */; };
 		586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4B2A05A51200309F91 /* ProfileImage.swift */; };
 		586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */; };
 		5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5874C4B62A6B72F900199AD6 /* GRDB */; };
 		588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588720A02A71A28B00D57B16 /* BetWrapper.swift */; };
 		588720A32A71AD0D00D57B16 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588720A22A71AD0D00D57B16 /* CategoryModel.swift */; };
+		5896B9D92CC96B2500759F02 /* TagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9D82CC96B2500759F02 /* TagModel.swift */; };
+		5896B9DB2CC96BE800759F02 /* TagsSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9DA2CC96BE800759F02 /* TagsSettingsSheet.swift */; };
+		5896B9DD2CC96C5500759F02 /* TagRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9DC2CC96C5500759F02 /* TagRowView.swift */; };
+		5896B9E02CC976F100759F02 /* CategorySettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9DF2CC976F100759F02 /* CategorySettingsScreen.swift */; };
+		5896B9E22CC9772100759F02 /* CategorySettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E12CC9772100759F02 /* CategorySettingsViewModel.swift */; };
+		5896B9E42CC9773900759F02 /* CategoryAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E32CC9773900759F02 /* CategoryAddSheet.swift */; };
+		5896B9E62CC97A3800759F02 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E52CC97A3800759F02 /* CategoryView.swift */; };
+		5896B9E92CC97DBA00759F02 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 5896B9E82CC97DBA00759F02 /* SFSymbolsPicker */; };
+		5896B9EC2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9EB2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift */; };
+		5896B9EE2CCAEB4A00759F02 /* BookmakerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9ED2CCAEB4A00759F02 /* BookmakerModel.swift */; };
+		5896B9F02CCAF1E000759F02 /* BookmakersSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9EF2CCAF1E000759F02 /* BookmakersSettingsScreen.swift */; };
+		5896B9F22CCAF1F000759F02 /* BookmakerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9F12CCAF1F000759F02 /* BookmakerRowView.swift */; };
+		5896B9F42CCAF20400759F02 /* BookmakersSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9F32CCAF20400759F02 /* BookmakersSettingsSheet.swift */; };
 		58A005432A476F870012B9CF /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005422A476F870012B9CF /* DateExt.swift */; };
 		58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A005462A478F1A0012B9CF /* BetslipModel.swift */; };
 		58AA328729EB79FD00BBBC9C /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA328629EB79FD00BBBC9C /* PreferencesViewModel.swift */; };
@@ -130,10 +145,24 @@
 		58645D322CC26AF5009ACB34 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
 		58645D362CC466C8009ACB34 /* FeedTabRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTabRouter.swift; sourceTree = "<group>"; };
 		58645D382CC466D8009ACB34 /* ProfileTabRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabRouter.swift; sourceTree = "<group>"; };
+		58645D3D2CC6CB14009ACB34 /* TagsSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSettingsScreen.swift; sourceTree = "<group>"; };
+		58645D3F2CC6CB33009ACB34 /* TagsSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSettingsViewModel.swift; sourceTree = "<group>"; };
 		586D2B4B2A05A51200309F91 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		586D2B4F2A05A7C900309F91 /* HideKeyboardExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardExt.swift; sourceTree = "<group>"; };
 		588720A02A71A28B00D57B16 /* BetWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetWrapper.swift; sourceTree = "<group>"; };
 		588720A22A71AD0D00D57B16 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
+		5896B9D82CC96B2500759F02 /* TagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagModel.swift; sourceTree = "<group>"; };
+		5896B9DA2CC96BE800759F02 /* TagsSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSettingsSheet.swift; sourceTree = "<group>"; };
+		5896B9DC2CC96C5500759F02 /* TagRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRowView.swift; sourceTree = "<group>"; };
+		5896B9DF2CC976F100759F02 /* CategorySettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySettingsScreen.swift; sourceTree = "<group>"; };
+		5896B9E12CC9772100759F02 /* CategorySettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySettingsViewModel.swift; sourceTree = "<group>"; };
+		5896B9E32CC9773900759F02 /* CategoryAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddSheet.swift; sourceTree = "<group>"; };
+		5896B9E52CC97A3800759F02 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		5896B9EB2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakersSettingsViewModel.swift; sourceTree = "<group>"; };
+		5896B9ED2CCAEB4A00759F02 /* BookmakerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakerModel.swift; sourceTree = "<group>"; };
+		5896B9EF2CCAF1E000759F02 /* BookmakersSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakersSettingsScreen.swift; sourceTree = "<group>"; };
+		5896B9F12CCAF1F000759F02 /* BookmakerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakerRowView.swift; sourceTree = "<group>"; };
+		5896B9F32CCAF20400759F02 /* BookmakersSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakersSettingsSheet.swift; sourceTree = "<group>"; };
 		58A005422A476F870012B9CF /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
 		58A005462A478F1A0012B9CF /* BetslipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetslipModel.swift; sourceTree = "<group>"; };
 		58AA328629EB79FD00BBBC9C /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
@@ -173,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58BD610E2CAAB193000BF464 /* LifetimeTracker in Frameworks */,
+				5896B9E92CC97DBA00759F02 /* SFSymbolsPicker in Frameworks */,
 				5874C4B72A6B72F900199AD6 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +276,8 @@
 				588720A02A71A28B00D57B16 /* BetWrapper.swift */,
 				58EC47762A112AB60088E6DC /* CurrencyModel.swift */,
 				588720A22A71AD0D00D57B16 /* CategoryModel.swift */,
+				5896B9D82CC96B2500759F02 /* TagModel.swift */,
+				5896B9ED2CCAEB4A00759F02 /* BookmakerModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -393,6 +425,17 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		58645D3A2CC6CAD1009ACB34 /* TagsSettings */ = {
+			isa = PBXGroup;
+			children = (
+				58645D3D2CC6CB14009ACB34 /* TagsSettingsScreen.swift */,
+				5896B9DA2CC96BE800759F02 /* TagsSettingsSheet.swift */,
+				58645D3F2CC6CB33009ACB34 /* TagsSettingsViewModel.swift */,
+				5896B9DC2CC96C5500759F02 /* TagRowView.swift */,
+			);
+			path = TagsSettings;
+			sourceTree = "<group>";
+		};
 		5870E9DA29E456610023CC01 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,9 +452,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5896B9DE2CC976BD00759F02 /* CategorySettings */ = {
+			isa = PBXGroup;
+			children = (
+				5896B9DF2CC976F100759F02 /* CategorySettingsScreen.swift */,
+				5896B9E32CC9773900759F02 /* CategoryAddSheet.swift */,
+				5896B9E12CC9772100759F02 /* CategorySettingsViewModel.swift */,
+				5896B9E52CC97A3800759F02 /* CategoryView.swift */,
+			);
+			path = CategorySettings;
+			sourceTree = "<group>";
+		};
+		5896B9EA2CCAE8B200759F02 /* BookmakerSettings */ = {
+			isa = PBXGroup;
+			children = (
+				5896B9EB2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift */,
+				5896B9EF2CCAF1E000759F02 /* BookmakersSettingsScreen.swift */,
+				5896B9F32CCAF20400759F02 /* BookmakersSettingsSheet.swift */,
+				5896B9F12CCAF1F000759F02 /* BookmakerRowView.swift */,
+			);
+			path = BookmakerSettings;
+			sourceTree = "<group>";
+		};
 		58A296CE29D44CF700E9E600 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5896B9EA2CCAE8B200759F02 /* BookmakerSettings */,
+				5896B9DE2CC976BD00759F02 /* CategorySettings */,
+				58645D3A2CC6CAD1009ACB34 /* TagsSettings */,
 				580CB6AB2CB470B2009771E6 /* FeedTab */,
 				583AB5A729D2303A00F4B9DC /* ProfileTab */,
 			);
@@ -509,6 +577,7 @@
 			packageProductDependencies = (
 				5874C4B62A6B72F900199AD6 /* GRDB */,
 				58BD610D2CAAB193000BF464 /* LifetimeTracker */,
+				5896B9E82CC97DBA00759F02 /* SFSymbolsPicker */,
 			);
 			productName = BetTracker;
 			productReference = 58076A4329C906FC00A0762B /* BetTracker.app */;
@@ -541,6 +610,7 @@
 			packageReferences = (
 				58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				58BD610C2CAAB193000BF464 /* XCRemoteSwiftPackageReference "LifetimeTracker" */,
+				5896B9E72CC97DBA00759F02 /* XCRemoteSwiftPackageReference "SFSymbolsPickerForSwiftUI" */,
 			);
 			productRefGroup = 58076A4429C906FC00A0762B /* Products */;
 			projectDirPath = "";
@@ -590,10 +660,14 @@
 				58EC47792A11417F0088E6DC /* NumbersExt.swift in Sources */,
 				58076A9529CA37BF00A0762B /* BetDao.swift in Sources */,
 				58645D332CC26AF5009ACB34 /* CancelButton.swift in Sources */,
+				5896B9D92CC96B2500759F02 /* TagModel.swift in Sources */,
 				580CB6BB2CB470B2009771E6 /* SortButton.swift in Sources */,
+				58645D3E2CC6CB14009ACB34 /* TagsSettingsScreen.swift in Sources */,
 				58C58F2E2A9BEE2D006A6229 /* CustomAlertView.swift in Sources */,
 				586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */,
+				5896B9E42CC9773900759F02 /* CategoryAddSheet.swift in Sources */,
 				58BD61272CAB3C31000BF464 /* RouterDestination.swift in Sources */,
+				5896B9DB2CC96BE800759F02 /* TagsSettingsSheet.swift in Sources */,
 				58AA328729EB79FD00BBBC9C /* PreferencesViewModel.swift in Sources */,
 				580CB6BE2CB470B2009771E6 /* FeedScreen.swift in Sources */,
 				58BD610A2CAAB17A000BF464 /* TaskCancellable.swift in Sources */,
@@ -603,38 +677,48 @@
 				58C485582A0EEE0300E62522 /* HapticsManager.swift in Sources */,
 				58C485562A0EE80400E62522 /* AppDelegate.swift in Sources */,
 				58076A4929C906FC00A0762B /* ContentView.swift in Sources */,
+				5896B9EC2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift in Sources */,
 				58BD61072CAAB17A000BF464 /* SessionManager.swift in Sources */,
 				580CB6B52CB470B2009771E6 /* BetslipDetailsViewModel.swift in Sources */,
 				58E887AD2A00528A0079C045 /* ProfileScreen.swift in Sources */,
 				58AA328929EB7A0800BBBC9C /* PreferencesScreen.swift in Sources */,
 				58B3B3152AA13DE400F83554 /* StandardShadowExt.swift in Sources */,
+				58645D402CC6CB33009ACB34 /* TagsSettingsViewModel.swift in Sources */,
 				58A005472A478F1A0012B9CF /* BetslipModel.swift in Sources */,
 				588720A12A71A28B00D57B16 /* BetWrapper.swift in Sources */,
 				58BEC42E2A0A968600C8CCCC /* UserDefaultsManager.swift in Sources */,
 				58645D392CC466D8009ACB34 /* ProfileTabRouter.swift in Sources */,
 				58BD611C2CAB38FC000BF464 /* View+Extensions.swift in Sources */,
+				5896B9E02CC976F100759F02 /* CategorySettingsScreen.swift in Sources */,
 				580CB6C22CB471FA009771E6 /* BetTypeCapsuleView.swift in Sources */,
 				580CB6BD2CB470B2009771E6 /* SearchVM.swift in Sources */,
 				58076A9329C98B9800A0762B /* BetRecord.swift in Sources */,
+				5896B9F42CCAF20400759F02 /* BookmakersSettingsSheet.swift in Sources */,
 				58BD61082CAAB17A000BF464 /* Injected.swift in Sources */,
 				58BD611B2CAB38FC000BF464 /* Color+Extensions.swift in Sources */,
+				5896B9E22CC9772100759F02 /* CategorySettingsViewModel.swift in Sources */,
 				58EC47772A112AB60088E6DC /* CurrencyModel.swift in Sources */,
 				58BD61192CAB38FC000BF464 /* EnvironmentValues+Extensions.swift in Sources */,
 				58076A7929C907A000A0762B /* Theme.swift in Sources */,
 				58BD611A2CAB38FC000BF464 /* CodingUserInfoKey+Extensions.swift in Sources */,
 				58076A9029C98B4000A0762B /* BetDb.swift in Sources */,
+				5896B9F22CCAF1F000759F02 /* BookmakerRowView.swift in Sources */,
+				5896B9E62CC97A3800759F02 /* CategoryView.swift in Sources */,
 				583AB5A929D230A200F4B9DC /* ProfileViewModel.swift in Sources */,
 				580CB6B72CB470B2009771E6 /* BetCellView.swift in Sources */,
 				580CB6BF2CB470B2009771E6 /* FeedViewModel.swift in Sources */,
+				5896B9EE2CCAEB4A00759F02 /* BookmakerModel.swift in Sources */,
 				58BD61092CAAB17A000BF464 /* Services.swift in Sources */,
 				58BD61222CAB3A0E000BF464 /* AppRouter.swift in Sources */,
 				580CB6B82CB470B2009771E6 /* BetslipCellView.swift in Sources */,
 				580CB6BC2CB470B2009771E6 /* SearchScreen.swift in Sources */,
 				58076A8A29C907A000A0762B /* AddBetScreen.swift in Sources */,
 				58076A4729C906FC00A0762B /* BetTrackerApp.swift in Sources */,
+				5896B9F02CCAF1E000759F02 /* BookmakersSettingsScreen.swift in Sources */,
 				586D2B502A05A7C900309F91 /* HideKeyboardExt.swift in Sources */,
 				580CB6AE2CB470B2009771E6 /* BetsDetailsViewModelsProtocol.swift in Sources */,
 				58B0715F2A08638B00439B98 /* OnboardingSetupScreen.swift in Sources */,
+				5896B9DD2CC96C5500759F02 /* TagRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -859,6 +943,14 @@
 				kind = branch;
 			};
 		};
+		5896B9E72CC97DBA00759F02 /* XCRemoteSwiftPackageReference "SFSymbolsPickerForSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alessiorubicini/SFSymbolsPickerForSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.6;
+			};
+		};
 		58BD610C2CAAB193000BF464 /* XCRemoteSwiftPackageReference "LifetimeTracker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzysztofzablocki/LifetimeTracker.git";
@@ -874,6 +966,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58076A8B29C9097400A0762B /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
+		};
+		5896B9E82CC97DBA00759F02 /* SFSymbolsPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5896B9E72CC97DBA00759F02 /* XCRemoteSwiftPackageReference "SFSymbolsPickerForSwiftUI" */;
+			productName = SFSymbolsPicker;
 		};
 		58BD610D2CAAB193000BF464 /* LifetimeTracker */ = {
 			isa = XCSwiftPackageProductDependency;

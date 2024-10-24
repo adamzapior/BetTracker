@@ -1,5 +1,5 @@
 {
-  "originHash" : "e1f590ebae0996a483a309ee11e5283c209b47743a8ff9678fcf39a1d12e4156",
+  "originHash" : "faa0b958819e8579ac1c84f9a0fc5363a8d5c02376f3229ed9750b0eb859d3ff",
   "pins" : [
     {
       "identity" : "grdb.swift",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "fccc98aae719f6615d1f0cfd8f5e60f3888bdf62",
         "version" : "1.8.4"
+      }
+    },
+    {
+      "identity" : "sfsymbolspickerforswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alessiorubicini/SFSymbolsPickerForSwiftUI.git",
+      "state" : {
+        "revision" : "73c909b8a7fc77a30dd04208e33f759f8b52c4c8",
+        "version" : "1.0.6"
       }
     }
   ],

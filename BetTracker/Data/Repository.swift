@@ -70,6 +70,21 @@ class Repository: RepositoryProtocol {
         db.deleteBet(model: model)
     }
 
+    func saveTag(model: TagModel) {
+        db.insertTag(model: model)
+    }
+
+    func deleteTag(model: TagModel) {
+        db.deleteTag(model: model)
+    }
+
+    func updateTag(model: TagModel) {
+        db.updateTag(model: model)
+    }
+
+    func observeTags() -> AnyPublisher<[TagModel], Never> {
+        db.observeTags()
+    }
     func markBetStatus<T: DatabaseModel>(model: T, isWon: Bool, tableName: String) {
         db.markFinished(model: model, isWon: isWon, tableName: tableName)
     }

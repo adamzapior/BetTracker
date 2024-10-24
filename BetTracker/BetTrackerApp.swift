@@ -10,8 +10,6 @@ struct BetTrackerApp: App {
 
     init() {
         requestNotificationPermission()
-        
-
     }
 
     var body: some Scene {
