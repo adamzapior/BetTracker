@@ -54,7 +54,7 @@ protocol RepositoryProtocol {
 }
 
 class Repository: RepositoryProtocol {
-    let db = BetDao()
+    private let db = BetDao()
 
     init() {
         #if DEBUG
@@ -69,6 +69,25 @@ class Repository: RepositoryProtocol {
     func deleteBet<T: DatabaseModel>(model: T) {
         db.deleteBet(model: model)
     }
+
+
+    func saveCategory(model: CategoryModel) {
+        db.insertCategory(model: model)
+    }
+
+    func deleteCategory(model: CategoryModel) {
+        db.deleteCategory(model: model)
+    }
+
+    func updateCategory(model: CategoryModel) {
+        db.updateCategory(model: model)
+    }
+
+    func observeCategories() -> AnyPublisher<[CategoryModel], Never> {
+        db.observeCategories()
+    }
+
+
 
     func saveTag(model: TagModel) {
         db.insertTag(model: model)
@@ -85,6 +104,26 @@ class Repository: RepositoryProtocol {
     func observeTags() -> AnyPublisher<[TagModel], Never> {
         db.observeTags()
     }
+
+    
+
+    func saveBookmaker(model: BookmakerModel) {
+        db.insertBookmaker(model: model)
+    }
+
+    func deleteBookmaker(model: BookmakerModel) {
+        db.deleteBookmaker(model: model)
+    }
+
+    func updateBookmaker(model: BookmakerModel) {
+        db.updateBookmaker(model: model)
+    }
+
+    func observeBookmakers() -> AnyPublisher<[BookmakerModel], Never> {
+        db.observeBookmakers()
+    }
+
+
     func markBetStatus<T: DatabaseModel>(model: T, isWon: Bool, tableName: String) {
         db.markFinished(model: model, isWon: isWon, tableName: tableName)
     }
