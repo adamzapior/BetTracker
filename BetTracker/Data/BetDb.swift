@@ -78,6 +78,18 @@ class BetDb {
             }
         }
         
+        try? db.write { db in
+            try db.create(table: BookmakerModel.databaseTableName, ifNotExists: true) { t in
+                t.autoIncrementedPrimaryKey("id")
+                t.column("name", .text).notNull().unique()
+                t.column("color_red", .double).notNull()
+                t.column("color_green", .double).notNull()
+                t.column("color_blue", .double).notNull()
+                t.column("color_alpha", .double).notNull()
+                t.column("indexPath", .integer).notNull()
+            }
+        }
+        
         return db
     }()
 }
