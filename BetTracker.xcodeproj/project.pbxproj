@@ -54,8 +54,8 @@
 		5896B9DD2CC96C5500759F02 /* TagRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9DC2CC96C5500759F02 /* TagRowView.swift */; };
 		5896B9E02CC976F100759F02 /* CategorySettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9DF2CC976F100759F02 /* CategorySettingsScreen.swift */; };
 		5896B9E22CC9772100759F02 /* CategorySettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E12CC9772100759F02 /* CategorySettingsViewModel.swift */; };
-		5896B9E42CC9773900759F02 /* CategoryAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E32CC9773900759F02 /* CategoryAddSheet.swift */; };
-		5896B9E62CC97A3800759F02 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E52CC97A3800759F02 /* CategoryView.swift */; };
+		5896B9E42CC9773900759F02 /* CategorySettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E32CC9773900759F02 /* CategorySettingsSheet.swift */; };
+		5896B9E62CC97A3800759F02 /* CategoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9E52CC97A3800759F02 /* CategoryRowView.swift */; };
 		5896B9E92CC97DBA00759F02 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 5896B9E82CC97DBA00759F02 /* SFSymbolsPicker */; };
 		5896B9EC2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9EB2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift */; };
 		5896B9EE2CCAEB4A00759F02 /* BookmakerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5896B9ED2CCAEB4A00759F02 /* BookmakerModel.swift */; };
@@ -156,8 +156,8 @@
 		5896B9DC2CC96C5500759F02 /* TagRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRowView.swift; sourceTree = "<group>"; };
 		5896B9DF2CC976F100759F02 /* CategorySettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySettingsScreen.swift; sourceTree = "<group>"; };
 		5896B9E12CC9772100759F02 /* CategorySettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySettingsViewModel.swift; sourceTree = "<group>"; };
-		5896B9E32CC9773900759F02 /* CategoryAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddSheet.swift; sourceTree = "<group>"; };
-		5896B9E52CC97A3800759F02 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		5896B9E32CC9773900759F02 /* CategorySettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySettingsSheet.swift; sourceTree = "<group>"; };
+		5896B9E52CC97A3800759F02 /* CategoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRowView.swift; sourceTree = "<group>"; };
 		5896B9EB2CCAE8EB00759F02 /* BookmakersSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakersSettingsViewModel.swift; sourceTree = "<group>"; };
 		5896B9ED2CCAEB4A00759F02 /* BookmakerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakerModel.swift; sourceTree = "<group>"; };
 		5896B9EF2CCAF1E000759F02 /* BookmakersSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmakersSettingsScreen.swift; sourceTree = "<group>"; };
@@ -456,9 +456,9 @@
 			isa = PBXGroup;
 			children = (
 				5896B9DF2CC976F100759F02 /* CategorySettingsScreen.swift */,
-				5896B9E32CC9773900759F02 /* CategoryAddSheet.swift */,
+				5896B9E32CC9773900759F02 /* CategorySettingsSheet.swift */,
 				5896B9E12CC9772100759F02 /* CategorySettingsViewModel.swift */,
-				5896B9E52CC97A3800759F02 /* CategoryView.swift */,
+				5896B9E52CC97A3800759F02 /* CategoryRowView.swift */,
 			);
 			path = CategorySettings;
 			sourceTree = "<group>";
@@ -665,7 +665,7 @@
 				58645D3E2CC6CB14009ACB34 /* TagsSettingsScreen.swift in Sources */,
 				58C58F2E2A9BEE2D006A6229 /* CustomAlertView.swift in Sources */,
 				586D2B4C2A05A51200309F91 /* ProfileImage.swift in Sources */,
-				5896B9E42CC9773900759F02 /* CategoryAddSheet.swift in Sources */,
+				5896B9E42CC9773900759F02 /* CategorySettingsSheet.swift in Sources */,
 				58BD61272CAB3C31000BF464 /* RouterDestination.swift in Sources */,
 				5896B9DB2CC96BE800759F02 /* TagsSettingsSheet.swift in Sources */,
 				58AA328729EB79FD00BBBC9C /* PreferencesViewModel.swift in Sources */,
@@ -703,7 +703,7 @@
 				58BD611A2CAB38FC000BF464 /* CodingUserInfoKey+Extensions.swift in Sources */,
 				58076A9029C98B4000A0762B /* BetDb.swift in Sources */,
 				5896B9F22CCAF1F000759F02 /* BookmakerRowView.swift in Sources */,
-				5896B9E62CC97A3800759F02 /* CategoryView.swift in Sources */,
+				5896B9E62CC97A3800759F02 /* CategoryRowView.swift in Sources */,
 				583AB5A929D230A200F4B9DC /* ProfileViewModel.swift in Sources */,
 				580CB6B72CB470B2009771E6 /* BetCellView.swift in Sources */,
 				580CB6BF2CB470B2009771E6 /* FeedViewModel.swift in Sources */,

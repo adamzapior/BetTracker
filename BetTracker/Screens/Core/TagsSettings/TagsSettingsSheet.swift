@@ -21,14 +21,14 @@ struct TagsSettingsSheet: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Tag Details")) {
-                    TextField("Tag Name", text: $viewModel.tagName)
+                Section(header: Text("Tag details")) {
+                    TextField("Tag name", text: $viewModel.tagName)
                         .focused($isTagNameFocused)
 
                     ColorPicker("Choose color", selection: $viewModel.selectedColor)
                 }
             }
-            .navigationTitle("New Tag")
+            .navigationTitle("New tag")
             .navigationBarItems(
                 leading: Button("Cancel") {
                     dismiss()

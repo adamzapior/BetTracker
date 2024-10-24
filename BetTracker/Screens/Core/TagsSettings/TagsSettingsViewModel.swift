@@ -42,7 +42,7 @@ final class TagsSettingsViewModel: ObservableObject {
     func deleteTag(at indexSet: IndexSet) {
         for index in indexSet {
             let categoryToDelete = tags[index]
-            repository.db.deleteBet(model: categoryToDelete)
+            repository.deleteTag(model: categoryToDelete)
         }
 
         updateIndexPaths()
