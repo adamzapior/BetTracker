@@ -77,6 +77,84 @@ class BetDao {
         }
     }
 
+
+    func observeTags() -> AnyPublisher<[TagModel], Never> {
+        ValueObservation
+            .tracking { db in
+                try TagModel.fetchAll(db)
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
+
+    func insertTag(model: TagModel) {
+        try? BetDb.db.write { db in
+            // Najpierw sprawdź czy istnieje kategoria o tej nazwie
+            if let existingCategory = try TagModel.filter(TagModel.Columns.name == model.name).fetchOne(db) {
+                // Jeśli istnieje, zaktualizuj pozostałe pola zachowując istniejące id
+                var updatedModel = model
+                updatedModel.id = existingCategory.id
+                try updatedModel.update(db)
+            } else {
+                // Jeśli nie istnieje, dodaj nowy rekord
+                try model.insert(db)
+            }
+        }
+    }
+
+    func updateTag(model: TagModel) {
+        try? BetDb.db.write { db in
+            try model.update(db)
+        }
+    }
+
+    func deleteTag(model: TagModel) {
+        _ = try? BetDb.db.write { db in
+            try model.delete(db)
+        }
+    }
+
+    
+    func observeBookmakers() -> AnyPublisher<[BookmakerModel], Never> {
+        ValueObservation
+            .tracking { db in
+                try BookmakerModel.fetchAll(db)
+            }
+            .publisher(in: BetDb.db)
+            .mapError { _ in Never.transferRepresentation }
+            .eraseToAnyPublisher()
+    }
+
+    func insertBookmaker(model: BookmakerModel) {
+        try? BetDb.db.write { db in
+            // Najpierw sprawdź czy istnieje kategoria o tej nazwie
+            if let existingCategory = try BookmakerModel.filter(BookmakerModel.Columns.name == model.name).fetchOne(db) {
+                // Jeśli istnieje, zaktualizuj pozostałe pola zachowując istniejące id
+                var updatedModel = model
+                updatedModel.id = existingCategory.id
+                try updatedModel.update(db)
+            } else {
+                // Jeśli nie istnieje, dodaj nowy rekord
+                try model.insert(db)
+            }
+        }
+    }
+
+    func updateBookmaker(model: BookmakerModel) {
+        try? BetDb.db.write { db in
+            try model.update(db)
+        }
+    }
+
+    func deleteBookmaker(model: BookmakerModel) {
+        _ = try? BetDb.db.write { db in
+            try model.delete(db)
+        }
+    }
+    
+
+
     func getSavedBets<T: DatabaseModel>(model _: T.Type) -> AnyPublisher<[T], Never> {
         ValueObservation
             .tracking { db in
